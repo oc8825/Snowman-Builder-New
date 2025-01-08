@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Phaser from 'phaser'; // Import Phaser
+<<<<<<< HEAD
 import GameScene from '/src/phaser/scenes/GameScene'; // Import the Phaser scene
+=======
+import GameScene from '/src/phaser/scenes/GameScene'; // Import the Phaser scene // old: import GameScene from 'C:/Users/opcla/SnowmanBuilder/src/phaser/scenes/GameScene'; // Import the Phaser scene
+>>>>>>> fee500361c4dbadc651502b020dd2357ed991bdf
 
 const GameCanvas = () => {
     const gameContainerRef = useRef(null); // Reference to the DOM element for Phaser
