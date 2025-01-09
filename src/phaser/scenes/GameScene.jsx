@@ -29,9 +29,9 @@ class GameScene extends Phaser.Scene {
         );
 
         //snowball sprite
-        this.snowball = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'snowball');
+        this.snowball = this.add.sprite(this.scale.width / 2, this.scale.height * 3 / 4, 'snowball');
         this.snowball.setScale(0.1);
-        this.snowball.setOrigin(0.5, 0.5);
+        this.snowball.setOrigin(.5, .5);
 
         this.setInventory();
     }
@@ -50,13 +50,7 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
-        this.ground.tilePositionY += 1;
-
-        this.snowball.y -= this.speedY;
-
-        if (this.snowball.y < 0) {
-            this.snowball.y = 0;
-        }
+        this.ground.tilePositionY -= 1;
 
         this.snowball.rotation += 0.01;
     }
