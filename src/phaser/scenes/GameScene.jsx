@@ -34,6 +34,12 @@ class GameScene extends Phaser.Scene {
         this.snowball.setOrigin(.5, .5);
 
         this.setInventory();
+
+        //initialize score
+        this.score = 0;
+
+        //Display score
+        this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#fff' });
     }
 
     setInventory() {
