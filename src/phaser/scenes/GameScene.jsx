@@ -9,7 +9,7 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        // Load game assets
+        // load game assets
         this.load.image('ground', '/src/assets/images/tempBackground.jpg');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('short', '/src/assets/images/short.png');
