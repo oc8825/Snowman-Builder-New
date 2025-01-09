@@ -1,30 +1,30 @@
 import React, { useEffect, useRef } from 'react';
-import Phaser from 'phaser'; // import phaser
-import GameScene from '/src/phaser/scenes/GameScene'; // import phaser scene
+import Phaser from 'phaser'; // Import Phaser
+import GameScene from '/src/phaser/scenes/GameScene'; // Import the Phaser scene
 
 const GameCanvas = () => {
-    const gameContainerRef = useRef(null); 
+    const gameContainerRef = useRef(null); // Reference to the DOM element for Phaser
 
     useEffect(() => {
-        // phaser config
+        // Phaser configuration
         const config = {
-            type: Phaser.AUTO,
-            width: 800, // game width
-            height: 600, // game height
-            scene: [GameScene], // add scene
-            parent: gameContainerRef.current 
+            type: Phaser.AUTO, // Use WebGL or Canvas automatically
+            width: 800, // Game width
+            height: 600, // Game height
+            scene: [GameScene], // Add the scene
+            parent: gameContainerRef.current // Attach Phaser to the div
         };
 
-        // create new phaser game instance
+        // Create a new Phaser game instance
         const game = new Phaser.Game(config);
 
+        // Cleanup on unmount
         return () => {
-            game.destroy(true); // 
+            game.destroy(true); // Destroy the Phaser game when the component unmounts
         };
-    }, []); // 
+    }, []); // Empty dependency array ensures this effect runs only once
 
     return <div ref={gameContainerRef} style={{ width: '100%', height: '100%' }} />;
 };
 
 export default GameCanvas;
-
