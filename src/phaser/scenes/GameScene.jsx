@@ -65,6 +65,11 @@ class GameScene extends Phaser.Scene {
 
         snowball.body.setBounce(0);    // Prevent bounce
         snowball.body.setFriction(0);  // Prevent friction from applying
+
+        // decrease score
+        this.score -= 1;
+        // Update the score display
+        this.scoreText.setText('Score: ' + this.score);
         
         obstacle.destroy(); // Remove the obstacle on collision
     }
