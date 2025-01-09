@@ -49,6 +49,12 @@ class GameScene extends Phaser.Scene {
 
         // collider for colision detection
         this.physics.add.collider(this.snowball, this.obstacles, this.handleCollision, null, this);
+
+        //initialize score
+        this.score = 10;
+
+        //Display score
+        this.scoreText = this.add.text(10, 10, 'Score: 10', { fontSize: '32px', fill: '#000' });
     }
 
     handleCollision(snowball, obstacle) {
