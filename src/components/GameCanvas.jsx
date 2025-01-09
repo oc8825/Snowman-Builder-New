@@ -9,8 +9,8 @@ const GameCanvas = () => {
         // Phaser configuration
         const config = {
             type: Phaser.AUTO, // Use WebGL or Canvas automatically
-            width: 800, // Game width
-            height: 600, // Game height
+            width: 1200, // Game width
+            height: 660, // Game height
             scene: [GameScene], // Add the scene
             parent: gameContainerRef.current // Attach Phaser to the div
         };
