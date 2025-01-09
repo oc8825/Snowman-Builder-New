@@ -109,8 +109,17 @@ class GameScene extends Phaser.Scene {
     handleOrientation(event) {
         // Extract tilt data
         const { beta, gamma } = event;
-    }
+
+        //Map tilt data to velocity
+        const tiltX = Phaser.Math.Clamp(gamma, -90, 90) / 90;
+        const tiltY = Phaser.Math.Clamp(beta, -90, 90) / 90;
+
+        // Set the velocity based on tilt
+        this.player.setVelocityX(tiltX * 200);
+        this.player.setVelocityY(tiltY * 200);
+        }
+ }
     
-}
+
 
 export default GameScene;
