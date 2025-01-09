@@ -10,7 +10,7 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         // load game assets
-        this.load.image('ground', '/src/assets/images/tempBackground.jpg');
+        this.load.image('ground', '/src/assets/images/backg2.jpg');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('short', '/src/assets/images/short.png');
         this.load.image('jersey', '/src/assets/images/jersey.png');
@@ -22,7 +22,7 @@ class GameScene extends Phaser.Scene {
         //background
         this.ground = this.add.tileSprite(
             this.scale.width/2,
-            this.scale.height / 2, // Center vertically
+            this.scale.height/2, // Center vertically
             this.scale.width, // Width matches the canvas
             this.scale.height, // Height matches the canvas
             "ground"
@@ -30,7 +30,7 @@ class GameScene extends Phaser.Scene {
 
         //snowball sprite
         this.snowball = this.add.sprite(this.scale.width / 2, this.scale.height * 3 / 4, 'snowball');
-        this.snowball.setScale(0.1);
+        this.snowball.setScale(0.2);
         this.snowball.setOrigin(.5, .5);
 
         this.setInventory();
