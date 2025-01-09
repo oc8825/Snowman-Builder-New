@@ -66,6 +66,12 @@ class GameScene extends Phaser.Scene {
 
         this.snowball.rotation += 0.01;
     }
+
+    handleOrientation(event) {
+        // Extract tilt data
+        const { beta, gamma } = event;
+    }
+    
 }
 
 export default GameScene;
