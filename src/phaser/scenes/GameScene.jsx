@@ -51,10 +51,10 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.snowball, this.obstacles, this.handleCollision, null, this);
 
         //initialize score
-        this.score = 10;
+        this.score = 0;
 
         //Display score
-        this.scoreText = this.add.text(10, 10, 'Score: 10', { fontSize: '32px', fill: '#000' });
+        this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
     }
 
     handleCollision(snowball, obstacle) {
@@ -67,7 +67,7 @@ class GameScene extends Phaser.Scene {
         snowball.body.setFriction(0);  // Prevent friction from applying
 
         // decrease score
-        this.score -= 1;
+        this.score += 1;
         // Update the score display
         this.scoreText.setText('Score: ' + this.score);
         
