@@ -36,10 +36,10 @@ class GameScene extends Phaser.Scene {
         this.setInventory();
 
         //initialize score
-        this.score = 0;
+        this.score = 10;
 
         //Display score
-        this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#fff' });
+        this.scoreText = this.add.text(10, 10, 'Score: 10', { fontSize: '32px', fill: '#000' });
     }
 
     setInventory() {
