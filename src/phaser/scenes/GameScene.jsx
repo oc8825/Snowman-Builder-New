@@ -1,21 +1,25 @@
 import Phaser from 'phaser';
 
 class GameScene extends Phaser.Scene {
-
     constructor() {
-        super('GameScene'); // Give this scene a name
+        super('GameScene');
         this.ground = null;
         this.snowball = null;
+        this.speedY = 1; // Vertical speed for both the snowball and the background
     }
 
     preload() {
-        // Load game assets (images, sounds, etc.)
-        this.load.image('ground', '/src/assets/images/tempBackground.jpg'); // Example images
-        this.load.image('snowball', '/src/assets/images/snowball.png'); 
-
+        // Load game assets
+        this.load.image('ground', '/src/assets/images/tempBackground.jpg');
+        this.load.image('snowball', '/src/assets/images/snowball.png');
+        this.load.image('short', '/src/assets/images/short.png');
+        this.load.image('jersey', '/src/assets/images/jersey.png');
+        this.load.image('shoes', '/src/assets/images/shoes.png');
+        this.load.image('cap', '/src/assets/images/cap.png');
     }
 
     create() {
+        //background
         this.ground = this.add.tileSprite(
             this.scale.width/2,
             this.scale.height / 2, // Center vertically
@@ -24,24 +28,36 @@ class GameScene extends Phaser.Scene {
             "ground"
         );
 
-        this.snowball = this.add.sprite(
-            this.scale.width/2,
-            100,
-            'snowball'
-        );
+        //snowball sprite
+        this.snowball = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'snowball');
         this.snowball.setScale(0.1);
         this.snowball.setOrigin(0.5, 0.5);
 
-        // Add game objects (e.g., player, obstacles, etc.)
-        // this.add.text(100, 100, 'HelloPhaser!', { font: '24px Arial', color: '#fff' }); // Display text
-        // this.player = this.physics.add.sprite(400, 300, 'player'); // Create a sprite with physics
+        this.setInventory();
+    }
+
+    setInventory() {
+        //slot variables
+        this.slot1 = document.getElementById('slot-1');
+        this.slot2 = document.getElementById('slot-2');
+        this.slot3 = document.getElementById('slot-3');
+        this.slot4 = document.getElementById('slot-4');
+
+        this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
+        this.slot2.style.backgroundImage = 'url(/src/assets/images/cap.png)';
+        this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
+        this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
     }
 
     update() {
-        // Game logic for updates each frame (e.g., movement, collisions)
-        // this.player.x += 1; // Example movement
-        this.ground.tilePositionY += 2;
-        this.snowball.y -= 0.1;
+        this.ground.tilePositionY += 1;
+
+        this.snowball.y -= this.speedY;
+
+        if (this.snowball.y < 0) {
+            this.snowball.y = 0;
+        }
+
         this.snowball.rotation += 0.01;
     }
 }
