@@ -16,6 +16,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('jersey', '/src/assets/images/jersey.png');
         this.load.image('shoes', '/src/assets/images/shoes.png');
         this.load.image('cap', '/src/assets/images/cap.png');
+        this.load.image('obstacleImage', '/src/assets/images/football.png');
     }
 
     create() {
@@ -29,11 +30,25 @@ class GameScene extends Phaser.Scene {
         );
 
         //snowball sprite
-        this.snowball = this.add.sprite(this.scale.width / 2, this.scale.height * 3 / 4, 'snowball');
+        this.snowball = this.physics.add.sprite(this.scale.width / 2, this.scale.height * 3 / 4, 'snowball');
         this.snowball.setScale(0.2);
         this.snowball.setOrigin(.5, .5);
 
         this.setInventory();
+
+        //group of obstacles
+        this.obstacles = this.physics.add.group();
+
+        // timed event for obstacles spawning
+        this.time.addEvent({
+            delay: 2000, // Spawn every 2000ms (2 seconds)
+            callback: this.spawnObstacle,
+            callbackScope: this,
+            loop: true, // Keep repeating
+        });
+
+        // collider for colision detection
+        this.physics.add.collider(this.snowball, this.obstacles, this.handleCollision, null, this);
 
         //initialize score
         this.score = 10;
@@ -42,10 +57,27 @@ class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(10, 10, 'Score: 10', { fontSize: '32px', fill: '#000' });
     }
 
-    handleCollision(player,object) {
-        this.score += 1;
-        this.scoreText.setText('Score: ' - this.score);
-        object.destroy();
+    handleCollision(snowball, obstacle) {
+        console.log('Collision detected!');
+        
+        // Disable the obstacle from moving
+        snowball.body.setVelocity(0, 0);  // Make sure obstacle doesn't move
+
+        snowball.body.setBounce(0);    // Prevent bounce
+        snowball.body.setFriction(0);  // Prevent friction from applying
+
+        // decrease score
+        this.score -= 1;
+        // Update the score display
+        this.scoreText.setText('Score: ' + this.score);
+        
+        obstacle.destroy(); // Remove the obstacle on collision
+    }
+
+    spawnObstacle() {
+        const obstacle = this.obstacles.create(this.scale.width/2, 0, 'obstacleImage'); // Spawn at the top
+        obstacle.setScale(0.1); // Scale the obstacle down
+        obstacle.setVelocityY(100); // Make the obstacle move downward
     }
 
     setInventory() {
@@ -65,6 +97,13 @@ class GameScene extends Phaser.Scene {
         this.ground.tilePositionY -= 1;
 
         this.snowball.rotation += 0.01;
+
+        // cleaning up obstacles 
+        this.obstacles.getChildren().forEach(obstacle => {
+            if (obstacle && obstacle.y > this.scale.height) {
+                obstacle.destroy(); // Clean up obstacles out of bounds
+            }
+        });
     }
 
     handleOrientation(event) {

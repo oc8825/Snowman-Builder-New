@@ -12,6 +12,13 @@ const GameCanvas = () => {
             width: 1200, // Game width
             height: 660, // Game height
             scene: [GameScene], // Add the scene
+            physics: {
+                default: 'arcade', // Use arcade physics
+                arcade: {
+                    debug: false, // Disable debug mode
+                    gravity: { y: 0 }, // Set gravity to zero for the y-axis
+                }
+            },
             parent: gameContainerRef.current // Attach Phaser to the div
         };
 
