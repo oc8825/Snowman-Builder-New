@@ -42,6 +42,12 @@ class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(10, 10, 'Score: 10', { fontSize: '32px', fill: '#000' });
     }
 
+    handleCollision(player,object) {
+        this.score += 1;
+        this.scoreText.setText('Score: ' - this.score);
+        object.destroy();
+    }
+
     setInventory() {
         //slot variables
         this.slot1 = document.getElementById('slot-1');
