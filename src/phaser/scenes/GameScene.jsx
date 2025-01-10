@@ -10,13 +10,30 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         // load game assets
-        this.load.image('ground', '/src/assets/images/backg2.jpg');
+        this.load.image('ground', '/src/assets/images/newbackg.jpg');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('short', '/src/assets/images/short.png');
         this.load.image('jersey', '/src/assets/images/jersey.png');
         this.load.image('shoes', '/src/assets/images/shoes.png');
-        this.load.image('cap', '/src/assets/images/cap.png');
+        this.load.image('cap', '/src/assets/images/accessories.png');
+
         this.load.image('obstacleImage', '/src/assets/images/football.png');
+        this.load.image('snowAdderImage', '/src/assets/images/soccer.png');
+
+      //  this.load.image('', '/src/assets/images/net.png');
+       //  this.load.image('', '/src/assets/images/baseball.png');
+        // this.load.image('', '/src/assets/images/basketball-hoop.png');
+       //  this.load.image('', '/src/assets/images/basketball.png');
+        // this.load.image('', '/src/assets/images/beckham.png');
+       //  this.load.image('', '/src/assets/images/curry.png');
+       //  this.load.image('', '/src/assets/images/doncic.png');
+       //  this.load.image('', '/src/assets/images/mclaurin.png');
+         //this.load.image('', '/src/assets/images/messi.png');
+       //  this.load.image('', '/src/assets/images/morgan.png');
+      //   this.load.image('', '/src/assets/images/ohtani.png');
+       //  this.load.image('', '/src/assets/images/rodman.png');
+       //  this.load.image('', '/src/assets/images/zimmerman.png');
+
     }
 
     create() {
@@ -39,6 +56,9 @@ class GameScene extends Phaser.Scene {
         //group of obstacles
         this.obstacles = this.physics.add.group();
 
+        //group of snow adders
+        this.snowAdders = this.physics.add.group();
+
         // timed event for obstacles spawning
         this.time.addEvent({
             delay: 2000, // Spawn every 2000ms (2 seconds)
@@ -47,18 +67,46 @@ class GameScene extends Phaser.Scene {
             loop: true, // Keep repeating
         });
 
-        // collider for colision detection
-        this.physics.add.collider(this.snowball, this.obstacles, this.handleCollision, null, this);
+        // timed event for snowAdders spawning
+        this.time.addEvent({
+            delay: 3000, // Spawn every 3000ms (3 seconds)
+            callback: this.spawnSnowAdder,
+            callbackScope: this,
+            loop: true, // Keep repeating
+        });
+
+        // collider for colision detection for obstacles
+        this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
+
+        // collider for colision detection for snowAdders
+        this.physics.add.collider(this.snowball, this.snowAdders, this.handleSnowAdderCollision, null, this);
 
         //initialize score
         this.score = 0;
 
-        //Display score
+        //display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
     }
 
-    handleCollision(snowball, obstacle) {
+    handleObstacleCollision(snowball, obstacle) {
         console.log('Collision detected!');
+        
+        // Disable the obstacle from moving
+        snowball.body.setVelocity(0, 0);  // Make sure obstacle doesn't move
+
+        snowball.body.setBounce(0);    // Prevent bounce
+        snowball.body.setFriction(0);  // Prevent friction from applying
+
+        // decrease score
+        this.score -= 1;
+        // Update the score display
+        this.scoreText.setText('Score: ' + this.score);
+        
+        obstacle.destroy(); // Remove the obstacle on collision
+    }
+
+    handleSnowAdderCollision(snowball, snowAdder) {
+        console.log('Snow added!');
         
         // Disable the obstacle from moving
         snowball.body.setVelocity(0, 0);  // Make sure obstacle doesn't move
@@ -71,13 +119,27 @@ class GameScene extends Phaser.Scene {
         // Update the score display
         this.scoreText.setText('Score: ' + this.score);
         
-        obstacle.destroy(); // Remove the obstacle on collision
+        snowAdder.destroy(); // Remove the obstacle on collision
     }
 
     spawnObstacle() {
-        const obstacle = this.obstacles.create(this.scale.width/2, 0, 'obstacleImage'); // Spawn at the top
+        // Randomly choose one of the three x positions
+        const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
+        const randomX = Phaser.Math.RND.pick(xPositions);  // Randomly pick one of the x positions
+        
+        const obstacle = this.obstacles.create(randomX, 0, 'obstacleImage'); // Spawn at the top
         obstacle.setScale(0.1); // Scale the obstacle down
         obstacle.setVelocityY(100); // Make the obstacle move downward
+    }
+
+    spawnSnowAdder() {
+        // Randomly choose one of the three x positions
+        const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
+        const randomX = Phaser.Math.RND.pick(xPositions);  // Randomly pick one of the x positions
+        
+        const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage'); // Spawn at the top
+        snowAdder.setScale(0.1); // Scale the snowAdder down
+        snowAdder.setVelocityY(100); // Make the obstacle move downward
     }
 
     setInventory() {
@@ -88,7 +150,7 @@ class GameScene extends Phaser.Scene {
         this.slot4 = document.getElementById('slot-4');
 
         this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
-        this.slot2.style.backgroundImage = 'url(/src/assets/images/cap.png)';
+        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
         this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
         this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
     }
