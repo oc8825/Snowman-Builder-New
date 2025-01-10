@@ -168,17 +168,18 @@ class GameScene extends Phaser.Scene {
         });
     }
 
-    handleOrientation(event) {
-        // Extract tilt data
+    handleDeviceMotion(event) {
         const { beta, gamma } = event;
 
-        //Map tilt data to velocity
-        const tiltX = Phaser.Math.Clamp(gamma, -90, 90) / 90;
-        const tiltY = Phaser.Math.Clamp(beta, -90, 90) / 90;
+        //Define the maxiumm speed for the sprite
+        const maxSpeed = 300;
 
-        // Set the velocity based on tilt
-        this.player.setVelocityX(tiltX * 200);
-        this.player.setVelocityY(tiltY * 200);
+        //Calculate the velocity based on tilt
+        const xVelocity = Phaser.Math.Clamp(gamma * 5, -maxSpeed, maxSpeed);
+        const yVelocity = Phaser.Math.Clamp(beta * 5, -maxSpeed, maxSpeed);
+
+        //Set the velocity for the sprite
+        this.sprite.setVelocity(xVelocity, yVelocity);
         }
  }
     
