@@ -196,6 +196,7 @@ class GameScene extends Phaser.Scene {
             tiltX = Phaser.Math.Clamp(tiltX, -30, 30);
             tiltY = Phaser.Math.Clamp(tiltY, -30, 30);
         }
+
         this.ground.tilePositionY -= 1;
 
         this.snowball.rotation += 0.01;
