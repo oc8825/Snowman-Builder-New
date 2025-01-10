@@ -18,7 +18,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('cap', '/src/assets/images/accessories.png');
 
         this.load.image('obstacleImage', '/src/assets/images/football.png');
-        this.load.image('snowAdderImage', '/src/assets/images/soccer.png');
+        this.load.image('snowAdderImage', '/src/assets/images/snowAdder.png');
 
       //  this.load.image('', '/src/assets/images/net.png');
        //  this.load.image('', '/src/assets/images/baseball.png');
@@ -174,8 +174,12 @@ class GameScene extends Phaser.Scene {
         const randomX = Phaser.Math.RND.pick(xPositions);  // Randomly pick one of the x positions
         
         const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage'); // Spawn at the top
-        snowAdder.setScale(0.1); // Scale the snowAdder down
-        snowAdder.setVelocityY(100); // Make the obstacle move downward
+        snowAdder.setScale(0.3); // Scale the snowAdder down
+
+        // calculate speed to move at same speed as background
+        let backgroundSpeed = 1; // pixels per frame
+        let velocityY = backgroundSpeed * this.game.loop.actualFps;
+        snowAdder.setVelocityY(velocityY); // Make the obstacle move downward
     }
 
     setInventory() {
