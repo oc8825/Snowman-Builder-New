@@ -86,6 +86,7 @@ class GameScene extends Phaser.Scene {
 
         //display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
+        this.scoreText.setDepth(10);
 
         //Check if device orienation is supported 
         if (window.DeviceOrientationEvent) {
