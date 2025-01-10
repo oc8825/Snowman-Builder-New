@@ -86,6 +86,17 @@ class GameScene extends Phaser.Scene {
 
         //display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
+
+        //Permissions for device motion
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', this.handleDeviceMotion, true);
+                    }
+                })
+                .catch(console.error);
+        }
     }
 
     handleObstacleCollision(snowball, obstacle) {
@@ -104,6 +115,7 @@ class GameScene extends Phaser.Scene {
         
         obstacle.destroy(); // Remove the obstacle on collision
     }
+
 
     handleSnowAdderCollision(snowball, snowAdder) {
         console.log('Snow added!');
