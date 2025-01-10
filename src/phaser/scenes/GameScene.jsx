@@ -113,6 +113,13 @@ class GameScene extends Phaser.Scene {
             console.log('DeviceOrientationEvent is NOT supported!');
         }
 
+        //Log device orientation plugin
+        if (this.orientation) {
+            console.log('Device orientation plugin is active.');
+        } else {
+            console.warn('Device orientation plugin not available.');
+        }
+    
     }
 
 
@@ -185,6 +192,17 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+        if (this.orientation) {
+            const { gamma, beta } = this.orientation;
+        //Map tilt data to velocity 
+        const maxSpeed = 300;
+        const xVelocity = Phaser.Math.Clamp(gamma * 5, -maxSpeed, maxSpeed);
+        const yVelocity = Phaser.Math.Clamp(beta * 5, -maxSpeed, maxSpeed);
+
+        //Apply velocity to snowball
+        this.snowball.setVelocity(xVelocity, yVelocity);
+        }
+
         //tilt
         if (typeof window.DeviceOrientationEvent !== 'undefined') {
             window.addEventListener('deviceorientation', handleOrientation);
