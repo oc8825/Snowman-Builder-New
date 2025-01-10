@@ -87,17 +87,33 @@ class GameScene extends Phaser.Scene {
         //display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
-        //Permissions for device motion
+        //Check if device orienation is supported 
+        if (window.DeviceOrientationEvent) {
+            console.log('DeviceOrientationEvent is supported!');
+
+        //For iOS, request permission for device motion
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
             DeviceOrientationEvent.requestPermission()
-                .then(permissionState => {
-                    if (permissionState === 'granted') {
-                        window.addEventListener('deviceorientation', this.handleDeviceMotion, true);
+                .then((response) => {
+                    if (response === 'granted') {
+                        console.log('Motion permission granted!');
+                        window.addEventListener('deviceorientation', this.handleDeviceMotion.bind(this));
+                    } else {
+                        console.log('Motion permission denied!');
                     }
                 })
-                .catch(console.error);
+                .catch((error) => {
+                    console.error('Request permission error: ', error);
+                });
+            } else {
+                //Non-iOS devices
+                window.addEventListener('deviceorientation', this.handleDeviceMotion.bind(this));
+            }
+        } else {
+            console.log('DeviceOrientationEvent is NOT supported!');
         }
     }
+
 
     handleObstacleCollision(snowball, obstacle) {
         console.log('Collision detected!');
