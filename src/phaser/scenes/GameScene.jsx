@@ -112,6 +112,7 @@ class GameScene extends Phaser.Scene {
         } else {
             console.log('DeviceOrientationEvent is NOT supported!');
         }
+
     }
 
 
@@ -199,12 +200,21 @@ class GameScene extends Phaser.Scene {
     handleDeviceMotion(event) {
         const { beta, gamma } = event;
 
+        console.log('Device orientation detected: beta=${beta}, gamma=${gamma}');
+
+        if (beta === null || gamma === null) {
+            console.warn('Device orientation values are null. Motion may not be supported or enabled.');
+            return;
+        }
+
         //Define the maxiumm speed for the sprite
         const maxSpeed = 300;
 
         //Calculate the velocity based on tilt
         const xVelocity = Phaser.Math.Clamp(gamma * 5, -maxSpeed, maxSpeed);
         const yVelocity = Phaser.Math.Clamp(beta * 5, -maxSpeed, maxSpeed);
+
+        console.log('Calculated velocities: x=${xVelocity}, y=${yVelocity}');
 
         //Set the velocity for the sprite
         this.sprite.setVelocity(xVelocity, yVelocity);
