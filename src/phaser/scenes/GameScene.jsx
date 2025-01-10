@@ -190,20 +190,11 @@ class GameScene extends Phaser.Scene {
             window.addEventListener('deviceorientation', handleOrientation);
         }
         function handleOrientation(event) {
-            var x = event.beta;  // In degree in the range [-180,180]
-            var y = event.gamma; // In degree in the range [-90,90]
-            // Because we don't want to have the device upside down
-            // We constrain the x value to the range [-90,90]
-            if (x > 90) { x = 90 };
-            if (x < -90) { x = -90 };
-            // To make computation easier we shift the range of
-            // x and y to [0,180]
-            x += 90;
-            y += 90;
-            // 10 is half the size of the ball
-            // It center the position of the ball
-            ball.style.top = (window.innerHeight - 20) * x / 180 - 10 + 'px';
-            ball.style.left = (window.innerWidth - 20) * y / 180 - 10 + 'px';
+            let tiltX = event.gamma;
+            let tiltY = event.beta;
+
+            tiltX = Phaser.Math.Clamp(tiltX, -30, 30);
+            tiltY = Phaser.Math.Clamp(tiltY, -30, 30);
         }
         this.ground.tilePositionY -= 1;
 
