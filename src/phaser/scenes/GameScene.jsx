@@ -10,14 +10,30 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         // load game assets
-        this.load.image('ground', '/src/assets/images/backg2.jpg');
+        this.load.image('ground', '/src/assets/images/newbackg.jpg');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('short', '/src/assets/images/short.png');
         this.load.image('jersey', '/src/assets/images/jersey.png');
         this.load.image('shoes', '/src/assets/images/shoes.png');
-        this.load.image('cap', '/src/assets/images/cap.png');
+        this.load.image('cap', '/src/assets/images/accessories.png');
+
         this.load.image('obstacleImage', '/src/assets/images/football.png');
-        this.load.image('snowAdderImage', '/src/assets/images/soccerball.png');
+        this.load.image('snowAdderImage', '/src/assets/images/soccer.png');
+
+      //  this.load.image('', '/src/assets/images/net.png');
+       //  this.load.image('', '/src/assets/images/baseball.png');
+        // this.load.image('', '/src/assets/images/basketball-hoop.png');
+       //  this.load.image('', '/src/assets/images/basketball.png');
+        // this.load.image('', '/src/assets/images/beckham.png');
+       //  this.load.image('', '/src/assets/images/curry.png');
+       //  this.load.image('', '/src/assets/images/doncic.png');
+       //  this.load.image('', '/src/assets/images/mclaurin.png');
+         //this.load.image('', '/src/assets/images/messi.png');
+       //  this.load.image('', '/src/assets/images/morgan.png');
+      //   this.load.image('', '/src/assets/images/ohtani.png');
+       //  this.load.image('', '/src/assets/images/rodman.png');
+       //  this.load.image('', '/src/assets/images/zimmerman.png');
+
     }
 
     create() {
@@ -68,7 +84,7 @@ class GameScene extends Phaser.Scene {
         //initialize score
         this.score = 0;
 
-        //Display score
+        //display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
     }
 
@@ -134,7 +150,7 @@ class GameScene extends Phaser.Scene {
         this.slot4 = document.getElementById('slot-4');
 
         this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
-        this.slot2.style.backgroundImage = 'url(/src/assets/images/cap.png)';
+        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
         this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
         this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
     }
