@@ -5,7 +5,7 @@ const GameCanvas = () => {
     const gameContainerRef = useRef(null);
 
     useEffect(() => {
-        // Initialize Phaser game using buildPhaserGame
+        // initialize Phaser game using buildPhaserGame
         const phaserGame = buildPhaserGame({
             parent: gameContainerRef.current,
         });

@@ -6,15 +6,21 @@ class GameScene extends Phaser.Scene {
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
-        this.orientation = null; // Initialize orientation data
+        this.orientation = null; 
     }
 
     preload() {
         // load game assets
         this.load.image('ground', '/src/assets/images/newbackg.png');
         this.load.image('snowball', '/src/assets/images/snowball.png');
-        this.load.image('obstacleImage', '/src/assets/images/football.png');
-        this.load.image('snowAdderImage', '/src/assets/images/soccer.png');
+
+        this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
+
+        this.load.image('football', '/src/assets/images/football.png')
+        this.load.image('baseballbat', '/src/assets/images/baseballbat.png');
+        this.load.image('net', '/src/assets/images/net.png');
+        this.load.image('basketball', '/src/assets/images/basketball.png');
+
     }
 
     create() {
@@ -122,11 +128,28 @@ class GameScene extends Phaser.Scene {
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
 
-        const obstacle = this.obstacles.create(randomX, 0, 'obstacleImage');
-        obstacle.setScale(0.15);
-        obstacle.setVelocityY(100);
-        obstacle.rotation += 0.01;
+        const obstacleTypes = ['football', 'baseballbat', 'net', 'basketball'];
+        const randomObstacleType = Phaser.Math.RND.pick(obstacleTypes);
+
+        const obstacle = this.obstacles.create(randomX, 0, randomObstacleType);
+        
+        if (randomObstacleType === 'baseballbat') {
+            obstacle.setScale(0.15);
+            obstacle.setVelocityY(100);
+            obstacle.rotationSpeed = 0.02;
+        } else if (randomObstacleType === 'basketball') {
+            obstacle.rotationSpeed = 0.01;
+            obstacle.setScale(0.15);
+            obstacle.setVelocityY(200);
+        } else if (randomObstacleType === 'net') {
+            obstacle.setScale(0.3); 
+            obstacle.setVelocityY(300);
+        } else if (randomObstacleType === 'football') {
+            obstacle.setScale(0.1); 
+            obstacle.setVelocityY(250);
+            obstacle.rotationSpeed = 0.02;
     }
+}
 
     spawnSnowAdder() {
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
@@ -163,14 +186,17 @@ class GameScene extends Phaser.Scene {
             this.snowball.setVelocity(xVelocity, yVelocity);
         }
 
-        // move the ground
-        this.ground.tilePositionY -= 1;
-        this.snowball.rotation += 0.01;
+        this.ground.tilePositionY -= 1; // move the ground
+        this.snowball.rotation += 0.01; 
+
+
 
         // cleanup obstacles that go off-screen
         this.obstacles.getChildren().forEach(obstacle => {
             if (obstacle && obstacle.y > this.scale.height) {
                 obstacle.destroy();
+            } else if (obstacle.rotationSpeed) {
+                obstacle.rotation += obstacle.rotationSpeed;
             }
         });
        
@@ -185,11 +211,11 @@ class GameScene extends Phaser.Scene {
 const buildPhaserGame = ({ parent }) => {
     const baseConfig = {
         type: Phaser.AUTO,
-        width: window.innerWidth,  // se to window's width for mobile responsiveness
-        height: window.innerHeight, // se to window's height for mobile responsiveness
+        width: 1300,  // set to window's width for mobile responsiveness
+        height: 660, // set to window's height for mobile responsiveness
         scale: {
-            mode: Phaser.Scale.RESIZE, // dynamically resize the game based on window size
-            autoCenter: Phaser.Scale.CENTER_BOTH, // keep the game centered
+            mode: Phaser.Scale.FIT, // dynamically resize the game based on window size
+            autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, // keep the game centered
         },
         scene: [GameScene], // add game scenes here
         physics: {
