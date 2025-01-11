@@ -1,37 +1,27 @@
 import React, { useEffect, useRef } from 'react';
-import Phaser from 'phaser'; // Import Phaser
-import GameScene from '/src/phaser/scenes/GameScene'; // Import the Phaser scene
+import { buildPhaserGame } from '/src/phaser/scenes/GameScene'; // import the buildPhaserGame function
 
 const GameCanvas = () => {
-    const gameContainerRef = useRef(null); // Reference to the DOM element for Phaser
+    const gameContainerRef = useRef(null);
 
     useEffect(() => {
-        // Phaser configuration
-        const config = {
-            type: Phaser.AUTO, // Use WebGL or Canvas automatically
-            width: 1200, // Game width
-            height: 660, // Game height
-            scene: [GameScene], // Add the scene
-            physics: {
-                default: 'arcade', // Use arcade physics
-                arcade: {
-                    debug: false, // Disable debug mode
-                    gravity: { y: 0 }, // Set gravity to zero for the y-axis
-                }
-            },
-            parent: gameContainerRef.current // Attach Phaser to the div
-        };
-
-        // Create a new Phaser game instance
-        const game = new Phaser.Game(config);
+        // Initialize Phaser game using buildPhaserGame
+        const phaserGame = buildPhaserGame({
+            parent: gameContainerRef.current, // Attach Phaser to the div container
+        });
 
         // Cleanup on unmount
         return () => {
-            game.destroy(true); // Destroy the Phaser game when the component unmounts
+            phaserGame.destroy(true); 
         };
-    }, []); // Empty dependency array ensures this effect runs only once
+    }, []);
 
-    return <div ref={gameContainerRef} style={{ width: '100%', height: '100%' }} />;
+    return (
+        <div
+            ref={gameContainerRef}
+            style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'absolute', top: 0, left: 0 }}
+        />
+    );
 };
 
 export default GameCanvas;

@@ -5,145 +5,107 @@ class GameScene extends Phaser.Scene {
         super('GameScene');
         this.ground = null;
         this.snowball = null;
-        this.speedY = 1; // Vertical speed for both the snowball and the background
+        this.speedY = 1;
     }
 
     preload() {
         // load game assets
-        this.load.image('ground', '/src/assets/images/newbackg.jpg');
+        this.load.image('ground', '/src/assets/images/newbackg.png');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('short', '/src/assets/images/short.png');
         this.load.image('jersey', '/src/assets/images/jersey.png');
         this.load.image('shoes', '/src/assets/images/shoes.png');
         this.load.image('cap', '/src/assets/images/accessories.png');
-
         this.load.image('obstacleImage', '/src/assets/images/football.png');
-        this.load.image('snowAdderImage', '/src/assets/images/soccer.png');
-
-      //  this.load.image('', '/src/assets/images/net.png');
-       //  this.load.image('', '/src/assets/images/baseball.png');
-        // this.load.image('', '/src/assets/images/basketball-hoop.png');
-       //  this.load.image('', '/src/assets/images/basketball.png');
-        // this.load.image('', '/src/assets/images/beckham.png');
-       //  this.load.image('', '/src/assets/images/curry.png');
-       //  this.load.image('', '/src/assets/images/doncic.png');
-       //  this.load.image('', '/src/assets/images/mclaurin.png');
-         //this.load.image('', '/src/assets/images/messi.png');
-       //  this.load.image('', '/src/assets/images/morgan.png');
-      //   this.load.image('', '/src/assets/images/ohtani.png');
-       //  this.load.image('', '/src/assets/images/rodman.png');
-       //  this.load.image('', '/src/assets/images/zimmerman.png');
-
+        this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
     }
 
     create() {
-        //background
+        // background
         this.ground = this.add.tileSprite(
-            this.scale.width/2,
-            this.scale.height/2, // Center vertically
-            this.scale.width, // Width matches the canvas
-            this.scale.height, // Height matches the canvas
+            this.scale.width / 2,
+            this.scale.height / 2,
+            this.scale.width,
+            this.scale.height,
             "ground"
         );
 
-        //snowball sprite
+        // snowball sprite
         this.snowball = this.physics.add.sprite(this.scale.width / 2, this.scale.height * 3 / 4, 'snowball');
         this.snowball.setScale(0.2);
-        this.snowball.setOrigin(.5, .5);
+        this.snowball.setOrigin(0.5, 0.5);
 
         this.setInventory();
 
-        //group of obstacles
-        this.obstacles = this.physics.add.group();
+        this.obstacles = this.physics.add.group(); //obstacles
+        this.snowAdders = this.physics.add.group(); // snow adders
 
-        //group of snow adders
-        this.snowAdders = this.physics.add.group();
-
-        // timed event for obstacles spawning
         this.time.addEvent({
-            delay: 2000, // Spawn every 2000ms (2 seconds)
+            delay: 2000, // spawn every 2 seconds
             callback: this.spawnObstacle,
             callbackScope: this,
-            loop: true, // Keep repeating
+            loop: true, //  repeating
         });
 
-        // timed event for snowAdders spawning
         this.time.addEvent({
-            delay: 3000, // Spawn every 3000ms (3 seconds)
+            delay: 3000,
             callback: this.spawnSnowAdder,
             callbackScope: this,
-            loop: true, // Keep repeating
+            loop: true,
         });
 
-        // collider for colision detection for obstacles
+        // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
 
-        // collider for colision detection for snowAdders
+        // collision detection for snowAdders
         this.physics.add.collider(this.snowball, this.snowAdders, this.handleSnowAdderCollision, null, this);
 
-        //initialize score
         this.score = 0;
 
-        //display score
+        // display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
     }
 
     handleObstacleCollision(snowball, obstacle) {
-        console.log('Collision detected!');
-        
-        // Disable the obstacle from moving
-        snowball.body.setVelocity(0, 0);  // Make sure obstacle doesn't move
-
-        snowball.body.setBounce(0);    // Prevent bounce
-        snowball.body.setFriction(0);  // Prevent friction from applying
-
-        // decrease score
+        snowball.body.setVelocity(0, 0);  // no obstacle movement
+        snowball.body.setBounce(0);       // no bounce
+        snowball.body.setFriction(0);     // no friction
         this.score -= 1;
-        // Update the score display
-        this.scoreText.setText('Score: ' + this.score);
-        
-        obstacle.destroy(); // Remove the obstacle on collision
+        this.scoreText.setText('Score: ' + this.score); // update score
+        obstacle.destroy(); // disappear
     }
 
     handleSnowAdderCollision(snowball, snowAdder) {
-        console.log('Snow added!');
-        
-        // Disable the obstacle from moving
-        snowball.body.setVelocity(0, 0);  // Make sure obstacle doesn't move
+        snowball.body.setVelocity(0, 0);
+        snowball.body.setBounce(0);
+        snowball.body.setFriction(0);
 
-        snowball.body.setBounce(0);    // Prevent bounce
-        snowball.body.setFriction(0);  // Prevent friction from applying
-
-        // decrease score
         this.score += 1;
-        // Update the score display
         this.scoreText.setText('Score: ' + this.score);
-        
-        snowAdder.destroy(); // Remove the obstacle on collision
+
+        snowAdder.destroy();
     }
 
     spawnObstacle() {
-        // Randomly choose one of the three x positions
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);  // Randomly pick one of the x positions
-        
-        const obstacle = this.obstacles.create(randomX, 0, 'obstacleImage'); // Spawn at the top
-        obstacle.setScale(0.1); // Scale the obstacle down
-        obstacle.setVelocityY(100); // Make the obstacle move downward
+        const randomX = Phaser.Math.RND.pick(xPositions);
+
+        const obstacle = this.obstacles.create(randomX, 0, 'obstacleImage');
+        obstacle.setScale(0.15);
+        obstacle.setVelocityY(100);
+        obstacle.rotation += 0.01;
     }
 
     spawnSnowAdder() {
-        // Randomly choose one of the three x positions
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);  // Randomly pick one of the x positions
-        
-        const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage'); // Spawn at the top
-        snowAdder.setScale(0.1); // Scale the snowAdder down
-        snowAdder.setVelocityY(100); // Make the obstacle move downward
+        const randomX = Phaser.Math.RND.pick(xPositions);
+
+        const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage');
+        snowAdder.setScale(0.15);
+        snowAdder.setVelocityY(100);
     }
 
     setInventory() {
-        //slot variables
         this.slot1 = document.getElementById('slot-1');
         this.slot2 = document.getElementById('slot-2');
         this.slot3 = document.getElementById('slot-3');
@@ -157,22 +119,38 @@ class GameScene extends Phaser.Scene {
 
     update() {
         this.ground.tilePositionY -= 1;
-
         this.snowball.rotation += 0.01;
 
-        // cleaning up obstacles 
         this.obstacles.getChildren().forEach(obstacle => {
             if (obstacle && obstacle.y > this.scale.height) {
-                obstacle.destroy(); // Clean up obstacles out of bounds
+                obstacle.destroy();
             }
         });
     }
-
-    handleOrientation(event) {
-        // Extract tilt data
-        const { beta, gamma } = event;
-    }
-    
 }
 
+const buildPhaserGame = ({ parent }) => {
+    const baseConfig = {
+        type: Phaser.AUTO,
+        width: window.innerWidth,  // Set to window's width for mobile responsiveness
+        height: window.innerHeight, // Set to window's height for mobile responsiveness
+        scale: {
+            mode: Phaser.Scale.RESIZE, // Dynamically resize the game based on window size
+            autoCenter: Phaser.Scale.CENTER_BOTH, // Keep the game centered
+        },
+        scene: [GameScene], // add game scenes here
+        physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false,
+                gravity: { y: 0 },
+            },
+        },
+        parent, // Attach Phaser to the provided container
+    };
+
+    return new Phaser.Game(baseConfig);
+};
+
 export default GameScene;
+export { buildPhaserGame };
