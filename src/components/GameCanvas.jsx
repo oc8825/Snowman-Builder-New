@@ -7,10 +7,9 @@ const GameCanvas = () => {
     useEffect(() => {
         // Initialize Phaser game using buildPhaserGame
         const phaserGame = buildPhaserGame({
-            parent: gameContainerRef.current, // Attach Phaser to the div container
+            parent: gameContainerRef.current,
         });
 
-        // Cleanup on unmount
         return () => {
             phaserGame.destroy(true); 
         };
