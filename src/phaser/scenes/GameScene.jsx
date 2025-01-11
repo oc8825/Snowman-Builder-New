@@ -17,7 +17,22 @@ class GameScene extends Phaser.Scene {
         this.load.image('shoes', '/src/assets/images/shoes.png');
         this.load.image('cap', '/src/assets/images/accessories.png');
         this.load.image('obstacleImage', '/src/assets/images/football.png');
-        this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
+        this.load.image('snowAdderImage', '/src/assets/images/soccer.png');
+
+      //  this.load.image('', '/src/assets/images/net.png');
+       //  this.load.image('', '/src/assets/images/baseball.png');
+        // this.load.image('', '/src/assets/images/basketball-hoop.png');
+       //  this.load.image('', '/src/assets/images/basketball.png');
+        // this.load.image('', '/src/assets/images/beckham.png');
+       //  this.load.image('', '/src/assets/images/curry.png');
+       //  this.load.image('', '/src/assets/images/doncic.png');
+       //  this.load.image('', '/src/assets/images/mclaurin.png');
+         //this.load.image('', '/src/assets/images/messi.png');
+       //  this.load.image('', '/src/assets/images/morgan.png');
+      //   this.load.image('', '/src/assets/images/ohtani.png');
+       //  this.load.image('', '/src/assets/images/rodman.png');
+       //  this.load.image('', '/src/assets/images/zimmerman.png');
+
     }
 
     create() {
@@ -64,7 +79,43 @@ class GameScene extends Phaser.Scene {
 
         // display score
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
+        this.scoreText.setDepth(10); // score will display above game
+
+        //Check if device orienation is supported 
+        if (window.DeviceOrientationEvent) {
+            console.log('DeviceOrientationEvent is supported!');
+
+        //For iOS, request permission for device motion
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then((response) => {
+                    if (response === 'granted') {
+                        console.log('Motion permission granted!');
+                        window.addEventListener('deviceorientation', this.handleDeviceMotion.bind(this));
+                    } else {
+                        console.log('Motion permission denied!');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Request permission error: ', error);
+                });
+            } else {
+                //Non-iOS devices
+                window.addEventListener('deviceorientation', this.handleDeviceMotion.bind(this));
+            }
+        } else {
+            console.log('DeviceOrientationEvent is NOT supported!');
+        }
+
+        //Log device orientation plugin
+        if (this.orientation) {
+            console.log('Device orientation plugin is active.');
+        } else {
+            console.warn('Device orientation plugin not available.');
+        }
+    
     }
+
 
     handleObstacleCollision(snowball, obstacle) {
         snowball.body.setVelocity(0, 0);  // no obstacle movement
@@ -74,6 +125,7 @@ class GameScene extends Phaser.Scene {
         this.scoreText.setText('Score: ' + this.score); // update score
         obstacle.destroy(); // disappear
     }
+
 
     handleSnowAdderCollision(snowball, snowAdder) {
         snowball.body.setVelocity(0, 0);
@@ -98,11 +150,11 @@ class GameScene extends Phaser.Scene {
 
     spawnSnowAdder() {
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);
-
-        const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage');
-        snowAdder.setScale(0.15);
-        snowAdder.setVelocityY(100);
+        const randomX = Phaser.Math.RND.pick(xPositions);  // Randomly pick one of the x positions
+        
+        const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage'); // Spawn at the top
+        snowAdder.setScale(0.1); // Scale the snowAdder down
+        snowAdder.setVelocityY(100); // Make the obstacle move downward
     }
 
     setInventory() {
@@ -118,6 +170,29 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+        if (this.orientation) {
+            const { gamma, beta } = this.orientation;
+        //Map tilt data to velocity 
+        const maxSpeed = 300;
+        const xVelocity = Phaser.Math.Clamp(gamma * 5, -maxSpeed, maxSpeed);
+        const yVelocity = Phaser.Math.Clamp(beta * 5, -maxSpeed, maxSpeed);
+
+        //Apply velocity to snowball
+        this.snowball.setVelocity(xVelocity, yVelocity);
+        }
+
+        //tilt
+        if (typeof window.DeviceOrientationEvent !== 'undefined') {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+        function handleOrientation(event) {
+            let tiltX = event.gamma;
+            let tiltY = event.beta;
+
+            tiltX = Phaser.Math.Clamp(tiltX, -30, 30);
+            tiltY = Phaser.Math.Clamp(tiltY, -30, 30);
+        }
+
         this.ground.tilePositionY -= 1;
         this.snowball.rotation += 0.01;
 
@@ -127,30 +202,13 @@ class GameScene extends Phaser.Scene {
             }
         });
     }
+
+    handleOrientation(event) {
+        // Extract tilt data
+        const { beta, gamma } = event;
+    }
+    
 }
-
-const buildPhaserGame = ({ parent }) => {
-    const baseConfig = {
-        type: Phaser.AUTO,
-        width: window.innerWidth,  // Set to window's width for mobile responsiveness
-        height: window.innerHeight, // Set to window's height for mobile responsiveness
-        scale: {
-            mode: Phaser.Scale.RESIZE, // Dynamically resize the game based on window size
-            autoCenter: Phaser.Scale.CENTER_BOTH, // Keep the game centered
-        },
-        scene: [GameScene], // add game scenes here
-        physics: {
-            default: 'arcade',
-            arcade: {
-                debug: false,
-                gravity: { y: 0 },
-            },
-        },
-        parent, // Attach Phaser to the provided container
-    };
-
-    return new Phaser.Game(baseConfig);
-};
 
 export default GameScene;
 export { buildPhaserGame };
