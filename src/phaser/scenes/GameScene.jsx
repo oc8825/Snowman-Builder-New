@@ -193,32 +193,6 @@ class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '32px', fill: '#000' });
         this.scoreText.setDepth(10); // score will display above game
 
-        // check if DeviceOrientationEvent is supported
-        if (window.DeviceOrientationEvent) {
-            console.log('DeviceOrientationEvent is supported!');
-
-            // request permission for device motion (iOS)
-            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission()
-                    .then((response) => {
-                        if (response === 'granted') {
-                            console.log('Motion permission granted!');
-                            window.addEventListener('deviceorientation', this.handleDeviceMotion.bind(this));
-                        } else {
-                            console.log('Motion permission denied!');
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Request permission error: ', error);
-                    });
-            } else {
-                // non-iOS devices
-                window.addEventListener('deviceorientation', this.handleDeviceMotion.bind(this));
-            }
-        } else {
-            console.log('DeviceOrientationEvent is NOT supported!');
-        }
-
         // set up controls for lane switching
         this.targetX = this.lanes[this.currentLaneIndex]; // Target x position for the snowball
 
@@ -237,7 +211,101 @@ class GameScene extends Phaser.Scene {
                 this.changeLane(1);
             }
         });
+
+        // Check if DeviceMotionEvent is supported and the user is on a mobile device
+        const isTiltSupported = 
+            typeof DeviceMotionEvent !== 'undefined' &&
+            (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone'));
+
+        if (isTiltSupported) {
+            // Create the Enable Tilt Controls button
+            const enableTiltButton = document.createElement('button');
+            enableTiltButton.innerText = 'Enable Tilt Controls';
+            enableTiltButton.style.position = 'absolute';
+            enableTiltButton.style.top = '50%';
+            enableTiltButton.style.left = '50%';
+            enableTiltButton.style.transform = 'translate(-50%, -50%)';
+            enableTiltButton.style.fontSize = '20px';
+            enableTiltButton.style.padding = '10px 20px';
+            enableTiltButton.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            enableTiltButton.style.color = '#fff';
+            enableTiltButton.style.border = 'none';
+            enableTiltButton.style.cursor = 'pointer';
+            document.body.appendChild(enableTiltButton);
+
+            // create cooldown for lane changes so cna only change one lane per tilt
+            this.laneChangeCooldown = false;
+
+            enableTiltButton.addEventListener('click', () => {
+                if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                    // Request permission for accelerometer access on iOS
+                    DeviceMotionEvent.requestPermission()
+                    .then(response => {
+                        if (response === 'granted') {
+                            console.log('Permission granted for tilt controls!');
+                            window.addEventListener('devicemotion', this.handleMotion.bind(this));
+                            document.body.removeChild(enableTiltButton); // Remove the button
+                        } else {
+                            console.error('Permission denied for tilt controls.');
+                            alert('Permission denied. Tilt controls are unavailable.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error requesting permission:', error);
+                        alert('Unable to enable tilt controls. ' + error);
+                    });
+                } else {
+                    // For Android or non-iOS devices (no permission request needed)
+                    console.log('Tilt controls enabled (no permission required).');
+                    window.addEventListener('devicemotion', this.handleMotion.bind(this));
+                    document.body.removeChild(enableTiltButton); // Remove the button
+                }
+            });
+        } else {
+            console.log('Tilt controls are not supported on this device.');
+        }
     }
+
+    handleMotion(event) {
+        let tilt;
+        const tiltThreshold = 1; // Sensitivity
+    
+        // Get the screen orientation angle
+        const angle = screen.orientation.angle;
+    
+        if (angle === 90) {
+            // Landscape (rotated right)
+            tilt = -event.accelerationIncludingGravity.y; // Invert the y-axis
+        } else if (angle === -90 || angle === 270) {
+            // Landscape (rotated left)
+            tilt = event.accelerationIncludingGravity.y; // Keep y-axis as is
+        } else {
+            // Portrait
+            tilt = event.accelerationIncludingGravity.x; // Invert the x-axis
+        }
+    
+        console.log('Tilt:', tilt); // Debugging
+    
+        if (!this.laneChangeCooldown) {
+            if (tilt > tiltThreshold) {
+                this.changeLane(1); // Move right
+                this.startCooldown();
+            } else if (tilt < -tiltThreshold) {
+                this.changeLane(-1); // Move left
+                this.startCooldown();
+            }
+        }
+    }
+
+    startCooldown() {
+        this.laneChangeCooldown = true;
+    
+        // Reset cooldown after 300ms (adjust as needed)
+        this.time.delayedCall(300, () => {
+            this.laneChangeCooldown = false;
+        });
+    }
+
 
     changeLane(direction) {
         // Update lane index and ensure it stays within bounds
@@ -249,14 +317,6 @@ class GameScene extends Phaser.Scene {
 
         // Move the snowball to the new lane
         this.targetX = this.lanes[this.currentLaneIndex];
-    }
-
-    handleDeviceMotion(event) {
-        // extract orientation data (beta: front/back, gamma: left/right tilt)
-        this.orientation = {
-            beta: event.beta, // front/back tilt
-            gamma: event.gamma, // left/right tilt
-        };
     }
 
     handleObstacleCollision(snowball, obstacle) {
@@ -510,29 +570,16 @@ class GameScene extends Phaser.Scene {
         const distance = Math.abs(this.snowball.x - this.targetX); // Calculate the distance to the target
         // Only move if the snowball isn't already at the target position
         if (distance > threshold) {
-        // Interpolate towards the target position
-        const moveAmount = speed * this.game.loop.delta / 1000;
-        // Ensure we don't overshoot the target position
-        if (distance <= moveAmount) {
-            this.snowball.x = this.targetX; // Snap to target
-        } else {
-            this.snowball.x += Math.sign(this.targetX - this.snowball.x) * moveAmount; // Move closer
-        }
+            // Interpolate towards the target position
+            const moveAmount = speed * this.game.loop.delta / 1000;
+            // Ensure we don't overshoot the target position
+            if (distance <= moveAmount) {
+              this.snowball.x = this.targetX; // Snap to target
+            } else {
+                this.snowball.x += Math.sign(this.targetX - this.snowball.x) * moveAmount; // Move closer
+            }
         } else {
         this.snowball.x = this.targetX; // Snap to target if close enough
-        }
-        
-        // handle device orientation (tilt controls)
-        if (this.orientation) {
-            const { gamma, beta } = this.orientation;
-
-            // map tilt data to velocity
-            const maxSpeed = 300;
-            const xVelocity = Phaser.Math.Clamp(gamma * 5, -maxSpeed, maxSpeed);
-            const yVelocity = Phaser.Math.Clamp(beta * 5, -maxSpeed, maxSpeed);
-
-            // apply velocity to snowball
-            this.snowball.setVelocity(xVelocity, yVelocity);
         }
 
         this.ground.tilePositionY -= 1; // move the ground
