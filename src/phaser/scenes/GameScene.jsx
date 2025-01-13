@@ -120,8 +120,13 @@ class GameScene extends Phaser.Scene {
             "ground"
         );
 
+        // create lanes and start snowball in middle lane
+        this.lanes = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
+        this.currentLaneIndex = 1;
+        this.targetX = this.lanes[this.currentLaneIndex]; // Target x position for the snowball
+
         // snowball sprite
-        this.snowball = this.physics.add.sprite(this.scale.width / 2, this.scale.height * 3 / 4, 'snowball');
+        this.snowball = this.physics.add.sprite(this.lanes[this.currentLaneIndex], this.scale.height * 3 / 4, 'snowball');
         this.snowball.setScale(0.2);
         this.snowball.setOrigin(0.5, 0.5);
 
@@ -213,6 +218,37 @@ class GameScene extends Phaser.Scene {
         } else {
             console.log('DeviceOrientationEvent is NOT supported!');
         }
+
+        // set up controls for lane switching
+        this.targetX = this.lanes[this.currentLaneIndex]; // Target x position for the snowball
+
+        this.input.keyboard.on('keydown-LEFT', () => {
+            this.changeLane(-1);
+        });
+
+        this.input.keyboard.on('keydown-RIGHT', () => {
+            this.changeLane(1);
+        });
+
+        this.input.on('pointerdown', (pointer) => {
+            if (pointer.x < this.scale.width / 2) {
+                this.changeLane(-1);
+            } else {
+                this.changeLane(1);
+            }
+        });
+    }
+
+    changeLane(direction) {
+        // Update lane index and ensure it stays within bounds
+        this.currentLaneIndex = Phaser.Math.Clamp(
+            this.currentLaneIndex + direction,
+            0,
+            this.lanes.length - 1
+        );
+
+        // Move the snowball to the new lane
+        this.targetX = this.lanes[this.currentLaneIndex];
     }
 
     handleDeviceMotion(event) {
@@ -468,6 +504,24 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+        // update snowball position if needed
+        const speed = 1000; // Pixels per second
+        const threshold = 1; // Snap threshold for close distances
+        const distance = Math.abs(this.snowball.x - this.targetX); // Calculate the distance to the target
+        // Only move if the snowball isn't already at the target position
+        if (distance > threshold) {
+        // Interpolate towards the target position
+        const moveAmount = speed * this.game.loop.delta / 1000;
+        // Ensure we don't overshoot the target position
+        if (distance <= moveAmount) {
+            this.snowball.x = this.targetX; // Snap to target
+        } else {
+            this.snowball.x += Math.sign(this.targetX - this.snowball.x) * moveAmount; // Move closer
+        }
+        } else {
+        this.snowball.x = this.targetX; // Snap to target if close enough
+        }
+        
         // handle device orientation (tilt controls)
         if (this.orientation) {
             const { gamma, beta } = this.orientation;
