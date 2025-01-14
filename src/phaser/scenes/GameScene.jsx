@@ -22,6 +22,7 @@ class GameScene extends Phaser.Scene {
         this.spawnShoeEvent = null;
         this.spawnThingEvent = null;
         this.spawnPantEvent = null;
+        this.tiltControlsActive = false;
     }
 
     preload() {
@@ -380,7 +381,7 @@ class GameScene extends Phaser.Scene {
         }
 
         this.overlay = this.add.graphics();
-        this.overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
+        this.overlay.fillStyle(0x000000, 1); // Semi-transparent black
         this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
 
         this.nextLevelButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton').setInteractive();
@@ -459,10 +460,13 @@ class GameScene extends Phaser.Scene {
             this.spawnPantEvent.paused = false;
         }
 
+
+
     }
 
     handleWin() {
         this.removeOverlayAndButton();
+        this.overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
         this.add.text(this.scale.width / 2, this.scale.height / 2, 'You Win!', { fontSize: '64px', fill: '#fff' }).setOrigin(0.5);
         this.time.delayedCall(2000, this.resetGame, this);
     }
