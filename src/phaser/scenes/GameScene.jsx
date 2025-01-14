@@ -411,7 +411,7 @@ class GameScene extends Phaser.Scene {
             this.updateLevel();
             this.physics.world.resume();
             this.startSpawns();
-
+            this.setInventory();
 
             this.removeOverlayAndButton();
         } else {
