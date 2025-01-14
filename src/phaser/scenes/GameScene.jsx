@@ -384,8 +384,8 @@ class GameScene extends Phaser.Scene {
         this.scoreText.setText('Score: ' + this.score);
 
         // glow effect
-        snowball.setTint(0xADD8E6); // Light blue tint (you can change the hex color)
-        this.time.delayedCall(200, () => {
+        snowball.setTint(0xB0E0FF); // Light blue tint
+        this.time.delayedCall(300, () => {
             snowball.clearTint(); // Remove the tint after 200ms
         });
 
