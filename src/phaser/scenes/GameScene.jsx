@@ -129,6 +129,7 @@ class GameScene extends Phaser.Scene {
         for (let i = 1; i <= 12; i++) {
             this.load.image(`poof${i}`, `/src/assets/images/poof/poof${i}.png`);
         }
+        
     }
 
     create() {
