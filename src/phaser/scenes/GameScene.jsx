@@ -365,7 +365,7 @@ class GameScene extends Phaser.Scene {
         this.scoreText.setText('Score: ' + this.score);
 
         // decrease size of snowball
-        snowball.setScale(snowball.scaleX - 0.01);
+        snowball.setScale(snowball.scaleX - 0.03);
         
         // play poof animation
         const poofSprite = this.add.sprite(snowball.x, snowball.y, 'poof1');
@@ -383,7 +383,20 @@ class GameScene extends Phaser.Scene {
         this.score += 3;
         this.scoreText.setText('Score: ' + this.score);
 
-        snowball.setScale(snowball.scaleX + 0.01);
+        // glow effect
+        snowball.setTint(0xADD8E6); // Light blue tint (you can change the hex color)
+        this.time.delayedCall(200, () => {
+            snowball.clearTint(); // Remove the tint after 200ms
+        });
+
+        // Smooth expansion
+        this.tweens.add({
+            targets: snowball,
+            scale: snowball.scaleX + 0.03,
+            duration: 300,
+            ease: 'Sine.easeInOut',
+        });
+
         snowAdder.destroy();
 
         if (this.score >= this.snowballTarget && !this.levelCompleted) {
