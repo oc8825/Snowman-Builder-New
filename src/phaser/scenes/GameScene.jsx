@@ -460,8 +460,6 @@ class GameScene extends Phaser.Scene {
             this.spawnPantEvent.paused = false;
         }
 
-
-
     }
 
     handleWin() {
