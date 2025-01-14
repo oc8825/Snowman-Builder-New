@@ -507,6 +507,7 @@ class GameScene extends Phaser.Scene {
     }
 
     nextLevel() {
+        
         this.snowball.body.setVelocity(0, 0);
         this.snowball.body.setBounce(0, 0);
         this.snowball.body.setFriction(0, 0);
@@ -529,6 +530,8 @@ class GameScene extends Phaser.Scene {
         } else {
             this.handleWin();
         }
+
+        this.event.stopPropagation();
     }
 
     removeOverlayAndButton() {
