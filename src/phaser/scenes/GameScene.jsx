@@ -125,6 +125,10 @@ class GameScene extends Phaser.Scene {
         this.load.image('ohtanipants', '/src/assets/images/ohtanipants.png');
         this.load.image('zimmermanpants', '/src/assets/images/zimmermanpants.png');
 
+        // snowball poof animation
+        for (let i = 1; i <= 12; i++) {
+            this.load.image(`poof${i}`, `/src/assets/images/poof/poof${i}.png`);
+        }
     }
 
     create() {
@@ -251,6 +255,26 @@ class GameScene extends Phaser.Scene {
 
         this.updateLevel();
 
+        // create snowball poof animation
+        this.anims.create({
+            key: 'poof',
+            frames: [
+              { key: 'poof1' },
+              { key: 'poof2' },
+              { key: 'poof3' },
+              { key: 'poof4' },
+              { key: 'poof5' },
+              { key: 'poof6' },
+              { key: 'poof7' },
+              { key: 'poof8' },
+              { key: 'poof9' },
+              { key: 'poof10' },
+              { key: 'poof11' },
+              { key: 'poof12' },
+            ],
+            frameRate: 10,
+            hideOnComplete: true, // Automatically hide the sprite after the animation completes
+          });
     }
 
     updateLevel() {
@@ -335,10 +359,19 @@ class GameScene extends Phaser.Scene {
         snowball.body.setVelocity(0, 0);  // no obstacle movement
         snowball.body.setBounce(0);       // no bounce
         snowball.body.setFriction(0);     // no friction
+        
+        // update score
         this.score -= 1;
-        this.scoreText.setText('Score: ' + this.score); // update score
+        this.scoreText.setText('Score: ' + this.score);
 
+        // decrease size of snowball
         snowball.setScale(snowball.scaleX - 0.01);
+        
+        // play poof animation
+        const poofSprite = this.add.sprite(snowball.x, snowball.y, 'poof1');
+        poofSprite.setScale(2);
+        poofSprite.play('poof');
+        
         obstacle.destroy(); // disappear
     }
 
