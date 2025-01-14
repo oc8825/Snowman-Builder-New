@@ -6,13 +6,30 @@ class GameScene extends Phaser.Scene {
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
+
         this.orientation = null;
+
+        this.snowballTarget = 10;
+        this.levelCompleted = false;
+        this.score = 0;
+        this.level = 1;
+        this.overlay = null;
+        this.nextLevelButton = null;
+
+        this.spawnObstacleEvent = null;
+        this.spawnSnowAdderEvent = null;
+        this.spawnCollectibleEvent = null;
+        this.spawnShoeEvent = null;
+        this.spawnThingEvent = null;
+        this.spawnPantEvent = null;
     }
 
     preload() {
         // load game assets
         this.load.image('ground', '/src/assets/images/newbackg.png');
         this.load.image('snowball', '/src/assets/images/snowball.png');
+        this.load.image('nextLevelButton', '/src/assets/images/nextLevelButton.png');
+
 
         this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
 
@@ -137,47 +154,12 @@ class GameScene extends Phaser.Scene {
         this.things = this.physics.add.group();
         this.pants = this.physics.add.group();
 
-        this.time.addEvent({
-            delay: 2000, // spawn every 2 seconds
-            callback: this.spawnObstacle,
-            callbackScope: this,
-            loop: true, // repeating
-        });
-
-        this.time.addEvent({
-            delay: 3000,
-            callback: this.spawnSnowAdder,
-            callbackScope: this,
-            loop: true,
-        });
-
-        this.time.addEvent({
-            delay: 4000,
-            callback: this.spawnCollectible,
-            callbackScope: this,
-            loop: true,
-        });
-
-        this.time.addEvent({
-            delay: 4250,
-            callback: this.spawnShoe,
-            callbackScope: this,
-            loop: true,
-        });
-
-        this.time.addEvent({
-            delay: 4500,
-            callback: this.spawnThing,
-            callbackScope: this,
-            loop: true,
-        });
-
-        this.time.addEvent({
-            delay: 4750,
-            callback: this.spawnPant,
-            callbackScope: this,
-            loop: true,
-        });
+        this.spawnObstacleEvent = this.time.addEvent({ delay: 2000, callback: this.spawnObstacle, callbackScope: this, loop: true });
+        this.spawnSnowAdderEvent = this.time.addEvent({ delay: 3000, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
+        this.spawnCollectibleEvent = this.time.addEvent({ delay: 4000, callback: this.spawnCollectible, callbackScope: this, loop: true });
+        this.spawnShoeEvent = this.time.addEvent({ delay: 4250, callback: this.spawnShoe, callbackScope: this, loop: true });
+        this.spawnThingEvent = this.time.addEvent({ delay: 4500, callback: this.spawnThing, callbackScope: this, loop: true });
+        this.spawnPantEvent = this.time.addEvent({ delay: 4750, callback: this.spawnPant, callbackScope: this, loop: true });
 
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
@@ -212,13 +194,13 @@ class GameScene extends Phaser.Scene {
             }
         });
 
-        // Check if DeviceMotionEvent is supported and the user is on a mobile device
-        const isTiltSupported = 
+        // check if DeviceMotionEvent is supported 
+        const isTiltSupported =
             typeof DeviceMotionEvent !== 'undefined' &&
             (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone'));
 
         if (isTiltSupported) {
-            // Create the Enable Tilt Controls button
+            // Enable Tilt Control button
             const enableTiltButton = document.createElement('button');
             enableTiltButton.innerText = 'Enable Tilt Controls';
             enableTiltButton.style.position = 'absolute';
@@ -238,60 +220,89 @@ class GameScene extends Phaser.Scene {
 
             enableTiltButton.addEventListener('click', () => {
                 if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                    // Request permission for accelerometer access on iOS
+                    // request permission for accelerometer access on iOS
                     DeviceMotionEvent.requestPermission()
-                    .then(response => {
-                        if (response === 'granted') {
-                            console.log('Permission granted for tilt controls!');
-                            window.addEventListener('devicemotion', this.handleMotion.bind(this));
-                            document.body.removeChild(enableTiltButton); // Remove the button
-                        } else {
-                            console.error('Permission denied for tilt controls.');
-                            alert('Permission denied. Tilt controls are unavailable.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error requesting permission:', error);
-                        alert('Unable to enable tilt controls. ' + error);
-                    });
+                        .then(response => {
+                            if (response === 'granted') {
+                                console.log('Permission granted for tilt controls!');
+                                window.addEventListener('devicemotion', this.handleMotion.bind(this));
+                                document.body.removeChild(enableTiltButton); // remove button
+                            } else {
+                                console.error('Permission denied for tilt controls.');
+                                alert('Permission denied. Tilt controls are unavailable.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error requesting permission:', error);
+                            alert('Unable to enable tilt controls. ' + error);
+                        });
                 } else {
-                    // For Android or non-iOS devices (no permission request needed)
+                    // non-iOS devices 
                     console.log('Tilt controls enabled (no permission required).');
                     window.addEventListener('devicemotion', this.handleMotion.bind(this));
-                    document.body.removeChild(enableTiltButton); // Remove the button
+                    document.body.removeChild(enableTiltButton);
                 }
             });
         } else {
             console.log('Tilt controls are not supported on this device.');
         }
+
+        this.updateLevel();
+
     }
+
+    updateLevel() {
+
+        if(this.score <0){
+            this.youLose();
+            return;
+        }
+        if (this.level === 1) {
+            this.snowballTarget = 10;
+        } else if (this.level === 2) {
+            this.snowballTarget = 7;
+        } else if (this.level === 3) {
+            this.snowballTarget = 5;
+        } 
+
+        }
+
+    youLose() {
+
+    this.overlay = this.add.graphics();
+    this.overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
+    this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+
+    // Show "You Lose!" text
+    this.removeOverlayAndButton();
+    this.add.text(this.scale.width / 2, this.scale.height / 2, 'You Lose!', { fontSize: '64px', fill: '#fff' }).setOrigin(0.5);
+  
+}
 
     handleMotion(event) {
         let tilt;
-        const tiltThreshold = 1; // Sensitivity
-    
-        // Get the screen orientation angle
+        const tiltThreshold = 1; // sensitivity
+
+        // get screen orientation angle
         const angle = screen.orientation.angle;
-    
+
         if (angle === 90) {
-            // Landscape (rotated right)
-            tilt = -event.accelerationIncludingGravity.y; // Invert the y-axis
+            // landscape (rotated right)
+            tilt = -event.accelerationIncludingGravity.y; // invert y-axis
         } else if (angle === -90 || angle === 270) {
-            // Landscape (rotated left)
-            tilt = event.accelerationIncludingGravity.y; // Keep y-axis as is
+            // landscape (rotated left)
+            tilt = event.accelerationIncludingGravity.y; // keep y-axis
         } else {
-            // Portrait
-            tilt = event.accelerationIncludingGravity.x; // Invert the x-axis
+            // portrait mode
+            tilt = event.accelerationIncludingGravity.x; // invert x-axis
         }
-    
-        console.log('Tilt:', tilt); // Debugging
-    
+
         if (!this.laneChangeCooldown) {
             if (tilt > tiltThreshold) {
-                this.changeLane(1); // Move right
+                this.changeLane(1); // move right
                 this.startCooldown();
             } else if (tilt < -tiltThreshold) {
-                this.changeLane(-1); // Move left
+                this.changeLane(-1); // move left
                 this.startCooldown();
             }
         }
@@ -299,23 +310,22 @@ class GameScene extends Phaser.Scene {
 
     startCooldown() {
         this.laneChangeCooldown = true;
-    
-        // Reset cooldown after 300ms (adjust as needed)
+
+        // reset cooldown after 300ms 
         this.time.delayedCall(300, () => {
             this.laneChangeCooldown = false;
         });
     }
 
-
     changeLane(direction) {
-        // Update lane index and ensure it stays within bounds
+        // update lane index and ensure it stays within bounds
         this.currentLaneIndex = Phaser.Math.Clamp(
             this.currentLaneIndex + direction,
             0,
             this.lanes.length - 1
         );
 
-        // Move the snowball to the new lane
+        // move snowball to new lane
         this.targetX = this.lanes[this.currentLaneIndex];
     }
 
@@ -325,6 +335,8 @@ class GameScene extends Phaser.Scene {
         snowball.body.setFriction(0);     // no friction
         this.score -= 1;
         this.scoreText.setText('Score: ' + this.score); // update score
+
+        snowball.setScale(snowball.scaleX - 0.01);
         obstacle.destroy(); // disappear
     }
 
@@ -333,10 +345,133 @@ class GameScene extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
 
-        this.score += 1;
+        this.score += 3;
         this.scoreText.setText('Score: ' + this.score);
 
+        snowball.setScale(snowball.scaleX + 0.01);
         snowAdder.destroy();
+
+        if (this.score >= this.snowballTarget && !this.levelCompleted) {
+            this.levelCompleted = true;
+            this.handleLevelComplete();
+        }
+    }
+
+    handleLevelComplete() {
+        this.physics.world.pause();
+
+        if (this.spawnObstacleEvent) {
+            this.spawnObstacleEvent.paused = true;
+        }
+        if (this.spawnSnowAdderEvent) {
+            this.spawnSnowAdderEvent.paused = true;
+        }
+        if (this.spawnCollectibleEvent) {
+            this.spawnCollectibleEvent.paused = true;
+        }
+        if (this.spawnShoeEvent) {
+            this.spawnShoeEvent.paused = true;
+        }
+        if (this.spawnThingEvent) {
+            this.spawnThingEvent.paused = true;
+        }
+        if (this.spawnPantEvent) {
+            this.spawnPantEvent.paused = true;
+        }
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+
+        this.nextLevelButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton').setInteractive();
+        this.nextLevelButton.setDepth(2);
+
+        this.nextLevelButton.on('pointerdown', () => {
+            this.nextLevel();
+        });
+        this.level++;
+        this.updateLevel();
+    }
+
+    nextLevel() {
+        this.snowball.body.setVelocity(0, 0);
+        this.snowball.body.setBounce(0, 0);
+        this.snowball.body.setFriction(0, 0);
+        this.snowball.setPosition(this.scale.width / 2, this.scale.height * 3 / 4);
+        this.snowball.setScale(0.2);
+        this.clearSpawnedItems();
+
+
+        if (this.level <= 3) {
+            this.levelCompleted = false;
+            this.score = 0;
+            this.scoreText.setText('Score: ' + this.score);
+
+            this.updateLevel();
+            this.physics.world.resume();
+            this.startSpawns();
+
+
+            this.removeOverlayAndButton();
+        } else {
+            this.handleWin();
+        }
+    }
+
+    removeOverlayAndButton() {
+        if (this.overlay) {
+            this.overlay.destroy();
+            this.overlay = null;
+        }
+        if (this.nextLevelButton) {
+            this.nextLevelButton.destroy();
+            this.nextLevelButton = null;
+        }
+    }
+
+    clearSpawnedItems() {
+        this.obstacles.children.each(obstacle => obstacle.destroy());
+        this.snowAdders.children.each(snowAdder => snowAdder.destroy());
+        this.collectibles.children.each(collectible => collectible.destroy());
+        this.shoes.children.each(shoe => shoe.destroy());
+        this.things.children.each(thing => thing.destroy());
+        this.pants.children.each(pant => pant.destroy());
+
+    }
+
+    startSpawns() {
+        if (this.spawnObstacleEvent) {
+            this.spawnObstacleEvent.paused = false;
+        }
+        if (this.spawnSnowAdderEvent) {
+            this.spawnSnowAdderEvent.paused = false;
+        }
+        if (this.spawnCollectibleEvent) {
+            this.spawnCollectibleEvent.paused = false;
+        }
+        if (this.spawnShoeEvent) {
+            this.spawnShoeEvent.paused = false;
+        }
+        if (this.spawnThingEvent) {
+            this.spawnThingEvent.paused = false;
+        }
+        if (this.spawnPantEvent) {
+            this.spawnPantEvent.paused = false;
+        }
+
+    }
+
+    handleWin() {
+        this.removeOverlayAndButton();
+        this.add.text(this.scale.width / 2, this.scale.height / 2, 'You Win!', { fontSize: '64px', fill: '#fff' }).setOrigin(0.5);
+        this.time.delayedCall(2000, this.resetGame, this);
+    }
+
+    resetGame() {
+        this.currentLevel = 1;
+        this.score = 0;
+        this.scoreText.setText('Score: ' + this.score);
+        this.scene.restart();
     }
 
     handlePantCollision(snowball, pant) {
@@ -564,28 +699,30 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+
         // update snowball position if needed
-        const speed = 1000; // Pixels per second
-        const threshold = 1; // Snap threshold for close distances
+        const speed = 1000; // pixels per second
+        const threshold = 1; // snap threshold for close distances
         const distance = Math.abs(this.snowball.x - this.targetX); // Calculate the distance to the target
-        // Only move if the snowball isn't already at the target position
+        // only move if the snowball isn't already at the target position
         if (distance > threshold) {
-            // Interpolate towards the target position
+            // interpolate towards the target position
             const moveAmount = speed * this.game.loop.delta / 1000;
-            // Ensure we don't overshoot the target position
+            // esnure we don't overshoot the target position
             if (distance <= moveAmount) {
-              this.snowball.x = this.targetX; // Snap to target
+                this.snowball.x = this.targetX; // snap to target
             } else {
                 this.snowball.x += Math.sign(this.targetX - this.snowball.x) * moveAmount; // Move closer
             }
         } else {
-        this.snowball.x = this.targetX; // Snap to target if close enough
+            this.snowball.x = this.targetX; // Snap to target if close enough
         }
 
         this.ground.tilePositionY -= 1; // move the ground
         this.snowball.rotation += 0.01;
 
         // cleanup for off-screen
+
         this.obstacles.getChildren().forEach(obstacle => {
             if (obstacle && obstacle.y > this.scale.height) {
                 obstacle.destroy();
@@ -618,7 +755,13 @@ class GameScene extends Phaser.Scene {
             }
         });
 
+        if (this.score >= this.snowballTarget && !this.levelCompleted) {
+            this.levelCompleted = true;
+            this.handleLevelComplete();
+        }
+
     }
+
 }
 
 const buildPhaserGame = ({ parent }) => {
