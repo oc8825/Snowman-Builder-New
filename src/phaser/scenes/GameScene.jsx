@@ -129,7 +129,12 @@ class GameScene extends Phaser.Scene {
         for (let i = 1; i <= 12; i++) {
             this.load.image(`poof${i}`, `/src/assets/images/poof/poof${i}.png`);
         }
-        
+
+        // confetti animation
+        for (let i = 0; i <= 49; i++) {
+            this.load.image(`confetti${i}`, `/src/assets/images/confetti/confetti${i}.png`);
+        }
+
     }
 
     create() {
@@ -274,6 +279,65 @@ class GameScene extends Phaser.Scene {
               { key: 'poof12' },
             ],
             frameRate: 10,
+            hideOnComplete: true, // Automatically hide the sprite after the animation completes
+          });
+
+        // create confetti animation
+        this.anims.create({
+            key: 'confetti',
+            frames: [
+              { key: 'confetti0' },
+              { key: 'confetti1' },
+              { key: 'confetti2' },
+              { key: 'confetti3' },
+              { key: 'confetti4' },
+              { key: 'confetti5' },
+              { key: 'confetti6' },
+              { key: 'confetti7' },
+              { key: 'confetti8' },
+              { key: 'confetti9' },
+              { key: 'confetti10' },
+              { key: 'confetti11' },
+              { key: 'confetti12' },
+              { key: 'confetti13' },
+              { key: 'confetti14' },
+              { key: 'confetti15' },
+              { key: 'confetti16' },
+              { key: 'confetti17' },
+              { key: 'confetti18' },
+              { key: 'confetti19' },
+              { key: 'confetti20' },
+              { key: 'confetti21' },
+              { key: 'confetti22' },
+              { key: 'confetti23' },
+              { key: 'confetti24' },
+              { key: 'confetti25' },
+              { key: 'confetti26' },
+              { key: 'confetti27' },
+              { key: 'confetti28' },
+              { key: 'confetti29' },
+              { key: 'confetti30' },
+              { key: 'confetti31' },
+              { key: 'confetti32' },
+              { key: 'confetti33' },
+              { key: 'confetti34' },
+              { key: 'confetti35' },
+              { key: 'confetti36' },
+              { key: 'confetti37' },
+              { key: 'confetti38' },
+              { key: 'confetti39' },
+              { key: 'confetti40' },
+              { key: 'confetti41' },
+              { key: 'confetti42' },
+              { key: 'confetti43' },
+              { key: 'confetti44' },
+              { key: 'confetti45' },
+              { key: 'confetti46' },
+              { key: 'confetti47' },
+              { key: 'confetti48' },
+              { key: 'confetti49' },
+            ],
+            frameRate: 40,
             hideOnComplete: true, // Automatically hide the sprite after the animation completes
           });
     }
@@ -550,6 +614,11 @@ class GameScene extends Phaser.Scene {
             this.slot4.style.backgroundImage = `url(/src/assets/images/zimmermanpants.png)`;
         }
 
+        // play confetti animation
+        const confettiSprite = this.add.sprite(pant.x, pant.y, 'confetti0');
+        confettiSprite.setScale(1.5);
+        confettiSprite.play('confetti');
+
         pant.destroy();
     }
 
@@ -578,6 +647,11 @@ class GameScene extends Phaser.Scene {
         } else if (thingKey === 'zimmermanHelmetCollect') {
             this.slot2.style.backgroundImage = `url(/src/assets/images/zimmermanhelmet.png)`;
         }
+
+        // play confetti animation
+        const confettiSprite = this.add.sprite(thing.x, thing.y, 'confetti0');
+        confettiSprite.setScale(1.5);
+        confettiSprite.play('confetti');
 
         thing.destroy();
     }
@@ -608,6 +682,11 @@ class GameScene extends Phaser.Scene {
             this.slot3.style.backgroundImage = `url(/src/assets/images/zimmermancleat.png)`;
         }
 
+        // play confetti animation
+        const confettiSprite = this.add.sprite(shoe.x, shoe.y, 'confetti0');
+        confettiSprite.setScale(1.5);
+        confettiSprite.play('confetti');
+
         shoe.destroy();
     }
 
@@ -636,8 +715,13 @@ class GameScene extends Phaser.Scene {
         } else if (collectibleKey === 'messiJerseyCollect') {
             this.slot1.style.backgroundImage = `url(/src/assets/images/messi.png)`;
         }
-        collectible.destroy();
 
+        // play confetti animation
+        const confettiSprite = this.add.sprite(collectible.x, collectible.y, 'confetti0');
+        confettiSprite.setScale(1.5);
+        confettiSprite.play('confetti');
+        
+        collectible.destroy();
     }
     spawnObstacle() {
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
