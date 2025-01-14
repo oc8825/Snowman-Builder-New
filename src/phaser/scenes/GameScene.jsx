@@ -30,6 +30,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('ground', '/src/assets/images/newbackg.png');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('nextLevelButton', '/src/assets/images/nextLevelButton.png');
+        this.load.image('startButton', '/src/assets/images/startButton.png');
 
 
         this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
