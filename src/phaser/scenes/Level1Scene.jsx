@@ -1,11 +1,8 @@
 import Phaser, { Game } from 'phaser';
-import StartScene from './StartScene';
-import InstructionScene from './InstructionScene';
-import Level1Scene from './Level1Scene';
+export default class Level1Scene extends Phaser.Scene {
 
-class GameScene extends Phaser.Scene {
     constructor() {
-        super('GameScene');
+        super('Level1Scene');
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
@@ -43,28 +40,6 @@ class GameScene extends Phaser.Scene {
         this.load.image('net', '/src/assets/images/net.png');
         this.load.image('basketball', '/src/assets/images/basketball.png');
 
-        //jerseys
-        this.load.image('mclaurinJerseyCollect', '/src/assets/images/mclaurinJerseyCollect.png')
-        this.load.image('beckhamJerseyCollect', '/src/assets/images/beckhamJerseyCollect.png')
-        this.load.image('curryJerseyCollect', '/src/assets/images/curryJerseyCollect.png')
-        this.load.image('doncicJerseyCollect', '/src/assets/images/doncicJerseyCollect.png')
-        this.load.image('messiJerseyCollect', '/src/assets/images/messiJerseyCollect.png')
-        this.load.image('morganJerseyCollect', '/src/assets/images/morganJerseyCollect.png')
-        this.load.image('rodmanJerseyCollect', '/src/assets/images/rodmanJerseyCollect.png')
-        this.load.image('ohtaniJerseyCollect', '/src/assets/images/ohtaniJerseyCollect.png')
-        this.load.image('zimmermanJerseyCollect', '/src/assets/images/zimmermanJerseyCollect.png')
-
-        this.load.image('mclaurin', '/src/assets/images/mclaurin.png');
-        this.load.image('beckham', '/src/assets/images/beckham.png');
-        this.load.image('curry', '/src/assets/images/curry.png');
-        this.load.image('doncic', '/src/assets/images/doncic.png');
-        this.load.image('messi', '/src/assets/images/messi.png');
-        this.load.image('morgan', '/src/assets/images/morgan.png');
-        this.load.image('rodman', '/src/assets/images/rodman.png');
-        this.load.image('ohtani', '/src/assets/images/ohtani.png');
-        this.load.image('zimmerman', '/src/assets/images/zimmerman.png');
-
-
         //feet
         this.load.image('mclaurinCleatsCollect', '/src/assets/images/mclaurinCleatsCollect.png')
         this.load.image('beckhamCleatsCollect', '/src/assets/images/beckhamCleatsCollect.png')
@@ -85,27 +60,6 @@ class GameScene extends Phaser.Scene {
         this.load.image('rodmancleat', '/src/assets/images/usacleat.png');
         this.load.image('ohtanicleat', '/src/assets/images/ohtanicleat.png');
         this.load.image('zimmermancleat', '/src/assets/images/zimmermancleat.png');
-
-        //accessories
-        this.load.image('mclaurinHelmetCollect', '/src/assets/images/mclaurinHelmetCollect.png')
-        this.load.image('beckhamHelmetCollect', '/src/assets/images/beckhamHelmetCollect.png')
-        this.load.image('curryHeadbandCollect', '/src/assets/images/curryHeadbandCollect.png')
-        this.load.image('doncicHeadbandCollect', '/src/assets/images/doncicHeadbandCollect.png')
-        this.load.image('messiCuffCollect', '/src/assets/images/messiCuffCollect.png')
-        this.load.image('morganCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('rodmanCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('ohtaniHelmetCollect', '/src/assets/images/ohtaniHelmetCollect.png')
-        this.load.image('zimmermanHelmetCollect', '/src/assets/images/zimmermanHelmetCollect.png')
-
-        this.load.image('mclaurinhelmet', '/src/assets/images/mclaurinhelmet.png');
-        this.load.image('beckhamhelmet', '/src/assets/images/beckhamhelmet.png');
-        this.load.image('curryheadband', '/src/assets/images/curryheadband.png');
-        this.load.image('doncicheadband', '/src/assets/images/doncicheadband.png');
-        this.load.image('messicuff', '/src/assets/images/messicuff.png');
-        this.load.image('morgancuff', '/src/assets/images/usacuff.png');
-        this.load.image('rodmancuff', '/src/assets/images/usacuff.png');
-        this.load.image('ohtanihelmet', '/src/assets/images/ohtanihelmet.png');
-        this.load.image('zimmermanhelmet', '/src/assets/images/zimmermanhelmet.png');
 
         //pants
         this.load.image('mclaurinPantsCollect', '/src/assets/images/mclaurinPantsCollect.png')
@@ -164,28 +118,19 @@ class GameScene extends Phaser.Scene {
 
         this.obstacles = this.physics.add.group(); // obstacles
         this.snowAdders = this.physics.add.group();
-        this.collectibles = this.physics.add.group();
         this.shoes = this.physics.add.group();
-        this.things = this.physics.add.group();
         this.pants = this.physics.add.group();
 
         this.spawnObstacleEvent = this.time.addEvent({ delay: 2000, callback: this.spawnObstacle, callbackScope: this, loop: true });
         this.spawnSnowAdderEvent = this.time.addEvent({ delay: 3000, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
-        
-        
+    
         this.spawnPantEvent = this.time.addEvent({ delay: 4750, callback: this.spawnPant, callbackScope: this, loop: true });
         this.spawnShoeEvent = this.time.addEvent({ delay: 4250, callback: this.spawnShoe, callbackScope: this, loop: true });
         
-        this.spawnCollectibleEvent = this.time.addEvent({ delay: 4000, callback: this.spawnCollectible, callbackScope: this, loop: true });
-        
-        this.spawnThingEvent = this.time.addEvent({ delay: 4500, callback: this.spawnThing, callbackScope: this, loop: true });
-
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
         this.physics.add.collider(this.snowball, this.snowAdders, this.handleSnowAdderCollision, null, this);
-        this.physics.add.collider(this.snowball, this.collectibles, this.handleCollectibleCollision, null, this);
         this.physics.add.collider(this.snowball, this.shoes, this.handleShoeCollision, null, this);
-        this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
         this.physics.add.collider(this.snowball, this.pants, this.handlePantCollision, null, this);
 
         this.score = 0;
@@ -265,8 +210,6 @@ class GameScene extends Phaser.Scene {
         } else {
             console.log('Tilt controls are not supported on this device.');
         }
-
-        this.updateLevel();
 
         // create snowball poof animation
         this.anims.create({
@@ -349,33 +292,6 @@ class GameScene extends Phaser.Scene {
           });
     }
 
-    updateLevel() {
-
-        if(this.score <0){
-            this.youLose();
-            return;
-        }
-        if (this.level === 1) {
-            this.snowballTarget = 10;
-        } else if (this.level === 2) {
-            this.snowballTarget = 7;
-        } else if (this.level === 3) {
-            this.snowballTarget = 5;
-        } 
-
-        }
-
-    youLose() {
-
-    this.overlay = this.add.graphics();
-    this.overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
-    this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
-
-    // Show "You Lose!" text
-    this.removeOverlayAndButton();
-    this.add.text(this.scale.width / 2, this.scale.height / 2, 'You Lose!', { fontSize: '64px', fill: '#fff' }).setOrigin(0.5);
-  
-}
 
     handleMotion(event) {
         let tilt;
@@ -471,131 +387,6 @@ class GameScene extends Phaser.Scene {
 
         snowAdder.destroy();
 
-        if (this.score >= this.snowballTarget && !this.levelCompleted) {
-            this.levelCompleted = true;
-            this.handleLevelComplete();
-        }
-    }
-
-    handleLevelComplete() {
-        this.physics.world.pause();
-
-        if (this.spawnObstacleEvent) {
-            this.spawnObstacleEvent.paused = true;
-        }
-        if (this.spawnSnowAdderEvent) {
-            this.spawnSnowAdderEvent.paused = true;
-        }
-        if (this.spawnCollectibleEvent) {
-            this.spawnCollectibleEvent.paused = true;
-        }
-        if (this.spawnShoeEvent) {
-            this.spawnShoeEvent.paused = true;
-        }
-        if (this.spawnThingEvent) {
-            this.spawnThingEvent.paused = true;
-        }
-        if (this.spawnPantEvent) {
-            this.spawnPantEvent.paused = true;
-        }
-
-        this.overlay = this.add.graphics();
-        this.overlay.fillStyle(0x000000, 1); // Semi-transparent black
-        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
-
-        this.nextLevelButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton').setInteractive();
-        this.nextLevelButton.setDepth(2);
-
-        this.nextLevelButton.on('pointerdown', () => {
-            this.nextLevel();
-        });
-        this.level++;
-        this.updateLevel();
-    }
-
-    nextLevel() {
-        
-        this.snowball.body.setVelocity(0, 0);
-        this.snowball.body.setBounce(0, 0);
-        this.snowball.body.setFriction(0, 0);
-        this.snowball.setPosition(this.scale.width / 2, this.scale.height * 3 / 4);
-        this.snowball.setScale(0.2);
-        this.clearSpawnedItems();
-
-
-        if (this.level <= 3) {
-            this.levelCompleted = false;
-            this.score = 0;
-            this.scoreText.setText('Score: ' + this.score);
-
-            this.updateLevel();
-            this.physics.world.resume();
-            this.startSpawns();
-            this.setInventory();
-
-            this.removeOverlayAndButton();
-        } else {
-            this.handleWin();
-        }
-
-        this.event.stopPropagation();
-    }
-
-    removeOverlayAndButton() {
-        if (this.overlay) {
-            this.overlay.destroy();
-            this.overlay = null;
-        }
-        if (this.nextLevelButton) {
-            this.nextLevelButton.destroy();
-            this.nextLevelButton = null;
-        }
-    }
-
-    clearSpawnedItems() {
-        this.obstacles.children.each(obstacle => obstacle.destroy());
-        this.snowAdders.children.each(snowAdder => snowAdder.destroy());
-        this.collectibles.children.each(collectible => collectible.destroy());
-        this.shoes.children.each(shoe => shoe.destroy());
-        this.things.children.each(thing => thing.destroy());
-        this.pants.children.each(pant => pant.destroy());
-
-    }
-
-    startSpawns() {
-        if (this.spawnObstacleEvent) {
-            this.spawnObstacleEvent.paused = false;
-        }
-        if (this.spawnSnowAdderEvent) {
-            this.spawnSnowAdderEvent.paused = false;
-        }
-        if (this.spawnCollectibleEvent) {
-            this.spawnCollectibleEvent.paused = false;
-        }
-        if (this.spawnShoeEvent) {
-            this.spawnShoeEvent.paused = false;
-        }
-        if (this.spawnThingEvent) {
-            this.spawnThingEvent.paused = false;
-        }
-        if (this.spawnPantEvent) {
-            this.spawnPantEvent.paused = false;
-        }
-
-    }
-
-    handleWin() {
-        this.removeOverlayAndButton();
-        this.overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
-        this.add.text(this.scale.width / 2, this.scale.height / 2, 'You Win!', { fontSize: '64px', fill: '#fff' }).setOrigin(0.5);
-        this.time.delayedCall(2000, this.resetGame, this);
-    }
-
-    resetGame() {
-        this.currentLevel = 1;
-        this.score = 0;
-        this.scoreText.setText('Score: ' + this.score);
-        this.scene.restart();
     }
 
     handlePantCollision(snowball, pant) {
@@ -632,38 +423,6 @@ class GameScene extends Phaser.Scene {
         pant.destroy();
     }
 
-    handleThingCollision(snowball, thing) {
-        snowball.body.setVelocity(0, 0);
-        snowball.body.setBounce(0);
-        snowball.body.setFriction(0);
-        const thingKey = thing.texture.key;
-
-        if (thingKey === 'mclaurinHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/mclaurinhelmet.png)`;
-        } else if (thingKey === 'beckhamHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/beckhamhelmet.png)`;
-        } else if (thingKey === 'curryHeadbandCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/curryheadband.png)`;
-        } else if (thingKey === 'doncicHeadbandCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/doncicheadband.png)`;
-        } else if (thingKey === 'messiCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/messicuff.png)`;
-        } else if (thingKey === 'morganCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
-        } else if (thingKey === 'rodmanCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
-        } else if (thingKey === 'ohtaniHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/ohtanihelmet.png)`;
-        } else if (thingKey === 'zimmermanHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/zimmermanhelmet.png)`;
-        }
-
-        const confettiSprite = this.add.sprite(thing.x, thing.y, 'confetti0');
-        confettiSprite.setScale(1.5);
-        confettiSprite.play('confetti');
-
-        thing.destroy();
-    }
 
     handleShoeCollision(snowball, shoe) {
         snowball.body.setVelocity(0, 0);
@@ -698,39 +457,6 @@ class GameScene extends Phaser.Scene {
         shoe.destroy();
     }
 
-    handleCollectibleCollision(snowball, collectible) {
-        snowball.body.setVelocity(0, 0);
-        snowball.body.setBounce(0);
-        snowball.body.setFriction(0);
-        const collectibleKey = collectible.texture.key;
-
-        if (collectibleKey === 'mclaurinJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/mclaurin.png)`;
-        } else if (collectibleKey === 'beckhamJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/beckham.png)`;
-        } else if (collectibleKey === 'curryJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/curry.png)`;
-        } else if (collectibleKey === 'doncicJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/doncic.png)`;
-        } else if (collectibleKey === 'ohtaniJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/ohtani.png)`;
-        } else if (collectibleKey === 'zimmermanJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/zimmerman.png)`;
-        } else if (collectibleKey === 'morganJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/morgan.png)`;
-        } else if (collectibleKey === 'rodmanJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/rodman.png)`;
-        } else if (collectibleKey === 'messiJerseyCollect') {
-            this.slot1.style.backgroundImage = `url(/src/assets/images/messi.png)`;
-        }
-
-        // play confetti animation
-        const confettiSprite = this.add.sprite(collectible.x, collectible.y, 'confetti0');
-        confettiSprite.setScale(1.5);
-        confettiSprite.play('confetti');
-        
-        collectible.destroy();
-    }
     spawnObstacle() {
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
@@ -780,36 +506,6 @@ class GameScene extends Phaser.Scene {
         const pant = this.pants.create(randomX, 0, ChoosePant);
         pant.setScale(.25);
         pant.setVelocityY(50);
-    }
-
-    spawnThing() {
-        const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);
-
-        const ThingTypes = ['mclaurinHelmetCollect', 'beckhamHelmetCollect',
-            'curryHeadbandCollect', 'doncicHeadbandCollect',
-            'messiCuffCollect', 'morganCuffCollect',
-            'rodmanCuffCollect', 'ohtaniHelmetCollect', 'zimmermanHelmetCollect']
-        const ChooseThing = Phaser.Math.RND.pick(ThingTypes);
-
-        const thing = this.things.create(randomX, 0, ChooseThing);
-        thing.setScale(.25);
-        thing.setVelocityY(50);
-    }
-
-    spawnCollectible() {
-        const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);
-
-        const collectibleJerseyType = ['mclaurinJerseyCollect', 'beckhamJerseyCollect',
-            'curryJerseyCollect', 'doncicJerseyCollect',
-            'ohtaniJerseyCollect', 'zimmermanJerseyCollect',
-            'morganJerseyCollect', 'rodmanJerseyCollect', 'messiJerseyCollect']
-        const JerseyType = Phaser.Math.RND.pick(collectibleJerseyType);
-
-        const collectible = this.collectibles.create(randomX, 0, JerseyType);
-        collectible.setScale(.35);
-        collectible.setVelocityY(50);
     }
 
     spawnShoe() {
@@ -879,54 +575,19 @@ class GameScene extends Phaser.Scene {
             }
         });
 
-        this.collectibles.getChildren().forEach(collectible => {
-            if (collectible && collectible.y > this.scale.height) {
-                collectible.destroy();
-            }
-        });
-
         this.shoes.getChildren().forEach(shoe => {
             if (shoe && shoe.y > this.scale.height) {
                 shoe.destroy();
             }
         });
 
-        this.things.getChildren().forEach(thing => {
-            if (thing && thing.y > this.scale.height) {
-                thing.destroy();
+        this.pants.getChildren().forEach(pant => {
+            if (pant && pant.y > this.scale.height) {
+                pant.destroy();
             }
         });
-
-        if (this.score >= this.snowballTarget && !this.levelCompleted) {
-            this.levelCompleted = true;
-            this.handleLevelComplete();
-        }
 
     }
 
 }
 
-const buildPhaserGame = ({ parent }) => {
-    const baseConfig = {
-        type: Phaser.AUTO,
-        width: 1300,  // set to window's width for mobile responsiveness
-        height: 660, // set to window's height for mobile responsiveness
-        scale: {
-            mode: Phaser.Scale.FIT, // dynamically resize the game based on window size
-            autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, // keep the game centered
-        },
-        scene: [StartScene, InstructionScene, Level1Scene, GameScene], // add game scenes here
-        physics: {
-            default: 'arcade',
-            arcade: {
-                debug: false,
-                gravity: { y: 0 },
-            },
-        },
-        parent,
-    };
-
-    return new Phaser.Game(baseConfig);
-};
-
-export { buildPhaserGame };
