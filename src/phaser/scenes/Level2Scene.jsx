@@ -9,7 +9,7 @@ export default class Level2Scene extends Phaser.Scene {
 
         this.orientation = null;
 
-        this.snowballTarget = 10;
+        this.snowballTarget = 7;
         this.levelCompleted = false;
         this.score = 0;
         this.level = 1;
@@ -500,5 +500,37 @@ export default class Level2Scene extends Phaser.Scene {
             }
         });
 
+        if (this.score >= this.snowballTarget && !this.levelCompleted) {
+            this.levelCompleted = true;
+            this.showLevelUpScene();
+        }
+
     }
+    
+    showLevelUpScene(){
+        this.scene.pause();
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7); // semi-transparent black
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height); // cover entire screen
+
+        const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        levelUpText.setOrigin(0.5);
+
+        // Create the "Next Level" button
+        this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
+            .setInteractive()
+            .on('pointerdown', this.onNextLevelButtonClick, this);
+        
+        // Optionally, add an animation to the button or text to make it more appealing
+    }
+
+    onNextLevelButtonClick() {
+        this.scene.start('Level3Scene'); // Transition to the next level scene
+    }
+
 }

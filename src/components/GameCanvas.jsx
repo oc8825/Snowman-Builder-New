@@ -22,4 +22,6 @@ const GameCanvas = () => {
     );
 };
 
+
+
 export default GameCanvas;

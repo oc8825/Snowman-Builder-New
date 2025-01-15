@@ -30,7 +30,6 @@ export default class Level1Scene extends Phaser.Scene {
         this.load.image('nextLevelButton', '/src/assets/images/nextLevelButton.png');
         this.load.image('startButton', '/src/assets/images/startButton.png');
 
-
         this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
 
         this.load.image('football', '/src/assets/images/football.png')
@@ -585,7 +584,35 @@ export default class Level1Scene extends Phaser.Scene {
             }
         });
 
+        if (this.score >= this.snowballTarget && !this.levelCompleted) {
+            this.levelCompleted = true;
+            this.showLevelUpScene();
+        }
+
     }
 
+    showLevelUpScene(){
+        this.scene.pause();
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7); // semi-transparent black
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height); // cover entire screen
+
+        const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        levelUpText.setOrigin(0.5);
+
+        this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
+        this.nextLevelButton.on('pointerdown', () => {
+            this.scene.start('Level2Scene');
+        });
+        
+        // Optionally, add an animation to the button or text to make it more appealing
+    }
 }
+
+    
 
