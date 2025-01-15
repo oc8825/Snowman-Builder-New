@@ -1,8 +1,7 @@
 import Phaser, { Game } from 'phaser';
-export default class Level1Scene extends Phaser.Scene {
-
+export default class Level3Scene extends Phaser.Scene {
     constructor() {
-        super('Level1Scene');
+        super('Level3Scene');
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
@@ -18,8 +17,7 @@ export default class Level1Scene extends Phaser.Scene {
 
         this.spawnObstacleEvent = null;
         this.spawnSnowAdderEvent = null;
-        this.spawnShoeEvent = null;
-        this.spawnPantEvent = null;
+        this.spawnThingEvent = null;
         this.tiltControlsActive = false;
     }
 
@@ -38,47 +36,26 @@ export default class Level1Scene extends Phaser.Scene {
         this.load.image('net', '/src/assets/images/net.png');
         this.load.image('basketball', '/src/assets/images/basketball.png');
 
-        //feet
-        this.load.image('mclaurinCleatsCollect', '/src/assets/images/mclaurinCleatsCollect.png')
-        this.load.image('beckhamCleatsCollect', '/src/assets/images/beckhamCleatsCollect.png')
-        this.load.image('curryShoeCollect', '/src/assets/images/curryShoeCollect.png')
-        this.load.image('doncicShoeCollect', '/src/assets/images/doncicShoeCollect.png')
-        this.load.image('messiCleatsCollect', '/src/assets/images/messiCleatsCollect.png')
-        this.load.image('morganCleatsCollect', '/src/assets/images/usaCleatsCollect.png')
-        this.load.image('rodmanCleatsCollect', '/src/assets/images/usaCleatsCollect.png')
-        this.load.image('ohtaniCleatsCollect', '/src/assets/images/ohtaniCleatsCollect.png')
-        this.load.image('zimmermanCleatsCollect', '/src/assets/images/zimmermanCleatsCollect.png')
+        //accessories
+        this.load.image('mclaurinHelmetCollect', '/src/assets/images/mclaurinHelmetCollect.png')
+        this.load.image('beckhamHelmetCollect', '/src/assets/images/beckhamHelmetCollect.png')
+        this.load.image('curryHeadbandCollect', '/src/assets/images/curryHeadbandCollect.png')
+        this.load.image('doncicHeadbandCollect', '/src/assets/images/doncicHeadbandCollect.png')
+        this.load.image('messiCuffCollect', '/src/assets/images/messiCuffCollect.png')
+        this.load.image('morganCuffCollect', '/src/assets/images/usaCuffCollect.png')
+        this.load.image('rodmanCuffCollect', '/src/assets/images/usaCuffCollect.png')
+        this.load.image('ohtaniHelmetCollect', '/src/assets/images/ohtaniHelmetCollect.png')
+        this.load.image('zimmermanHelmetCollect', '/src/assets/images/zimmermanHelmetCollect.png')
 
-        this.load.image('mclaurincleat', '/src/assets/images/mclaurincleat.png');
-        this.load.image('beckhamcleat', '/src/assets/images/beckhamcleat.png');
-        this.load.image('curryshoe', '/src/assets/images/curryshoe.png');
-        this.load.image('doncicshoe', '/src/assets/images/doncicshoe.png');
-        this.load.image('messicleat', '/src/assets/images/messicleat.png');
-        this.load.image('morgancleat', '/src/assets/images/usacleat.png');
-        this.load.image('rodmancleat', '/src/assets/images/usacleat.png');
-        this.load.image('ohtanicleat', '/src/assets/images/ohtanicleat.png');
-        this.load.image('zimmermancleat', '/src/assets/images/zimmermancleat.png');
-
-        //pants
-        this.load.image('mclaurinPantsCollect', '/src/assets/images/mclaurinPantsCollect.png')
-        this.load.image('beckhamPantsCollect', '/src/assets/images/beckhamPantsCollect.png')
-        this.load.image('curryShortsCollect', '/src/assets/images/curryShortsCollect.png')
-        this.load.image('doncicShortsCollect', '/src/assets/images/doncicShortsCollect.png')
-        this.load.image('messiShortsCollect', '/src/assets/images/messiShortsCollect.png')
-        this.load.image('morganShortsCollect', '/src/assets/images/morganShortsCollect.png')
-        this.load.image('rodmanShortsCollect', '/src/assets/images/rodmanShortsCollect.png')
-        this.load.image('ohtaniPantsCollect', '/src/assets/images/ohtaniPantsCollect.png')
-        this.load.image('zimmermanPantsCollect', '/src/assets/images/zimmermanPantsCollect.png')
-
-        this.load.image('mclaurinpants', '/src/assets/images/mclaurinpants.png');
-        this.load.image('beckhampants', '/src/assets/images/beckhampants.png');
-        this.load.image('curryshorts', '/src/assets/images/curryshorts.png');
-        this.load.image('doncicshorts', '/src/assets/images/doncicshorts.png');
-        this.load.image('messishorts', '/src/assets/images/messishorts.png');
-        this.load.image('morganshorts', '/src/assets/images/morganshorts.png');
-        this.load.image('rodmanshorts', '/src/assets/images/rodmanshorts.png');
-        this.load.image('ohtanipants', '/src/assets/images/ohtanipants.png');
-        this.load.image('zimmermanpants', '/src/assets/images/zimmermanpants.png');
+        this.load.image('mclaurinhelmet', '/src/assets/images/mclaurinhelmet.png');
+        this.load.image('beckhamhelmet', '/src/assets/images/beckhamhelmet.png');
+        this.load.image('curryheadband', '/src/assets/images/curryheadband.png');
+        this.load.image('doncicheadband', '/src/assets/images/doncicheadband.png');
+        this.load.image('messicuff', '/src/assets/images/messicuff.png');
+        this.load.image('morgancuff', '/src/assets/images/usacuff.png');
+        this.load.image('rodmancuff', '/src/assets/images/usacuff.png');
+        this.load.image('ohtanihelmet', '/src/assets/images/ohtanihelmet.png');
+        this.load.image('zimmermanhelmet', '/src/assets/images/zimmermanhelmet.png');
 
         // snowball poof animation
         for (let i = 1; i <= 12; i++) {
@@ -116,20 +93,16 @@ export default class Level1Scene extends Phaser.Scene {
 
         this.obstacles = this.physics.add.group(); // obstacles
         this.snowAdders = this.physics.add.group();
-        this.shoes = this.physics.add.group();
-        this.pants = this.physics.add.group();
+        this.things = this.physics.add.group();
 
         this.spawnObstacleEvent = this.time.addEvent({ delay: 2000, callback: this.spawnObstacle, callbackScope: this, loop: true });
         this.spawnSnowAdderEvent = this.time.addEvent({ delay: 3000, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
-    
-        this.spawnPantEvent = this.time.addEvent({ delay: 4750, callback: this.spawnPant, callbackScope: this, loop: true });
-        this.spawnShoeEvent = this.time.addEvent({ delay: 4250, callback: this.spawnShoe, callbackScope: this, loop: true });
-        
+        this.spawnThingEvent = this.time.addEvent({ delay: 4500, callback: this.spawnThing, callbackScope: this, loop: true });
+
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
         this.physics.add.collider(this.snowball, this.snowAdders, this.handleSnowAdderCollision, null, this);
-        this.physics.add.collider(this.snowball, this.shoes, this.handleShoeCollision, null, this);
-        this.physics.add.collider(this.snowball, this.pants, this.handlePantCollision, null, this);
+        this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
 
         this.score = 0;
 
@@ -290,7 +263,6 @@ export default class Level1Scene extends Phaser.Scene {
           });
     }
 
-
     handleMotion(event) {
         let tilt;
         const tiltThreshold = 1; // sensitivity
@@ -384,75 +356,39 @@ export default class Level1Scene extends Phaser.Scene {
         });
 
         snowAdder.destroy();
-
     }
 
-    handlePantCollision(snowball, pant) {
+    handleThingCollision(snowball, thing) {
         snowball.body.setVelocity(0, 0);
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
-        const pantKey = pant.texture.key;
+        const thingKey = thing.texture.key;
 
-        if (pantKey === 'mclaurinPantsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/mclaurinpants.png)`;
-        } else if (pantKey == 'beckhamPantsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/beckhampants.png)`;
-        } else if (pantKey == 'curryShortsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/curryshorts.png)`;
-        } else if (pantKey == 'doncicShortsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/doncicshorts.png)`;
-        } else if (pantKey == 'messiShortsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/messishorts.png)`;
-        } else if (pantKey == 'morganShortsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/morganshorts.png)`;
-        } else if (pantKey == 'rodmanShortsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/rodmanshorts.png)`;
-        } else if (pantKey == 'ohtaniPantsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/ohtanipants.png)`;
-        } else if (pantKey == 'zimmermanPantsCollect') {
-            this.slot4.style.backgroundImage = `url(/src/assets/images/zimmermanpants.png)`;
+        if (thingKey === 'mclaurinHelmetCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/mclaurinhelmet.png)`;
+        } else if (thingKey === 'beckhamHelmetCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/beckhamhelmet.png)`;
+        } else if (thingKey === 'curryHeadbandCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/curryheadband.png)`;
+        } else if (thingKey === 'doncicHeadbandCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/doncicheadband.png)`;
+        } else if (thingKey === 'messiCuffCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/messicuff.png)`;
+        } else if (thingKey === 'morganCuffCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
+        } else if (thingKey === 'rodmanCuffCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
+        } else if (thingKey === 'ohtaniHelmetCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/ohtanihelmet.png)`;
+        } else if (thingKey === 'zimmermanHelmetCollect') {
+            this.slot2.style.backgroundImage = `url(/src/assets/images/zimmermanhelmet.png)`;
         }
 
-        // play confetti animation
-        const confettiSprite = this.add.sprite(pant.x, pant.y, 'confetti0');
+        const confettiSprite = this.add.sprite(thing.x, thing.y, 'confetti0');
         confettiSprite.setScale(1.5);
         confettiSprite.play('confetti');
 
-        pant.destroy();
-    }
-
-
-    handleShoeCollision(snowball, shoe) {
-        snowball.body.setVelocity(0, 0);
-        snowball.body.setBounce(0);
-        snowball.body.setFriction(0);
-        const shoeKey = shoe.texture.key;
-
-        if (shoeKey === 'mclaurinCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/mclaurincleat.png)`;
-        } else if (shoeKey === 'beckhamCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/beckhamcleat.png)`;
-        } else if (shoeKey === 'curryShoeCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/curryshoe.png)`;
-        } else if (shoeKey === 'doncicShoeCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/doncicshoe.png)`;
-        } else if (shoeKey === 'messiCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/messicleat.png)`;
-        } else if (shoeKey === 'morganCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/usacleat.png)`;
-        } else if (shoeKey === 'rodmanCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/usacleat.png)`;
-        } else if (shoeKey === 'ohtaniCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/ohtanicleat.png)`;
-        } else if (shoeKey === 'zimmermanCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/zimmermancleat.png)`;
-        }
-
-        const confettiSprite = this.add.sprite(shoe.x, shoe.y, 'confetti0');
-        confettiSprite.setScale(1.5);
-        confettiSprite.play('confetti');
-
-        shoe.destroy();
+        thing.destroy();
     }
 
     spawnObstacle() {
@@ -491,36 +427,20 @@ export default class Level1Scene extends Phaser.Scene {
         snowAdder.setVelocityY(100); // make the obstacle move downward
     }
 
-    spawnPant() {
+    spawnThing() {
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
 
-        const PantTypes = ['mclaurinPantsCollect', 'beckhamPantsCollect',
-            'curryShortsCollect', 'doncicShortsCollect',
-            'messiShortsCollect', 'morganShortsCollect',
-            'rodmanShortsCollect', 'ohtaniPantsCollect', 'zimmermanPantsCollect']
-        const ChoosePant = Phaser.Math.RND.pick(PantTypes);
+        const ThingTypes = ['mclaurinHelmetCollect', 'beckhamHelmetCollect',
+            'curryHeadbandCollect', 'doncicHeadbandCollect',
+            'messiCuffCollect', 'morganCuffCollect',
+            'rodmanCuffCollect', 'ohtaniHelmetCollect', 'zimmermanHelmetCollect']
+        const ChooseThing = Phaser.Math.RND.pick(ThingTypes);
 
-        const pant = this.pants.create(randomX, 0, ChoosePant);
-        pant.setScale(.25);
-        pant.setVelocityY(50);
+        const thing = this.things.create(randomX, 0, ChooseThing);
+        thing.setScale(.25);
+        thing.setVelocityY(50);
     }
-
-    spawnShoe() {
-        const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);
-
-        const shoeType = ['mclaurinCleatsCollect', 'beckhamCleatsCollect',
-            'curryShoeCollect', 'doncicShoeCollect',
-            'messiCleatsCollect', 'morganCleatsCollect',
-            'rodmanCleatsCollect', 'ohtaniCleatsCollect', 'zimmermanCleatsCollect']
-        const RandomShoeType = Phaser.Math.RND.pick(shoeType);
-
-        const shoe = this.shoes.create(randomX, 0, RandomShoeType);
-        shoe.setScale(.25);
-        shoe.setVelocityY(50);
-    }
-
 
     setInventory() {
         this.slot1 = document.getElementById('slot-1');
@@ -573,19 +493,12 @@ export default class Level1Scene extends Phaser.Scene {
             }
         });
 
-        this.shoes.getChildren().forEach(shoe => {
-            if (shoe && shoe.y > this.scale.height) {
-                shoe.destroy();
-            }
-        });
 
-        this.pants.getChildren().forEach(pant => {
-            if (pant && pant.y > this.scale.height) {
-                pant.destroy();
+        this.things.getChildren().forEach(thing => {
+            if (thing && thing.y > this.scale.height) {
+                thing.destroy();
             }
         });
 
     }
-
 }
-

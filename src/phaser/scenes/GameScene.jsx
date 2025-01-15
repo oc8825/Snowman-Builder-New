@@ -2,6 +2,8 @@ import Phaser, { Game } from 'phaser';
 import StartScene from './StartScene';
 import InstructionScene from './InstructionScene';
 import Level1Scene from './Level1Scene';
+import Level2Scene from './Level2Scene';
+import Level3Scene from './Level3Scene';
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -915,7 +917,7 @@ const buildPhaserGame = ({ parent }) => {
             mode: Phaser.Scale.FIT, // dynamically resize the game based on window size
             autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, // keep the game centered
         },
-        scene: [StartScene, InstructionScene, Level1Scene, GameScene], // add game scenes here
+        scene: [StartScene, InstructionScene, Level1Scene, Level2Scene, Level3Scene, GameScene], // add game scenes here
         physics: {
             default: 'arcade',
             arcade: {
