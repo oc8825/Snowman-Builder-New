@@ -25,7 +25,7 @@ export default class InstructionScene extends Phaser.Scene {
 
         // When the arrow is clicked/tapped, start the game
         this.arrow.on('pointerdown', () => {
-            this.scene.start('Level1Scene'); // Transition to the game scene
+            this.scene.start('ObjectiveScene'); // Transition to the game scene
         });
     }
     hideInventory() {

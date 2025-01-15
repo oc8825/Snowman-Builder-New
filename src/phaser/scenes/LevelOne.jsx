@@ -1,8 +1,7 @@
-import Phaser, { Game } from 'phaser';
-export default class Level1Scene extends Phaser.Scene {
+export default class LevelOne extends Phaser.Scene {
 
     constructor() {
-        super('Level1Scene');
+        super({ key: 'LevelOne'});
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
@@ -29,7 +28,6 @@ export default class Level1Scene extends Phaser.Scene {
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('nextLevelButton', '/src/assets/images/nextLevelButton.png');
         this.load.image('startButton', '/src/assets/images/startButton.png');
-
 
         this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
 
@@ -94,6 +92,7 @@ export default class Level1Scene extends Phaser.Scene {
 
     create() {
         this.setInventory();
+        this.showInventory();
 
         // background
         this.ground = this.add.tileSprite(
@@ -162,6 +161,7 @@ export default class Level1Scene extends Phaser.Scene {
             (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone'));
 
         if (isTiltSupported) {
+            this.scene.pause();
             // Enable Tilt Control button
             const enableTiltButton = document.createElement('button');
             enableTiltButton.innerText = 'Enable Tilt Controls';
@@ -188,7 +188,8 @@ export default class Level1Scene extends Phaser.Scene {
                             if (response === 'granted') {
                                 console.log('Permission granted for tilt controls!');
                                 window.addEventListener('devicemotion', this.handleMotion.bind(this));
-                                document.body.removeChild(enableTiltButton); // remove button
+                                document.body.removeChild(enableTiltButton);
+                                this.scene.resume(); // remove button
                             } else {
                                 console.error('Permission denied for tilt controls.');
                                 alert('Permission denied. Tilt controls are unavailable.');
@@ -288,6 +289,7 @@ export default class Level1Scene extends Phaser.Scene {
             frameRate: 40,
             hideOnComplete: true, // Automatically hide the sprite after the animation completes
           });
+
     }
 
 
@@ -534,6 +536,14 @@ export default class Level1Scene extends Phaser.Scene {
         this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
     }
 
+    showInventory() {
+        const inventoryBox = document.getElementById('inventory-box');
+        if (inventoryBox) {
+            inventoryBox.style.display = 'flex'; 
+        }
+    }
+    
+
     update() {
 
         // update snowball position if needed
@@ -585,7 +595,40 @@ export default class Level1Scene extends Phaser.Scene {
             }
         });
 
+        if (this.score >= this.snowballTarget && !this.levelCompleted) {
+            this.levelCompleted = true;
+            this.showLevelUpScene();
+        }
+
+    }
+
+
+    showLevelUpScene(){
+        this.scene.pause();
+
+        this.nextLevelButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
+        .setInteractive()
+        .setDepth(1)
+        .on('pointerdown', () => {
+            console.log('Next level clicked!');
+            this.scene.start('LevelTwo')
+        });
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7); // semi-transparent black
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height); // cover entire screen
+
+        const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        levelUpText.setOrigin(0.5);
+        
+        // Optionally, add an animation to the button or text to make it more appealing
     }
 
 }
+
+    
 
