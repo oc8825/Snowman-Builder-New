@@ -161,6 +161,7 @@ export default class LevelOne extends Phaser.Scene {
             (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone'));
 
         if (isTiltSupported) {
+            this.scene.pause();
             // Enable Tilt Control button
             const enableTiltButton = document.createElement('button');
             enableTiltButton.innerText = 'Enable Tilt Controls';
@@ -187,7 +188,8 @@ export default class LevelOne extends Phaser.Scene {
                             if (response === 'granted') {
                                 console.log('Permission granted for tilt controls!');
                                 window.addEventListener('devicemotion', this.handleMotion.bind(this));
-                                document.body.removeChild(enableTiltButton); // remove button
+                                document.body.removeChild(enableTiltButton);
+                                this.scene.resume(); // remove button
                             } else {
                                 console.error('Permission denied for tilt controls.');
                                 alert('Permission denied. Tilt controls are unavailable.');
