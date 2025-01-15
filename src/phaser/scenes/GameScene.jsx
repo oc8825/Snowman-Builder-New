@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
 import StartScene from './StartScene';
 import InstructionScene from './InstructionScene';
-import Level1Scene from './Level1Scene';
-import Level2Scene from './Level2Scene';
-import Level3Scene from './Level3Scene';
+import ObjectiveScene from './ObjectiveScene';
+import LevelOne from './LevelOne';
+import LevelTwo from './LevelTwo';
+import LevelThree from './LevelThree';
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -12,17 +13,16 @@ class GameScene extends Phaser.Scene {
 
 }
 
-// This function will set up the Phaser game with the provided configuration
 const buildPhaserGame = ({ parent }) => {
     const baseConfig = {
         type: Phaser.AUTO,
-        width: 1300,  // set to window's width for mobile responsiveness
-        height: 660, // set to window's height for mobile responsiveness
+        width: 1300,  
+        height: 660, 
         scale: {
-            mode: Phaser.Scale.FIT, // dynamically resize the game based on window size
-            autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, // keep the game centered
+            mode: Phaser.Scale.FIT, 
+            autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, 
         },
-        scene: [StartScene, InstructionScene, Level1Scene, Level2Scene, Level3Scene, GameScene], // add game scenes here
+        scene: [StartScene, InstructionScene, ObjectiveScene, LevelOne, LevelTwo, LevelThree, GameScene], // add game scenes here
         physics: {
             default: 'arcade',
             arcade: {
@@ -30,7 +30,7 @@ const buildPhaserGame = ({ parent }) => {
                 gravity: { y: 0 },
             },
         },
-        parent, // This ensures Phaser will render the game into the given parent DOM element
+        parent, 
     };
 
     return new Phaser.Game(baseConfig);
