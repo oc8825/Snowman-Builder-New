@@ -19,14 +19,13 @@ export default class YouWin extends Phaser.Scene {
 
     create() {
 
-        // Create and scale the background to fit the screen (without distorting it)
         let background = this.add.image(0, 0, 'instructionBackground').setOrigin(0, 0);
-        background.setDisplaySize(this.scale.width, this.scale.height);  // Set the background size to fit the screen
+        background.setDisplaySize(this.scale.width, this.scale.height);  
         background.setScale(Math.max(this.scale.width / background.width, this.scale.height / background.height));
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'You Win!', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
 
-        // Retrieve selected player index from localStorage
+        // retrieve from localStorage
         const playerIndex = localStorage.getItem('selectedPlayerIndex');
 
         const players = [
@@ -41,7 +40,6 @@ export default class YouWin extends Phaser.Scene {
             { name: 'Beckham', snowmanKey: 'beckhamSnowman' }
         ];
 
-        // Display selected player's name
         const playerName = players[playerIndex]?.name || 'Unknown Player';
         this.add.text(this.scale.width / 2, this.scale.height / 2, `You selected: ${playerName}`, { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
 
@@ -52,13 +50,12 @@ export default class YouWin extends Phaser.Scene {
             console.log('No snowman image for selected player');
         }
 
-        // Add an arrow to transition to another scene
         this.arrow = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, 'arrow').setInteractive();
         this.arrow.setScale(0.25);
 
-        // When the arrow is clicked/tapped, transition to LevelOne
+        
         this.arrow.on('pointerdown', () => {
-            this.scene.start('LevelOne'); // Transition to LevelOne or another scene
+            this.scene.start('LevelOne'); 
         });
     }
 
