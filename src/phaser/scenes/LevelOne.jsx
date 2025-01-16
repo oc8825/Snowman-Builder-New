@@ -20,6 +20,9 @@ export default class LevelOne extends Phaser.Scene {
         this.spawnShoeEvent = null;
         this.spawnPantEvent = null;
         this.tiltControlsActive = false;
+
+        this.collectedPants = [];
+        this.collectedShoes = [];
     }
 
     preload() {
@@ -395,6 +398,10 @@ export default class LevelOne extends Phaser.Scene {
         snowball.body.setFriction(0);
         const pantKey = pant.texture.key;
 
+    if (!this.collectedPants.includes(pantKey)) {
+        this.collectedPants.push(pantKey);  // Add the collected pant to the array
+    }
+
         if (pantKey === 'mclaurinPantsCollect') {
             this.slot4.style.backgroundImage = `url(/src/assets/images/mclaurinpants.png)`;
         } else if (pantKey == 'beckhamPantsCollect') {
@@ -429,6 +436,9 @@ export default class LevelOne extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
         const shoeKey = shoe.texture.key;
+        if (!this.collectedShoes.includes(shoeKey)) {
+            this.collectedShoes.push(shoeKey);  // Add the collected shoe to the array
+        }
 
         if (shoeKey === 'mclaurinCleatsCollect') {
             this.slot3.style.backgroundImage = `url(/src/assets/images/mclaurincleat.png)`;
@@ -597,7 +607,7 @@ export default class LevelOne extends Phaser.Scene {
 
         if (this.score >= this.snowballTarget && !this.levelCompleted) {
             this.levelCompleted = true;
-            this.showLevelUpScene();
+            this.checkIfPlayerLost();
         }
 
     }
@@ -605,27 +615,65 @@ export default class LevelOne extends Phaser.Scene {
 
     showLevelUpScene(){
         this.scene.pause();
-
+    
         this.nextLevelButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
         .setInteractive()
         .setDepth(1)
         .on('pointerdown', () => {
             console.log('Next level clicked!');
-            this.scene.start('LevelTwo')
+            this.scene.start('LevelTwo');
         });
-
+    
         this.overlay = this.add.graphics();
         this.overlay.fillStyle(0x000000, 0.7); // semi-transparent black
         this.overlay.fillRect(0, 0, this.scale.width, this.scale.height); // cover entire screen
-
+    
         const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
             fontSize: '48px',
             fill: '#fff',
             align: 'center'
         });
         levelUpText.setOrigin(0.5);
-        
-        // Optionally, add an animation to the button or text to make it more appealing
+    
+    }
+
+    checkIfPlayerLost() {
+        // Define required items (example: shoes and pants)
+        const requiredPants = ['mclaurinPantsCollect', 'beckhamPantsCollect', 'curryShortsCollect'];
+        const requiredShoes = ['mclaurinCleatsCollect', 'beckhamCleatsCollect', 'curryShoeCollect'];
+    
+        const lastCollectedPant = this.collectedPants[this.collectedPants.length - 1];
+        const lastCollectedShoe = this.collectedShoes[this.collectedShoes.length - 1];
+
+        let playerLost = false;
+
+        if (!requiredPants.includes(lastCollectedPant) || !requiredShoes.includes(lastCollectedShoe)) {
+            playerLost = true;  // Player lost if the last item does not match
+        }
+    
+        if (playerLost) {
+            this.showLoseScreen();  // Show the "You Lose" screen
+        } else {
+            this.showLevelUpScene();
+        }
+
+    }
+
+    showLoseScreen() {
+        this.scene.pause();
+    
+        const overlay = this.add.graphics();
+        overlay.fillStyle(0x000000, 0.7); // Semi-transparent background
+        overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+    
+        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'You Lose!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        loseText.setOrigin(0.5);
+    
+        // Add a retry button or some other actions to restart or quit the game
     }
 
 }

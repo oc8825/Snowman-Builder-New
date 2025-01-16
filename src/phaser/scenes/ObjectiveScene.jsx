@@ -12,7 +12,7 @@ export default class ObjectiveScene extends Phaser.Scene {
             { name: 'Zimmerman', components: ['zimmerman', 'zimmermancleat', 'zimmermanhelmet', 'zimmermanpants'] },
             { name: 'Beckham', components: ['beckham', 'beckhamcleat', 'beckhamhelmet', 'beckhampants'] }
         ];
-        this.playerIndex = 0;
+        this.playerIndex = -1;
         this.componentImages = {
             'messi': '/src/assets/images/messi.png',
             'morgan': '/src/assets/images/morgan.png',
@@ -108,7 +108,6 @@ export default class ObjectiveScene extends Phaser.Scene {
     
 
     create() {
-        console.log(this.playerIndex)
         // white background
         this.cameras.main.setBackgroundColor('#ffffff');
 
@@ -154,7 +153,7 @@ export default class ObjectiveScene extends Phaser.Scene {
 
         startGameButton.on('pointerdown', () => {
             if (this.playerIndex >= 0) {
-                this.scene.start('YouWin');
+                this.scene.start('LevelOne');
             } else {
                 alert('Please select a player first!');
             }
