@@ -149,7 +149,7 @@ export default class ObjectiveScene extends Phaser.Scene {
 
         startGameButton.on('pointerdown', () => {
             if (this.playerIndex >= 0) {
-                this.scene.start('LevelOnePartTwo');
+                this.scene.start('LevelOne');
             } else {
                 alert('Please select a player first!');
             }

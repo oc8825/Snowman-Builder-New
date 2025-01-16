@@ -28,7 +28,7 @@ export default class InstructionScene extends Phaser.Scene {
         });
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 300, 'Instructions', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
-        this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'To get started chose a player and enable tilt contorls on mobile devices.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'To get started choose a player and enable tilt contorls on mobile devices.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 200, 'To move the snowball, tilt your device in the direction you want to move.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 150, 'Hitting snowballs gains points, hitting obsticles loses points.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'To build the body, get 10 points in part one, and then find your players shoes and pants.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);

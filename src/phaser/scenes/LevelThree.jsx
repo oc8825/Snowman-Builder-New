@@ -17,7 +17,6 @@ export default class LevelThree extends Phaser.Scene {
 
         this.spawnObstacleEvent = null;
         this.spawnSnowAdderEvent = null;
-        this.spawnThingEvent = null;
         this.tiltControlsActive = false;
     }
 
@@ -36,41 +35,16 @@ export default class LevelThree extends Phaser.Scene {
         this.load.image('net', '/src/assets/images/net.png');
         this.load.image('basketball', '/src/assets/images/basketball.png');
 
-        //accessories
-        this.load.image('mclaurinHelmetCollect', '/src/assets/images/mclaurinHelmetCollect.png')
-        this.load.image('beckhamHelmetCollect', '/src/assets/images/beckhamHelmetCollect.png')
-        this.load.image('curryHeadbandCollect', '/src/assets/images/curryHeadbandCollect.png')
-        this.load.image('doncicHeadbandCollect', '/src/assets/images/doncicHeadbandCollect.png')
-        this.load.image('messiCuffCollect', '/src/assets/images/messiCuffCollect.png')
-        this.load.image('morganCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('rodmanCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('ohtaniHelmetCollect', '/src/assets/images/ohtaniHelmetCollect.png')
-        this.load.image('zimmermanHelmetCollect', '/src/assets/images/zimmermanHelmetCollect.png')
-
-        this.load.image('mclaurinhelmet', '/src/assets/images/mclaurinhelmet.png');
-        this.load.image('beckhamhelmet', '/src/assets/images/beckhamhelmet.png');
-        this.load.image('curryheadband', '/src/assets/images/curryheadband.png');
-        this.load.image('doncicheadband', '/src/assets/images/doncicheadband.png');
-        this.load.image('messicuff', '/src/assets/images/messicuff.png');
-        this.load.image('morgancuff', '/src/assets/images/usacuff.png');
-        this.load.image('rodmancuff', '/src/assets/images/usacuff.png');
-        this.load.image('ohtanihelmet', '/src/assets/images/ohtanihelmet.png');
-        this.load.image('zimmermanhelmet', '/src/assets/images/zimmermanhelmet.png');
 
         // snowball poof animation
         for (let i = 1; i <= 12; i++) {
             this.load.image(`poof${i}`, `/src/assets/images/poof/poof${i}.png`);
         }
 
-        // confetti animation
-        for (let i = 0; i <= 49; i++) {
-            this.load.image(`confetti${i}`, `/src/assets/images/confetti/confetti${i}.png`);
-        }
 
     }
 
     create() {
-        this.setInventory();
 
         // background
         this.ground = this.add.tileSprite(
@@ -93,16 +67,13 @@ export default class LevelThree extends Phaser.Scene {
 
         this.obstacles = this.physics.add.group(); // obstacles
         this.snowAdders = this.physics.add.group();
-        this.things = this.physics.add.group();
 
         this.spawnObstacleEvent = this.time.addEvent({ delay: 2000, callback: this.spawnObstacle, callbackScope: this, loop: true });
         this.spawnSnowAdderEvent = this.time.addEvent({ delay: 3000, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
-        this.spawnThingEvent = this.time.addEvent({ delay: 4500, callback: this.spawnThing, callbackScope: this, loop: true });
 
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
         this.physics.add.collider(this.snowball, this.snowAdders, this.handleSnowAdderCollision, null, this);
-        this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
 
         this.score = 0;
 
@@ -129,58 +100,6 @@ export default class LevelThree extends Phaser.Scene {
             }
         });
 
-        // check if DeviceMotionEvent is supported 
-        const isTiltSupported =
-            typeof DeviceMotionEvent !== 'undefined' &&
-            (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone'));
-
-        if (isTiltSupported) {
-            // Enable Tilt Control button
-            const enableTiltButton = document.createElement('button');
-            enableTiltButton.innerText = 'Enable Tilt Controls';
-            enableTiltButton.style.position = 'absolute';
-            enableTiltButton.style.top = '50%';
-            enableTiltButton.style.left = '50%';
-            enableTiltButton.style.transform = 'translate(-50%, -50%)';
-            enableTiltButton.style.fontSize = '20px';
-            enableTiltButton.style.padding = '10px 20px';
-            enableTiltButton.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            enableTiltButton.style.color = '#fff';
-            enableTiltButton.style.border = 'none';
-            enableTiltButton.style.cursor = 'pointer';
-            document.body.appendChild(enableTiltButton);
-
-            // create cooldown for lane changes so cna only change one lane per tilt
-            this.laneChangeCooldown = false;
-
-            enableTiltButton.addEventListener('click', () => {
-                if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                    // request permission for accelerometer access on iOS
-                    DeviceMotionEvent.requestPermission()
-                        .then(response => {
-                            if (response === 'granted') {
-                                console.log('Permission granted for tilt controls!');
-                                window.addEventListener('devicemotion', this.handleMotion.bind(this));
-                                document.body.removeChild(enableTiltButton); // remove button
-                            } else {
-                                console.error('Permission denied for tilt controls.');
-                                alert('Permission denied. Tilt controls are unavailable.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error requesting permission:', error);
-                            alert('Unable to enable tilt controls. ' + error);
-                        });
-                } else {
-                    // non-iOS devices 
-                    console.log('Tilt controls enabled (no permission required).');
-                    window.addEventListener('devicemotion', this.handleMotion.bind(this));
-                    document.body.removeChild(enableTiltButton);
-                }
-            });
-        } else {
-            console.log('Tilt controls are not supported on this device.');
-        }
 
         // create snowball poof animation
         this.anims.create({
@@ -200,65 +119,6 @@ export default class LevelThree extends Phaser.Scene {
               { key: 'poof12' },
             ],
             frameRate: 10,
-            hideOnComplete: true, // Automatically hide the sprite after the animation completes
-          });
-
-        // create confetti animation
-        this.anims.create({
-            key: 'confetti',
-            frames: [
-              { key: 'confetti0' },
-              { key: 'confetti1' },
-              { key: 'confetti2' },
-              { key: 'confetti3' },
-              { key: 'confetti4' },
-              { key: 'confetti5' },
-              { key: 'confetti6' },
-              { key: 'confetti7' },
-              { key: 'confetti8' },
-              { key: 'confetti9' },
-              { key: 'confetti10' },
-              { key: 'confetti11' },
-              { key: 'confetti12' },
-              { key: 'confetti13' },
-              { key: 'confetti14' },
-              { key: 'confetti15' },
-              { key: 'confetti16' },
-              { key: 'confetti17' },
-              { key: 'confetti18' },
-              { key: 'confetti19' },
-              { key: 'confetti20' },
-              { key: 'confetti21' },
-              { key: 'confetti22' },
-              { key: 'confetti23' },
-              { key: 'confetti24' },
-              { key: 'confetti25' },
-              { key: 'confetti26' },
-              { key: 'confetti27' },
-              { key: 'confetti28' },
-              { key: 'confetti29' },
-              { key: 'confetti30' },
-              { key: 'confetti31' },
-              { key: 'confetti32' },
-              { key: 'confetti33' },
-              { key: 'confetti34' },
-              { key: 'confetti35' },
-              { key: 'confetti36' },
-              { key: 'confetti37' },
-              { key: 'confetti38' },
-              { key: 'confetti39' },
-              { key: 'confetti40' },
-              { key: 'confetti41' },
-              { key: 'confetti42' },
-              { key: 'confetti43' },
-              { key: 'confetti44' },
-              { key: 'confetti45' },
-              { key: 'confetti46' },
-              { key: 'confetti47' },
-              { key: 'confetti48' },
-              { key: 'confetti49' },
-            ],
-            frameRate: 40,
             hideOnComplete: true, // Automatically hide the sprite after the animation completes
           });
 
@@ -361,40 +221,10 @@ export default class LevelThree extends Phaser.Scene {
         snowAdder.destroy();
     }
 
-    handleThingCollision(snowball, thing) {
-        snowball.body.setVelocity(0, 0);
-        snowball.body.setBounce(0);
-        snowball.body.setFriction(0);
-        const thingKey = thing.texture.key;
-
-        if (thingKey === 'mclaurinHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/mclaurinhelmet.png)`;
-        } else if (thingKey === 'beckhamHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/beckhamhelmet.png)`;
-        } else if (thingKey === 'curryHeadbandCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/curryheadband.png)`;
-        } else if (thingKey === 'doncicHeadbandCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/doncicheadband.png)`;
-        } else if (thingKey === 'messiCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/messicuff.png)`;
-        } else if (thingKey === 'morganCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
-        } else if (thingKey === 'rodmanCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
-        } else if (thingKey === 'ohtaniHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/ohtanihelmet.png)`;
-        } else if (thingKey === 'zimmermanHelmetCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/zimmermanhelmet.png)`;
-        }
-
-        const confettiSprite = this.add.sprite(thing.x, thing.y, 'confetti0');
-        confettiSprite.setScale(1.5);
-        confettiSprite.play('confetti');
-
-        thing.destroy();
-    }
 
     spawnObstacle() {
+        if(this.levelCompleted) return;
+
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
 
@@ -422,6 +252,8 @@ export default class LevelThree extends Phaser.Scene {
     }
 
     spawnSnowAdder() {
+        if(this.levelCompleted) return;
+
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);  // randomly pick one of the x positions
 
@@ -430,33 +262,7 @@ export default class LevelThree extends Phaser.Scene {
         snowAdder.setVelocityY(100); // make the obstacle move downward
     }
 
-    spawnThing() {
-        const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
-        const randomX = Phaser.Math.RND.pick(xPositions);
-
-        const ThingTypes = ['mclaurinHelmetCollect', 'beckhamHelmetCollect',
-            'curryHeadbandCollect', 'doncicHeadbandCollect',
-            'messiCuffCollect', 'morganCuffCollect',
-            'rodmanCuffCollect', 'ohtaniHelmetCollect', 'zimmermanHelmetCollect']
-        const ChooseThing = Phaser.Math.RND.pick(ThingTypes);
-
-        const thing = this.things.create(randomX, 0, ChooseThing);
-        thing.setScale(.25);
-        thing.setVelocityY(50);
-    }
-
-    setInventory() {
-        this.slot1 = document.getElementById('slot-1');
-        this.slot2 = document.getElementById('slot-2');
-        this.slot3 = document.getElementById('slot-3');
-        this.slot4 = document.getElementById('slot-4');
-
-        this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
-        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
-        this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
-        this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
-    }
-
+    
     update() {
 
         // update snowball position if needed
@@ -496,17 +302,34 @@ export default class LevelThree extends Phaser.Scene {
             }
         });
 
-
-        this.things.getChildren().forEach(thing => {
-            if (thing && thing.y > this.scale.height) {
-                thing.destroy();
-            }
-        });
-
-        if (this.score < 0){
+        if (this.score >= this.snowballTarget && !this.levelCompleted) {
+            this.levelCompleted = true;
+            this.showLevelUpScene();
+        } else if (this.score < 0){
             this.restartLevel();
         }
+    }
 
+    showLevelUpScene(){
+        this.physics.pause();
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7);
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+
+        this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
+        .setInteractive();
+        this.nextLevelButton.on('pointerdown', () => {
+            this.scene.start('LevelThreePartTwo');
+        });
+
+        const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        levelUpText.setOrigin(0.5);
+    
     }
 
     restartLevel() {

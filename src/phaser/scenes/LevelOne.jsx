@@ -18,6 +18,9 @@ export default class LevelOne extends Phaser.Scene {
         this.spawnObstacleEvent = null;
         this.spawnSnowAdderEvent = null;
         this.tiltControlsActive = false;
+
+        this.isRestarting = false;
+        
     }
 
     preload() {
@@ -42,7 +45,6 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     create() {
-        this.setInventory();
 
         // background
         this.ground = this.add.tileSprite(
@@ -273,6 +275,8 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     spawnObstacle() {
+        if(this.levelCompleted) return;
+
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
 
@@ -300,6 +304,9 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     spawnSnowAdder() {
+
+        if(this.levelCompleted) return;
+
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);  // randomly pick one of the x positions
 
@@ -308,17 +315,6 @@ export default class LevelOne extends Phaser.Scene {
         snowAdder.setVelocityY(100); // make the obstacle move downward
     }
 
-    setInventory() {
-        this.slot1 = document.getElementById('slot-1');
-        this.slot2 = document.getElementById('slot-2');
-        this.slot3 = document.getElementById('slot-3');
-        this.slot4 = document.getElementById('slot-4');
-
-        this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
-        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
-        this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
-        this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
-    }
     
     update() {
 
@@ -363,25 +359,25 @@ export default class LevelOne extends Phaser.Scene {
             this.levelCompleted = true;
             this.showLevelUpScene();
         } else if (this.score < 0){
-            this.showLoseScreen();
+            this.restartLevel();
         }
 
     }
 
     showLevelUpScene(){
-        this.scene.pause();
-        
+        this.physics.pause();
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7);
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+
         this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
         .setInteractive();
         this.nextLevelButton.on('pointerdown', () => {
             console.log('Next level clicked!');
-            this.scene.start('LevelTwo');
+            this.scene.start('LevelOnePartTwo');
         });
-    
-       // this.overlay = this.add.graphics();
-       // this.overlay.fillStyle(0x000000, 0.7);
-       // this.overlay.fillRect(0, 0, this.scale.width, this.scale.height); // cover entire screen
-    
+
         const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
             fontSize: '48px',
             fill: '#fff',
@@ -390,24 +386,62 @@ export default class LevelOne extends Phaser.Scene {
         levelUpText.setOrigin(0.5);
     
     }
+    
+    restartLevel() {
+        if (this.isRestarting) return; // If already restarting, exit early
 
-    showLoseScreen() {
-        this.scene.pause();
+        this.isRestarting = true; // Prevent further calls until reset
     
+        // Pause gameplay
+        this.physics.pause();
+    
+        // Create a semi-transparent overlay
         const overlay = this.add.graphics();
-        overlay.fillStyle(0x000000, 0.7); // 
-        overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+        overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
+        overlay.fillRect(0, 0, this.scale.width, this.scale.height); // Draw the rectangle to cover the screen
+        overlay.setDepth(10); // Ensure overlay is above other objects
     
-        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'You Lose!', {
+        // Display the initial message
+        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Failed!', {
             fontSize: '48px',
             fill: '#fff',
             align: 'center'
         });
         loseText.setOrigin(0.5);
+        loseText.setDepth(11); // Ensure text is above the overlay
     
-        // add a retry button 
+        // Countdown logic
+        const countdownText = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
+            fontSize: '64px',
+            fill: '#fff',
+            align: 'center'
+        });
+        countdownText.setOrigin(0.5);
+        countdownText.setDepth(11); // Ensure countdown text is above the overlay
+    
+        let countdownValue = 3;
+        const countdownTimer = this.time.addEvent({
+            delay: 1000, // 1 second per countdown step
+            repeat: 2,   // Repeat 2 more times (for 2 and 1)
+            callback: () => {
+                countdownValue--;
+                countdownText.setText(countdownValue.toString()); // Update the countdown text
+            }
+        });
+    
+        // Schedule the restart after the countdown finishes
+        this.time.delayedCall(3000, () => {
+            // Clear the countdown text and update the message
+            countdownText.destroy();
+            loseText.setText('Restarting...');
+    
+            // Restart the scene after a small delay
+            this.time.delayedCall(500, () => {
+                this.isRestarting = false; // Reset the flag
+                this.scene.restart(); // Restart the scene
+            });
+        });
     }
 }
-
     
 

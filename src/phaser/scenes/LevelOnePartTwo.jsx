@@ -21,6 +21,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.timerText = null;
         this.timerEvent = null;
         this.timeLeft = 30;
+
+        this.isRestarting = false;
     }
 
     preload() {
@@ -199,7 +201,19 @@ export default class LevelOnePartTwo extends Phaser.Scene {
             frameRate: 40,
             hideOnComplete: true, 
           });
+          this.isRestarting = false;
+    }
 
+    setInventory() {
+        this.slot1 = document.getElementById('slot-1');
+        this.slot2 = document.getElementById('slot-2');
+        this.slot3 = document.getElementById('slot-3');
+        this.slot4 = document.getElementById('slot-4');
+
+        this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
+        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
+        this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
+        this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
     }
 
     updateTimer(){
@@ -339,6 +353,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
     }
 
     spawnPant() {
+        if(this.levelCompleted) return;
+
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
 
@@ -354,6 +370,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
     }
 
     spawnShoe() {
+        if(this.levelCompleted) return;
+
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
 
@@ -368,17 +386,6 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         shoe.setVelocityY(50);
     }
 
-    setInventory() {
-        this.slot1 = document.getElementById('slot-1');
-        this.slot2 = document.getElementById('slot-2');
-        this.slot3 = document.getElementById('slot-3');
-        this.slot4 = document.getElementById('slot-4');
-
-        this.slot1.style.backgroundImage = 'url(/src/assets/images/jersey.png)';
-        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
-        this.slot3.style.backgroundImage = 'url(/src/assets/images/shoes.png)';
-        this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
-    }
 
     showInventory() {
         const inventoryBox = document.getElementById('inventory-box');
@@ -424,27 +431,21 @@ export default class LevelOnePartTwo extends Phaser.Scene {
             }
         });
 
-        if (this.score >= this.snowballTarget && !this.levelCompleted) {
-            this.levelCompleted = true;
-            this.checkIfPlayerLost();
-        }
     }
 
     showLevelUpScene(){
-        this.scene.pause();
-    
-        this.nextLevelButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
-        .setInteractive()
-        .setDepth(1)
-        .on('pointerdown', () => {
-            console.log('Next level clicked!');
+        this.physics.pause();
+
+        this.overlay = this.add.graphics();
+        this.overlay.fillStyle(0x000000, 0.7);
+        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+
+        this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
+        .setInteractive();
+        this.nextLevelButton.on('pointerdown', () => {
             this.scene.start('LevelTwo');
         });
-    
-        this.overlay = this.add.graphics();
-        this.overlay.fillStyle(0x000000, 0.7); 
-        this.overlay.fillRect(0, 0, this.scale.width, this.scale.height); 
-    
+
         const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
             fontSize: '48px',
             fill: '#fff',
@@ -469,31 +470,69 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         }
     
         if (playerLost) {
-            this.showLoseScreen(); 
+            this.restartLevel(); 
         } else {
             this.showLevelUpScene();
+            this.levelCompleted = true;
         }
-
     }
 
-    showLoseScreen() {
-        this.scene.pause();
+    restartLevel() {
+        if (this.isRestarting) return; // If already restarting, exit early
+
+        this.isRestarting = true; // Prevent further calls until reset
     
+        // Pause gameplay
+        this.physics.pause();
+    
+        // Create a semi-transparent overlay
         const overlay = this.add.graphics();
-        overlay.fillStyle(0x000000, 0.7); // Semi-transparent background
-        overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+        overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
+        overlay.fillRect(0, 0, this.scale.width, this.scale.height); // Draw the rectangle to cover the screen
+        overlay.setDepth(10); // Ensure overlay is above other objects
     
-        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'You Lose!', {
+        // Display the initial message
+        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Failed!', {
             fontSize: '48px',
             fill: '#fff',
             align: 'center'
         });
         loseText.setOrigin(0.5);
+        loseText.setDepth(11); // Ensure text is above the overlay
     
-        // Add a retry button or some other actions to restart or quit the game
+        // Countdown logic
+        const countdownText = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
+            fontSize: '64px',
+            fill: '#fff',
+            align: 'center'
+        });
+        countdownText.setOrigin(0.5);
+        countdownText.setDepth(11); // Ensure countdown text is above the overlay
+    
+        let countdownValue = 3;
+        const countdownTimer = this.time.addEvent({
+            delay: 1000, // 1 second per countdown step
+            repeat: 2,   // Repeat 2 more times (for 2 and 1)
+            callback: () => {
+                countdownValue--;
+                countdownText.setText(countdownValue.toString()); // Update the countdown text
+            }
+        });
+    
+        // Schedule the restart after the countdown finishes
+        this.time.delayedCall(3000, () => {
+            // Clear the countdown text and update the message
+            countdownText.destroy();
+            loseText.setText('Restarting...');
+    
+            // Restart the scene after a small delay
+            this.time.delayedCall(500, () => {
+                this.isRestarting = false; // Reset the flag
+                this.scene.restart(); // Restart the scene
+                this.timeLeft = 30;
+            });
+        });
     }
-
 }
 
-    
 
