@@ -1,6 +1,6 @@
-export default class InstructionScene extends Phaser.Scene {
+export default class InstructionFour extends Phaser.Scene {
     constructor() {
-        super({ key: 'InstructionScene' });
+        super({ key: 'InstructionFour' });
     }
 
     preload() {
@@ -24,7 +24,7 @@ export default class InstructionScene extends Phaser.Scene {
 
         
         this.arrow.on('pointerdown', () => {
-            this.scene.start('Instructiontwo'); 
+            this.scene.start('ObjectiveScene'); 
         });
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'Instructions', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
@@ -36,7 +36,7 @@ export default class InstructionScene extends Phaser.Scene {
         const text = this.add.text(
             this.cameras.main.centerX,
             verticalPosition,
-            'To get started, chose a player and enable tilt contorls on mobile devices. For desktop users, use the arrow keys to move the snowball. Hitting snowballs gains points, hitting obsitcales loses poitns.',
+            'In level 3, you will build the head of the snowman. You will first have 30 seconds collect the correct gear for the player that you built (head-gear). In part 2, you will have to get to 5 points. If your point value is less than 0, you lose! ',
             { 
                 fontSize: '25px', 
                 color: '#000',
@@ -65,7 +65,6 @@ export default class InstructionScene extends Phaser.Scene {
        );
 
        this.children.bringToTop(text);
-       
        
     }
     hideInventory() {
