@@ -58,15 +58,6 @@ export default class ObjectiveScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.image('mclaurinCleatsCollect', '/src/assets/images/mclaurinCleatsCollect.png')
-        this.load.image('beckhamCleatsCollect', '/src/assets/images/beckhamCleatsCollect.png')
-        this.load.image('curryShoeCollect', '/src/assets/images/curryShoeCollect.png')
-        this.load.image('doncicShoeCollect', '/src/assets/images/doncicShoeCollect.png')
-        this.load.image('messiCleatsCollect', '/src/assets/images/messiCleatsCollect.png')
-        this.load.image('morganCleatsCollect', '/src/assets/images/usaCleatsCollect.png')
-        this.load.image('rodmanCleatsCollect', '/src/assets/images/usaCleatsCollect.png')
-        this.load.image('ohtaniCleatsCollect', '/src/assets/images/ohtaniCleatsCollect.png')
-        this.load.image('zimmermanCleatsCollect', '/src/assets/images/zimmermanCleatsCollect.png')
 
         this.load.image('mclaurincleat', '/src/assets/images/mclaurincleat.png');
         this.load.image('beckhamcleat', '/src/assets/images/beckhamcleat.png');
@@ -78,17 +69,6 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('ohtanicleat', '/src/assets/images/ohtanicleat.png');
         this.load.image('zimmermancleat', '/src/assets/images/zimmermancleat.png');
 
-        //pants
-        this.load.image('mclaurinPantsCollect', '/src/assets/images/mclaurinPantsCollect.png')
-        this.load.image('beckhamPantsCollect', '/src/assets/images/beckhamPantsCollect.png')
-        this.load.image('curryShortsCollect', '/src/assets/images/curryShortsCollect.png')
-        this.load.image('doncicShortsCollect', '/src/assets/images/doncicShortsCollect.png')
-        this.load.image('messiShortsCollect', '/src/assets/images/messiShortsCollect.png')
-        this.load.image('morganShortsCollect', '/src/assets/images/morganShortsCollect.png')
-        this.load.image('rodmanShortsCollect', '/src/assets/images/rodmanShortsCollect.png')
-        this.load.image('ohtaniPantsCollect', '/src/assets/images/ohtaniPantsCollect.png')
-        this.load.image('zimmermanPantsCollect', '/src/assets/images/zimmermanPantsCollect.png')
-
         this.load.image('mclaurinpants', '/src/assets/images/mclaurinpants.png');
         this.load.image('beckhampants', '/src/assets/images/beckhampants.png');
         this.load.image('curryshorts', '/src/assets/images/curryshorts.png');
@@ -98,16 +78,6 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('rodmanshorts', '/src/assets/images/rodmanshorts.png');
         this.load.image('ohtanipants', '/src/assets/images/ohtanipants.png');
         this.load.image('zimmermanpants', '/src/assets/images/zimmermanpants.png');
-
-        this.load.image('mclaurinJerseyCollect', '/src/assets/images/mclaurinJerseyCollect.png')
-        this.load.image('beckhamJerseyCollect', '/src/assets/images/beckhamJerseyCollect.png')
-        this.load.image('curryJerseyCollect', '/src/assets/images/curryJerseyCollect.png')
-        this.load.image('doncicJerseyCollect', '/src/assets/images/doncicJerseyCollect.png')
-        this.load.image('messiJerseyCollect', '/src/assets/images/messiJerseyCollect.png')
-        this.load.image('morganJerseyCollect', '/src/assets/images/morganJerseyCollect.png')
-        this.load.image('rodmanJerseyCollect', '/src/assets/images/rodmanJerseyCollect.png')
-        this.load.image('ohtaniJerseyCollect', '/src/assets/images/ohtaniJerseyCollect.png')
-        this.load.image('zimmermanJerseyCollect', '/src/assets/images/zimmermanJerseyCollect.png')
 
         this.load.image('mclaurin', '/src/assets/images/mclaurin.png');
         this.load.image('beckham', '/src/assets/images/beckham.png');
@@ -119,16 +89,6 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('ohtani', '/src/assets/images/ohtani.png');
         this.load.image('zimmerman', '/src/assets/images/zimmerman.png');
 
-        this.load.image('mclaurinHelmetCollect', '/src/assets/images/mclaurinHelmetCollect.png')
-        this.load.image('beckhamHelmetCollect', '/src/assets/images/beckhamHelmetCollect.png')
-        this.load.image('curryHeadbandCollect', '/src/assets/images/curryHeadbandCollect.png')
-        this.load.image('doncicHeadbandCollect', '/src/assets/images/doncicHeadbandCollect.png')
-        this.load.image('messiCuffCollect', '/src/assets/images/messiCuffCollect.png')
-        this.load.image('morganCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('rodmanCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('ohtaniHelmetCollect', '/src/assets/images/ohtaniHelmetCollect.png')
-        this.load.image('zimmermanHelmetCollect', '/src/assets/images/zimmermanHelmetCollect.png')
-
         this.load.image('mclaurinhelmet', '/src/assets/images/mclaurinhelmet.png');
         this.load.image('beckhamhelmet', '/src/assets/images/beckhamhelmet.png');
         this.load.image('curryheadband', '/src/assets/images/curryheadband.png');
@@ -139,49 +99,94 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('ohtanihelmet', '/src/assets/images/ohtanihelmet.png');
         this.load.image('zimmermanhelmet', '/src/assets/images/zimmermanhelmet.png');
 
+        this.load.image('instructionBackground', '/src/assets/images/instructionBackground.jpg');
         this.load.image('nextPlayerButton', '/src/assets/images/nextPlayerButton.png');
         this.load.image('startGameButton', '/src/assets/images/startGameButton.png');
+        this.load.image('selectPlayerButton', '/src/assets/images/selectPlayerButton.png');
+ 
     }
+    
+
     create() {
+        console.log(this.playerIndex)
         // white background
         this.cameras.main.setBackgroundColor('#ffffff');
 
-        const nextPlayerButton = this.add.image(this.scale.width/2, this.scale.height/2, 'nextPlayerButton').setOrigin(0.5);
+        // Add a heading text (only once)
+        this.add.text(this.scale.width / 2, 100, 'Select Your Player', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
+
+        // Add buttons for selecting players, but don't show all player names in the middle
+        this.players.forEach((player, index) => {
+            const playerButton = this.add.image(this.scale.width / 2, 150 + index * 100, player.name.toLowerCase())
+                .setInteractive()
+                .setOrigin(0.5);
+            playerButton.setScale(0.3); // Adjust size if necessary
+
+            // Player click event
+            playerButton.on('pointerdown', () => {
+                this.selectPlayer(index);
+            });
+        });
+
+        // Add the next player button
+        const nextPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 150, 'nextPlayerButton').setOrigin(0.5);
         nextPlayerButton.setInteractive();
-        nextPlayerButton.setScale(1);
-        nextPlayerButton.setDepth(1);
-        
+        nextPlayerButton.setScale(.5);
+        nextPlayerButton.setDepth(1);  // Ensure it's visible above other elements
 
         nextPlayerButton.on('pointerdown', () => {
             this.children.list.forEach(child => {
-                if (child.type === 'Image') {
+                if (child.type === 'Image' && !['nextPlayerButton', 'startGameButton', 'selectPlayerButton'].includes(child.texture.key)) {
+                    child.destroy();
+                }
+                if (child.type === 'Text' && child.text !== 'Select Your Player') {
                     child.destroy();
                 }
             });
-             this.cyclePlayer();
+            this.cyclePlayer();
         });
 
+        // Add the start game button
         const startGameButton = this.add.image(this.scale.width / 2, this.scale.height - 100, 'startGameButton').setOrigin(0.5);
         startGameButton.setInteractive();
-        startGameButton.setScale(0.5)
-        nextPlayerButton.setDepth(1)
-
+        startGameButton.setScale(0.5);
+        startGameButton.setDepth(1);  // Ensure it's visible above other elements
 
         startGameButton.on('pointerdown', () => {
-            this.scene.start('LevelOne');
+            if (this.playerIndex >= 0) {
+                this.scene.start('YouWin');
+            } else {
+                alert('Please select a player first!');
+            }
+        });
+
+        const selectPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 200, 'selectPlayerButton').setOrigin(0.5);
+        selectPlayerButton.setInteractive();
+        selectPlayerButton.setScale(0.5);
+        selectPlayerButton.setDepth(1);
+
+        selectPlayerButton.on('pointerdown', () => {
+            if (this.playerIndex >= 0) {
+                // Store the selected player index in localStorage (or any other global state)
+                localStorage.setItem('selectedPlayerIndex', this.playerIndex);
+            } else {
+                alert('Please select a player first!');
+            }
         });
 
         this.displayComponents();
     }
 
     displayComponents() {
-
         this.children.list.forEach(child => {
-            if (child.type === 'Image') {
+            if (child.type === 'Image' && !['nextPlayerButton', 'startGameButton', 'selectPlayerButton'].includes(child.texture.key)) {
+                child.destroy();
+            }
+            if (child.type === 'Text' && child.text !== 'Select Your Player') {
                 child.destroy();
             }
         });
-        
+
         const componentPositions = [
             { x: this.scale.width / 2 - 100, y: this.scale.height / 2 - 50 },  // Top left
             { x: this.scale.width / 2, y: this.scale.height / 2 - 50 },        // Top right
@@ -191,20 +196,34 @@ export default class ObjectiveScene extends Phaser.Scene {
 
         const components = this.players[this.playerIndex].components;
 
+        this.add.text(this.scale.width / 2, 50, `Player: ${this.players[this.playerIndex].name} (${this.playerIndex})`, {
+            fontSize: '24px',
+            fill: '#000'
+        }).setOrigin(0.5);
+
         components.forEach((component, index) => {
             const position = componentPositions[index];
-
             this.add.image(position.x, position.y, component).setScale(0.2);
         });
     }
 
     cyclePlayer() {
         this.children.list.forEach(child => {
-            if (child.type === 'Image') {
+            if (child.type === 'Image' && !['nextPlayerButton', 'startGameButton', 'selectPlayerButton'].includes(child.texture.key)) {
+                child.destroy();
+            }
+            if (child.type === 'Text' && child.text !== 'Select Your Player') {
                 child.destroy();
             }
         });
+        
+        // cycle  through players but preserve the buttons and player name
         this.playerIndex = (this.playerIndex + 1) % this.players.length;
+        this.displayComponents();
+    }
+
+    selectPlayer(index) {
+        this.playerIndex = index;
         this.displayComponents();
     }
 }

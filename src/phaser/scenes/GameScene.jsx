@@ -5,6 +5,7 @@ import ObjectiveScene from './ObjectiveScene';
 import LevelOne from './LevelOne';
 import LevelTwo from './LevelTwo';
 import LevelThree from './LevelThree';
+import YouWin from './YouWin';
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -22,7 +23,7 @@ const buildPhaserGame = ({ parent }) => {
             mode: Phaser.Scale.FIT, 
             autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, 
         },
-        scene: [StartScene, InstructionScene, ObjectiveScene, LevelOne, LevelTwo, LevelThree, GameScene], // add game scenes here
+        scene: [StartScene, InstructionScene, ObjectiveScene, LevelOne, LevelTwo, LevelThree, YouWin, GameScene], // add game scenes here
         physics: {
             default: 'arcade',
             arcade: {
