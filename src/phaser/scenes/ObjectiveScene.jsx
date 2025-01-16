@@ -111,27 +111,23 @@ export default class ObjectiveScene extends Phaser.Scene {
         // white background
         this.cameras.main.setBackgroundColor('#ffffff');
 
-        // Add a heading text (only once)
         this.add.text(this.scale.width / 2, 100, 'Select Your Player', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
 
-        // Add buttons for selecting players, but don't show all player names in the middle
         this.players.forEach((player, index) => {
             const playerButton = this.add.image(this.scale.width / 2, 150 + index * 100, player.name.toLowerCase())
                 .setInteractive()
                 .setOrigin(0.5);
-            playerButton.setScale(0.3); // Adjust size if necessary
+            playerButton.setScale(0.3); 
 
-            // Player click event
             playerButton.on('pointerdown', () => {
                 this.selectPlayer(index);
             });
         });
 
-        // Add the next player button
         const nextPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 150, 'nextPlayerButton').setOrigin(0.5);
         nextPlayerButton.setInteractive();
         nextPlayerButton.setScale(.5);
-        nextPlayerButton.setDepth(1);  // Ensure it's visible above other elements
+        nextPlayerButton.setDepth(1);  
 
         nextPlayerButton.on('pointerdown', () => {
             this.children.list.forEach(child => {
@@ -145,15 +141,15 @@ export default class ObjectiveScene extends Phaser.Scene {
             this.cyclePlayer();
         });
 
-        // Add the start game button
+        // start game button
         const startGameButton = this.add.image(this.scale.width / 2, this.scale.height - 100, 'startGameButton').setOrigin(0.5);
         startGameButton.setInteractive();
         startGameButton.setScale(0.5);
-        startGameButton.setDepth(1);  // Ensure it's visible above other elements
+        startGameButton.setDepth(1);  
 
         startGameButton.on('pointerdown', () => {
             if (this.playerIndex >= 0) {
-                this.scene.start('LevelOne');
+                this.scene.start('LevelOnePartTwo');
             } else {
                 alert('Please select a player first!');
             }
@@ -166,7 +162,7 @@ export default class ObjectiveScene extends Phaser.Scene {
 
         selectPlayerButton.on('pointerdown', () => {
             if (this.playerIndex >= 0) {
-                // Store the selected player index in localStorage (or any other global state)
+                // store  selected player index in localStorage
                 localStorage.setItem('selectedPlayerIndex', this.playerIndex);
             } else {
                 alert('Please select a player first!');
@@ -187,10 +183,10 @@ export default class ObjectiveScene extends Phaser.Scene {
         });
 
         const componentPositions = [
-            { x: this.scale.width / 2 - 100, y: this.scale.height / 2 - 50 },  // Top left
-            { x: this.scale.width / 2, y: this.scale.height / 2 - 50 },        // Top right
-            { x: this.scale.width / 2 - 100, y: this.scale.height / 2 + 50 },  // Bottom left
-            { x: this.scale.width / 2, y: this.scale.height / 2 + 50 },        // Bottom right
+            { x: this.scale.width / 2 - 100, y: this.scale.height / 2 - 50 },  // top left
+            { x: this.scale.width / 2, y: this.scale.height / 2 - 50 },        // top right
+            { x: this.scale.width / 2 - 100, y: this.scale.height / 2 + 50 },  // bottom  left
+            { x: this.scale.width / 2, y: this.scale.height / 2 + 50 },        // bottom right
         ];
 
         const components = this.players[this.playerIndex].components;
@@ -216,7 +212,6 @@ export default class ObjectiveScene extends Phaser.Scene {
             }
         });
         
-        // cycle  through players but preserve the buttons and player name
         this.playerIndex = (this.playerIndex + 1) % this.players.length;
         this.displayComponents();
     }
