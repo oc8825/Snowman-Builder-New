@@ -24,7 +24,7 @@ export default class InstructionThree extends Phaser.Scene {
 
         
         this.arrow.on('pointerdown', () => {
-            this.scene.start('InstructionFour'); 
+            this.scene.start('ObjectiveScene'); 
         });
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'Instructions', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
