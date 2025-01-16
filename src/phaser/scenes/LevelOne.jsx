@@ -638,7 +638,8 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     checkIfPlayerLost() {
-        // Define required items (example: shoes and pants)
+        
+        // define required items (example: shoes and pants)
         const requiredPants = ['mclaurinPantsCollect', 'beckhamPantsCollect', 'curryShortsCollect'];
         const requiredShoes = ['mclaurinCleatsCollect', 'beckhamCleatsCollect', 'curryShoeCollect'];
     

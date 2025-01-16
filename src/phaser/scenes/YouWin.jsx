@@ -47,7 +47,7 @@ export default class YouWin extends Phaser.Scene {
 
         const snowmanKey = players[playerIndex]?.snowmanKey;
         if (snowmanKey) {
-            this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, snowmanKey).setOrigin(0.5);
+            this.add.image(300, this.scale.height / 2, snowmanKey).setOrigin(0.5).setScale(0.75);
         } else {
             console.log('No snowman image for selected player');
         }
