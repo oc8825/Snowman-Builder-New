@@ -261,6 +261,9 @@ export default class LevelThree extends Phaser.Scene {
             frameRate: 40,
             hideOnComplete: true, // Automatically hide the sprite after the animation completes
           });
+
+          // create flag so don't restart multiple times in a row
+          this.isRestarting = false;
     }
 
     handleMotion(event) {
@@ -507,6 +510,58 @@ export default class LevelThree extends Phaser.Scene {
     }
 
     restartLevel() {
-        this.scene.restart();
+        if (this.isRestarting) return; // If already restarting, exit early
+
+        this.isRestarting = true; // Prevent further calls until reset
+    
+        // Pause gameplay
+        this.physics.pause();
+    
+        // Create a semi-transparent overlay
+        const overlay = this.add.graphics();
+        overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
+        overlay.fillRect(0, 0, this.scale.width, this.scale.height); // Draw the rectangle to cover the screen
+        overlay.setDepth(10); // Ensure overlay is above other objects
+    
+        // Display the initial message
+        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Failed!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        loseText.setOrigin(0.5);
+        loseText.setDepth(11); // Ensure text is above the overlay
+    
+        // Countdown logic
+        const countdownText = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
+            fontSize: '64px',
+            fill: '#fff',
+            align: 'center'
+        });
+        countdownText.setOrigin(0.5);
+        countdownText.setDepth(11); // Ensure countdown text is above the overlay
+    
+        let countdownValue = 3;
+        const countdownTimer = this.time.addEvent({
+            delay: 1000, // 1 second per countdown step
+            repeat: 2,   // Repeat 2 more times (for 2 and 1)
+            callback: () => {
+                countdownValue--;
+                countdownText.setText(countdownValue.toString()); // Update the countdown text
+            }
+        });
+    
+        // Schedule the restart after the countdown finishes
+        this.time.delayedCall(3000, () => {
+            // Clear the countdown text and update the message
+            countdownText.destroy();
+            loseText.setText('Restarting...');
+    
+            // Restart the scene after a small delay
+            this.time.delayedCall(500, () => {
+                this.isRestarting = false; // Reset the flag
+                this.scene.restart(); // Restart the scene
+            });
+        });
     }
 }
