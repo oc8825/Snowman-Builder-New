@@ -28,7 +28,6 @@ export default class LevelTwo extends Phaser.Scene {
         this.load.image('nextLevelButton', '/src/assets/images/nextLevelButton.png');
         this.load.image('startButton', '/src/assets/images/startButton.png');
 
-
         this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
 
         this.load.image('football', '/src/assets/images/football.png')
@@ -502,6 +501,8 @@ export default class LevelTwo extends Phaser.Scene {
         if (this.score >= this.snowballTarget && !this.levelCompleted) {
             this.levelCompleted = true;
             this.showLevelUpScene();
+        } else if (this.score < 0){
+            this.showLoseScreen();
         }
 
     }
@@ -531,4 +532,22 @@ export default class LevelTwo extends Phaser.Scene {
         this.scene.start('LevelThree'); 
     }
 
+    showLoseScreen() {
+        this.scene.pause();
+    
+        const overlay = this.add.graphics();
+        overlay.fillStyle(0x000000, 0.7); // Semi-transparent background
+        overlay.fillRect(0, 0, this.scale.width, this.scale.height);
+    
+        const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'You Lose!', {
+            fontSize: '48px',
+            fill: '#fff',
+            align: 'center'
+        });
+        loseText.setOrigin(0.5);
+    
+        // Add a retry button or some other actions to restart or quit the game
+    }
 }
+
+
