@@ -1,6 +1,6 @@
-export default class InstructionScene extends Phaser.Scene {
+export default class Instruction3 extends Phaser.Scene {
     constructor() {
-        super({ key: 'InstructionScene' });
+        super({ key: 'Instruction3' });
     }
 
     preload() {
@@ -24,7 +24,7 @@ export default class InstructionScene extends Phaser.Scene {
 
         
         this.arrow.on('pointerdown', () => {
-            this.scene.start('Instruction2'); 
+            this.scene.start('ObjectiveScene'); 
         });
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'Instructions', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
@@ -36,7 +36,7 @@ export default class InstructionScene extends Phaser.Scene {
         const text = this.add.text(
             this.cameras.main.centerX,
             verticalPosition,
-            'To get started, choose a player and enable tilt controls on mobile devices. For desktop users, use the arrow keys to move the snowball. Hitting obstacles gains points, hitting obstacles loses points.',
+            'In level 2, you will build the middle of the snowman. You will first have 30 seconds collect the correct gear for the player that you built (jersies). In part 2, you will have to get to 7 points. If your point value is less than 7, you lose! ',
             { 
                 fontSize: '25px', 
                 color: '#000',
