@@ -1,6 +1,6 @@
-export default class Instruction3 extends Phaser.Scene {
+export default class InstructionThree extends Phaser.Scene {
     constructor() {
-        super({ key: 'Instruction3' });
+        super({ key: 'InstructionThree' });
     }
 
     preload() {

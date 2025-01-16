@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import StartScene from './StartScene';
 import InstructionScene from './InstructionScene';
 import Instructiontwo from './Instructiontwo';
-import Instruction3 from './Instruction3';
+import InstructionThree from './InstructionThree';
 import ObjectiveScene from './ObjectiveScene';
 import LevelOne from './LevelOne';
 import LevelTwo from './LevelTwo';
@@ -27,7 +27,7 @@ const buildPhaserGame = ({ parent }) => {
             mode: Phaser.Scale.FIT, 
             autoCenter: Phaser.Scale.CENTER_HORIZONTALLY, 
         },
-        scene: [StartScene, InstructionScene, ObjectiveScene, LevelOnePartTwo, LevelOne, LevelTwo, LevelThree, YouWin, GameScene], // add game scenes here
+        scene: [StartScene, InstructionScene, Instructiontwo, InstructionThree, ObjectiveScene, LevelOnePartTwo, LevelOne, LevelTwo, LevelTwoPartTwo, LevelThree, LevelThreePartTwo, YouWin, GameScene], // add game scenes here
         physics: {
             default: 'arcade',
             arcade: {
