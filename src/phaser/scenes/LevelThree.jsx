@@ -1,7 +1,7 @@
 import Phaser, { Game } from 'phaser';
-export default class Level3Scene extends Phaser.Scene {
+export default class LevelThree extends Phaser.Scene {
     constructor() {
-        super('Level3Scene');
+        super('LevelThree');
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
@@ -500,5 +500,13 @@ export default class Level3Scene extends Phaser.Scene {
             }
         });
 
+        if (this.score < 0){
+            this.restartLevel();
+        }
+
+    }
+
+    restartLevel() {
+        this.scene.restart();
     }
 }

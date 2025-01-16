@@ -560,7 +560,6 @@ export default class LevelTwo extends Phaser.Scene {
     */
 
     restartLevel() {
-        // Optionally reset variables or clean up if needed
         this.scene.restart();
     }
 }
