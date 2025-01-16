@@ -18,15 +18,25 @@ export default class InstructionScene extends Phaser.Scene {
 
         background.setScale(Math.max(this.scale.width / background.width, this.scale.height / background.height));
 
-        this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'Tap the arrow to start!', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 + 50, 'Tap the arrow to start!', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
 
-        this.arrow = this.add.image(this.scale.width / 2, this.scale.height / 2 + 50, 'arrow').setInteractive();
+        this.arrow = this.add.image(this.scale.width / 2, this.scale.height / 2 + 200, 'arrow').setInteractive();
         this.arrow.setScale(0.5);
 
         // When the arrow is clicked/tapped, start the game
         this.arrow.on('pointerdown', () => {
             this.scene.start('ObjectiveScene'); // Transition to the game scene
         });
+
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 300, 'Instructions', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'To get started chose a player and enable tilt contorls on mobile devices.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 200, 'To move the snowball, tilt your device in the direction you want to move.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 150, 'Hitting snowballs gains points, hitting obsticles loses points.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'To build the body, get 10 points in part one, and then find your players shoes and pants.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 50, 'To build the middle part of the snowman, get 7 points in part one, and then find your players shirt.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2, 'To build the head of the snowman, get 5 points in part one, and then find your players head-gear.', { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+
+       
     }
     hideInventory() {
         const inventoryBox = document.getElementById('inventory-box');
