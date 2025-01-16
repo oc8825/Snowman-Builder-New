@@ -14,6 +14,7 @@ export default class LevelTwo extends Phaser.Scene {
         this.level = 1;
         this.overlay = null;
         this.nextLevelButton = null;
+        this.restartLevelButton = null;
 
         this.spawnObstacleEvent = null;
         this.spawnSnowAdderEvent = null;
@@ -26,6 +27,7 @@ export default class LevelTwo extends Phaser.Scene {
         this.load.image('ground', '/src/assets/images/newbackg.png');
         this.load.image('snowball', '/src/assets/images/snowball.png');
         this.load.image('nextLevelButton', '/src/assets/images/nextLevelButton.png');
+        this.load.image('restartLevelButton', '/src/assets/images/restartLevelButton.png');
         this.load.image('startButton', '/src/assets/images/startButton.png');
 
         this.load.image('snowAdderImage', '/src/assets/images/snowballCollect.png');
@@ -502,7 +504,7 @@ export default class LevelTwo extends Phaser.Scene {
             this.levelCompleted = true;
             this.showLevelUpScene();
         } else if (this.score < 0){
-            this.showLoseScreen();
+            this.restartLevel();
         }
 
     }
@@ -532,6 +534,7 @@ export default class LevelTwo extends Phaser.Scene {
         this.scene.start('LevelThree'); 
     }
 
+    /*
     showLoseScreen() {
         this.scene.pause();
     
@@ -547,6 +550,18 @@ export default class LevelTwo extends Phaser.Scene {
         loseText.setOrigin(0.5);
     
         // Add a retry button or some other actions to restart or quit the game
+        this.restartLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'restartLevelButton')
+        .setInteractive()
+        .on('pointerdown', () => {
+            console.log('restart level button pressed');
+            this.restartLevel();
+        });
+    }
+    */
+
+    restartLevel() {
+        // Optionally reset variables or clean up if needed
+        this.scene.restart();
     }
 }
 
