@@ -63,7 +63,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.load.image('doncicShoeCollect', '/src/assets/images/doncicShoeCollect.png')
         this.load.image('messiCleatsCollect', '/src/assets/images/messiCleatsCollect.png')
         this.load.image('morganCleatsCollect', '/src/assets/images/usaCleatsCollect.png')
-        this.load.image('rodmanCleatsCollect', '/src/assets/images/usaCleatsCollect.png')
+        this.load.image('rodmanCleatsCollect', '/src/assets/images/rodmanCleatsCollect.png')
         this.load.image('ohtaniCleatsCollect', '/src/assets/images/ohtaniCleatsCollect.png')
         this.load.image('zimmermanCleatsCollect', '/src/assets/images/zimmermanCleatsCollect.png')
 
@@ -73,7 +73,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.load.image('doncicshoe', '/src/assets/images/doncicshoe.png');
         this.load.image('messicleat', '/src/assets/images/messicleat.png');
         this.load.image('morgancleat', '/src/assets/images/usacleat.png');
-        this.load.image('rodmancleat', '/src/assets/images/usacleat.png');
+        this.load.image('rodmancleat', '/src/assets/images/rodmancleat.png');
         this.load.image('ohtanicleat', '/src/assets/images/ohtanicleat.png');
         this.load.image('zimmermancleat', '/src/assets/images/zimmermancleat.png');
 
@@ -428,7 +428,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         } else if (shoeKey === 'morganCleatsCollect') {
             this.slot3.style.backgroundImage = `url(/src/assets/images/usacleat.png)`;
         } else if (shoeKey === 'rodmanCleatsCollect') {
-            this.slot3.style.backgroundImage = `url(/src/assets/images/usacleat.png)`;
+            this.slot3.style.backgroundImage = `url(/src/assets/images/rodmancleat.png)`;
         } else if (shoeKey === 'ohtaniCleatsCollect') {
             this.slot3.style.backgroundImage = `url(/src/assets/images/ohtanicleat.png)`;
         } else if (shoeKey === 'zimmermanCleatsCollect') {

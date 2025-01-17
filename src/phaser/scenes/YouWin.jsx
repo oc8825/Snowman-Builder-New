@@ -51,11 +51,11 @@ export default class YouWin extends Phaser.Scene {
         }
 
         this.restartGameButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, 'restartGameButton').setInteractive();
-        this.restartGameButton.setScale(0.5);
+        this.restartGameButton.setScale(0.75);
 
         
         this.restartGameButton.on('pointerdown', () => {
-            this.scene.start('StartScene'); 
+            this.scene.start('ObjectiveScene'); 
         });
     }
 

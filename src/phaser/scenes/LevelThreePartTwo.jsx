@@ -50,7 +50,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         this.load.image('doncicHeadbandCollect', '/src/assets/images/doncicHeadbandCollect.png')
         this.load.image('messiCuffCollect', '/src/assets/images/messiCuffCollect.png')
         this.load.image('morganCuffCollect', '/src/assets/images/usaCuffCollect.png')
-        this.load.image('rodmanCuffCollect', '/src/assets/images/usaCuffCollect.png')
+        this.load.image('rodmanCuffCollect', '/src/assets/images/rodmanCuffCollect.png')
         this.load.image('ohtaniHelmetCollect', '/src/assets/images/ohtaniHelmetCollect.png')
         this.load.image('zimmermanHelmetCollect', '/src/assets/images/zimmermanHelmetCollect.png')
 
@@ -60,7 +60,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         this.load.image('doncicheadband', '/src/assets/images/doncicheadband.png');
         this.load.image('messicuff', '/src/assets/images/messicuff.png');
         this.load.image('morgancuff', '/src/assets/images/usacuff.png');
-        this.load.image('rodmancuff', '/src/assets/images/usacuff.png');
+        this.load.image('rodmancuff', '/src/assets/images/rodmancuff.png');
         this.load.image('ohtanihelmet', '/src/assets/images/ohtanihelmet.png');
         this.load.image('zimmermanhelmet', '/src/assets/images/zimmermanhelmet.png');
 
@@ -344,7 +344,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         } else if (thingKey === 'morganCuffCollect') {
             this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
         } else if (thingKey === 'rodmanCuffCollect') {
-            this.slot2.style.backgroundImage = `url(/src/assets/images/usacuff.png)`;
+            this.slot2.style.backgroundImage = `url(/src/assets/images/rodmancuff.png)`;
         } else if (thingKey === 'ohtaniHelmetCollect') {
             this.slot2.style.backgroundImage = `url(/src/assets/images/ohtanihelmet.png)`;
         } else if (thingKey === 'zimmermanHelmetCollect') {
