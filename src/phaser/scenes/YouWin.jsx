@@ -28,19 +28,19 @@ export default class YouWin extends Phaser.Scene {
         const playerIndex = localStorage.getItem('selectedPlayerIndex');
 
         const players = [
-            { name: 'Messi', snowmanKey: 'messiSnowman' },
-            { name: 'Morgan', snowmanKey: 'morganSnowman' },
-            { name: 'Rodman', snowmanKey: 'rodmanSnowman' },
-            { name: 'McLaurin', snowmanKey: 'mclaurinSnowman' },
-            { name: 'Curry', snowmanKey: 'currySnowman' },
-            { name: 'Doncic', snowmanKey: 'doncicSnowman' },
-            { name: 'Ohtani', snowmanKey: 'ohtaniSnowman' },
-            { name: 'Zimmerman', snowmanKey: 'zimmermanSnowman' },
-            { name: 'Beckham', snowmanKey: 'beckhamSnowman' }
+            { name: 'Lionel Messi', snowmanKey: 'messiSnowman' },
+            { name: 'Alex Morgan', snowmanKey: 'morganSnowman' },
+            { name: 'Trinity Rodman', snowmanKey: 'rodmanSnowman' },
+            { name: 'Terry McLaurin', snowmanKey: 'mclaurinSnowman' },
+            { name: 'Stephen Curry', snowmanKey: 'currySnowman' },
+            { name: 'Luca Doncic', snowmanKey: 'doncicSnowman' },
+            { name: 'Shoehei Ohtani', snowmanKey: 'ohtaniSnowman' },
+            { name: 'Ralph Zimmerman', snowmanKey: 'zimmermanSnowman' },
+            { name: 'Odell Beckham Jr', snowmanKey: 'beckhamSnowman' }
         ];
 
         const playerName = players[playerIndex]?.name || 'Unknown Player';
-        this.add.text(this.scale.width / 2, this.scale.height / 2, `You selected: ${playerName}`, { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2, `You built: ${playerName}`, { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
 
         const snowmanKey = players[playerIndex]?.snowmanKey;
         if (snowmanKey) {
