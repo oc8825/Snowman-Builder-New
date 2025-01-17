@@ -37,7 +37,8 @@ export default class Instructiontwo extends Phaser.Scene {
             'In level 1, you will build the bottom of the snowman',
             'You will first have to avoid obsacles and collect snowballs to reach 10 points',
             'If your point value is less than 0, you lose!',
-            'You will then have to collect the correct gear for the player that you built (shoes and pants)'
+            'You will then have to collect the correct gear for the player that you built (shoes and pants)',
+            'Your last item in the inventory needs to be the correct gear for the player that you are building'
         ];
 
         const formattedText = bulletPoints.map(point => `• ${point}`).join('\n');
