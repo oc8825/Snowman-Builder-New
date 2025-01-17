@@ -21,6 +21,14 @@ export default class StartScene extends Phaser.Scene {
 
         this.add.image(200, this.scale.height / 2, 'WITSnowman');
 
+        // add a title
+        const titleText = this.add.text(this.scale.width / 2, this.scale.height * 0.1, 'Arctic All-Stars', {
+            font: '64px Arial',  // Font size and font type
+            fill: '#ffffff',    // Text color (white)
+            align: 'center',    // Align the text to the center
+            fontStyle: 'bold'    // Optional: make the text bold
+        }).setOrigin(0.5);  // Center the text horizontally
+
         this.startButton = this.add.image(this.scale.width / 2, this.scale.height * 0.75, 'startButton').setInteractive();
         this.startButton.setScale(0.5);
 
