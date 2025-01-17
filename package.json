@@ -2,6 +2,7 @@
   "name": "snowmanbuilder",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://oc8825.github.io/Snowman-Builder-New/",
   "type": "module",
   "scripts": {
     "dev": "vite",
