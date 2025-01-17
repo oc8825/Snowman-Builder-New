@@ -102,6 +102,60 @@ export default class LevelTwo extends Phaser.Scene {
             }
         });
 
+        const isTiltSupported =
+            typeof DeviceMotionEvent !== 'undefined' &&
+            (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone'));
+
+        if (isTiltSupported) {
+            this.scene.pause();
+            // Tilt Control button
+            const enableTiltButton = document.createElement('button');
+            enableTiltButton.innerText = 'Enable Tilt Controls';
+            enableTiltButton.style.position = 'absolute';
+            enableTiltButton.style.top = '50%';
+            enableTiltButton.style.left = '50%';
+            enableTiltButton.style.transform = 'translate(-50%, -50%)';
+            enableTiltButton.style.fontSize = '20px';
+            enableTiltButton.style.padding = '10px 20px';
+            enableTiltButton.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            enableTiltButton.style.color = '#fff';
+            enableTiltButton.style.border = 'none';
+            enableTiltButton.style.cursor = 'pointer';
+            document.body.appendChild(enableTiltButton);
+
+            // create cooldown for lane changes so cna only change one lane per tilt
+            this.laneChangeCooldown = false;
+
+            enableTiltButton.addEventListener('click', () => {
+                if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                    // request permission for accelerometer access on iOS
+                    DeviceMotionEvent.requestPermission()
+                        .then(response => {
+                            if (response === 'granted') {
+                                console.log('Permission granted for tilt controls!');
+                                window.addEventListener('devicemotion', this.handleMotion.bind(this));
+                                document.body.removeChild(enableTiltButton);
+                                this.scene.resume(); // remove button
+                            } else {
+                                console.error('Permission denied for tilt controls.');
+                                alert('Permission denied. Tilt controls are unavailable.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error requesting permission:', error);
+                            alert('Unable to enable tilt controls. ' + error);
+                        });
+                } else {
+                    // non-iOS devices 
+                    console.log('Tilt controls enabled (no permission required).');
+                    window.addEventListener('devicemotion', this.handleMotion.bind(this));
+                    document.body.removeChild(enableTiltButton);
+                }
+            });
+        } else {
+            console.log('Tilt controls are not supported on this device.');
+        }
+
 
         // create snowball poof animation
         this.anims.create({
