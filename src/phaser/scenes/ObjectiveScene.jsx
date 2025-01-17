@@ -13,6 +13,7 @@ export default class ObjectiveScene extends Phaser.Scene {
             { name: 'Beckham', components: ['beckham', 'beckhamcleat', 'beckhamhelmet', 'beckhampants'] }
         ];
         this.playerIndex = -1;
+        this.highlight = null;
         this.componentImages = {
             'messi': '/src/assets/images/messi.png',
             'morgan': '/src/assets/images/morgan.png',
@@ -57,7 +58,6 @@ export default class ObjectiveScene extends Phaser.Scene {
     }
 
     preload() {
-
 
         this.load.image('mclaurincleat', '/src/assets/images/mclaurincleat.png');
         this.load.image('beckhamcleat', '/src/assets/images/beckhamcleat.png');
@@ -112,17 +112,6 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#ffffff');
 
         this.add.text(this.scale.width / 2, 100, 'Select Your Player', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
-
-        this.players.forEach((player, index) => {
-            const playerButton = this.add.image(this.scale.width / 2, 150 + index * 100, player.name.toLowerCase())
-                .setInteractive()
-                .setOrigin(0.5);
-            playerButton.setScale(0.3); 
-
-            playerButton.on('pointerdown', () => {
-                this.selectPlayer(index);
-            });
-        });
 
         this.nextPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 150, 'nextPlayerButton')
             .setOrigin(0.5)
@@ -224,7 +213,9 @@ export default class ObjectiveScene extends Phaser.Scene {
             const position = componentPositions[index];
             this.add.image(position.x, position.y, component).setScale(0.2);
         });
+
     }
+    
 
     cyclePlayer() {
         this.children.list.forEach(child => {
@@ -240,8 +231,4 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.displayComponents();
     }
 
-    selectPlayer(index) {
-        this.playerIndex = index;
-        this.displayComponents();
-    }
 }
