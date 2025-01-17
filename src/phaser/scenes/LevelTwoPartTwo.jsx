@@ -73,6 +73,7 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
 
     create() {
         this.setInventory();
+        this.showInventory();
 
         const selectedPlayerIndex = localStorage.getItem('selectedPlayerIndex')
         if (selectedPlayerIndex !== null) {
@@ -108,7 +109,7 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
         this.timerText.setDepth(10);
 
-        this.requiredJerseyDisplay = this.add.sprite(this.snowball.x/2, this.snowball.y/2, this.requiredJersey); 
+        this.requiredJerseyDisplay = this.add.sprite(this.scale.width/2, this.scale.width/2 -60, this.requiredItem); 
         this.requiredJerseyDisplay.setScale(0.15);
         
         this.timerEvent = this.time.addEvent({
@@ -252,6 +253,13 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
 
           // create flag so don't restart multiple times in a row
           this.isRestarting = false;
+    }
+
+    showInventory() {
+        const inventoryBox = document.getElementById('inventory-box');
+        if (inventoryBox) {
+            inventoryBox.style.display = 'flex';
+        }
     }
 
     updateTimer(){

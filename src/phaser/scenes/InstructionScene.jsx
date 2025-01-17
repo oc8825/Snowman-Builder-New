@@ -34,11 +34,11 @@ export default class InstructionScene extends Phaser.Scene {
         const verticalPosition = this.cameras.main.centerY - 100;
 
         const bulletPoints = [
-            'To get started, chose a player',
+            'To get started, choose a player',
             'Enable tilt controls on mobile devices',
             'For desktop users, use the arrow keys to move the snowball',
             'Hitting snowballs gains points',
-            'Hitting obstacles loses points'
+            'Hitting obstacles loses points',
         ];
 
         const formattedText = bulletPoints.map(point => `• ${point}`).join('\n');

@@ -72,6 +72,8 @@ export default class LevelThreePartTwo extends Phaser.Scene {
     }
 
     create() {
+        this.showInventory();
+        
 
         const selectedPlayerIndex = localStorage.getItem('selectedPlayerIndex')
         if (selectedPlayerIndex !== null) {
@@ -108,8 +110,8 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
 
-        this.requiredThingDisplay = this.add.sprite(this.snowball.x/2, this.snowball.y/2, this.requiredItem); 
-        this.requiredThingDisplay.setScale(0.25);
+        this.requiredThingDisplay = this.add.sprite(this.scale.width/2, this.scale.width/2 -60, this.requiredItem); 
+        this.requiredThingDisplay.setScale(0.15);
       
         this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
         this.timerText.setDepth(10);
@@ -259,6 +261,13 @@ export default class LevelThreePartTwo extends Phaser.Scene {
     setInventory() {
         this.slot2 = document.getElementById('slot-2');
         this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
+    }
+
+    showInventory() {
+        const inventoryBox = document.getElementById('inventory-box');
+        if (inventoryBox) {
+            inventoryBox.style.display = 'flex';
+        }
     }
 
 

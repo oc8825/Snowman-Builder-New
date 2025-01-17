@@ -2,17 +2,17 @@ export default class ObjectiveScene extends Phaser.Scene {
     constructor() {
         super({ key: 'ObjectiveScene' });
         this.players = [
-            { name: 'Messi', components: ['messi', 'messicleat', 'messicuff', 'messishorts'] },
-            { name: 'Morgan', components: ['morgan', 'morgancleat', 'morgancuff', 'morganshorts'] },
-            { name: 'Rodman', components: ['rodman', 'rodmancleat', 'rodmancuff', 'rodmanshorts'] },
-            { name: 'McLaurin', components: ['mclaurin', 'mclaurincleat', 'mclaurinhelmet', 'mclaurinpants'] },
-            { name: 'Curry', components: ['curry', 'curryshoe', 'curryheadband', 'curryshorts'] },
-            { name: 'Doncic', components: ['doncic', 'doncicshoe', 'doncicheadband', 'doncicshorts'] },
-            { name: 'Ohtani', components: ['ohtani', 'ohtanicleat', 'ohtanihelmet', 'ohtanipants'] },
-            { name: 'Zimmerman', components: ['zimmerman', 'zimmermancleat', 'zimmermanhelmet', 'zimmermanpants'] },
-            { name: 'Beckham', components: ['beckham', 'beckhamcleat', 'beckhamhelmet', 'beckhampants'] }
+            { name: 'Lionel Messi', components: ['messi', 'messicleat', 'messicuff', 'messishorts'] },
+            { name: 'Alex Morgan', components: ['morgan', 'morgancleat', 'morgancuff', 'morganshorts'] },
+            { name: 'Trinit Rodman', components: ['rodman', 'rodmancleat', 'rodmancuff', 'rodmanshorts'] },
+            { name: 'Terry McLaurin', components: ['mclaurin', 'mclaurincleat', 'mclaurinhelmet', 'mclaurinpants'] },
+            { name: 'Stephen Curry', components: ['curry', 'curryshoe', 'curryheadband', 'curryshorts'] },
+            { name: 'Luca Doncic', components: ['doncic', 'doncicshoe', 'doncicheadband', 'doncicshorts'] },
+            { name: 'Shohei Ohtani', components: ['ohtani', 'ohtanicleat', 'ohtanihelmet', 'ohtanipants'] },
+            { name: 'Ralph Zimmerman', components: ['zimmerman', 'zimmermancleat', 'zimmermanhelmet', 'zimmermanpants'] },
+            { name: 'Odell Beckham Jr', components: ['beckham', 'beckhamcleat', 'beckhamhelmet', 'beckhampants'] }
         ];
-        this.playerIndex = -1;
+        this.playerIndex = 0;
         this.highlight = null;
         this.componentImages = {
             'messi': '/src/assets/images/messi.png',

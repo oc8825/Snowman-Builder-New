@@ -504,18 +504,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         }
     }
 
-    update() {
-
-      /*  if (this.requiredShoeDisplay) {
-            this.requiredShoeDisplay.setPosition(this.snowball.x-100, this.snowball.y+110); // Adjust 50 for vertical spacing
-        }
-
-        if (this.requiredPantDisplay) {
-            this.requiredPantDisplay.setPosition(this.snowball.x+100, this.snowball.y+110); // Adjust 50 for vertical spacing
-        }
-            */
-
-        
+    update() {    
 
         // update snowball position if needed
         const speed = 1000; // pixels per second
