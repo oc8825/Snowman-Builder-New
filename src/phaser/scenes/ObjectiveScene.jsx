@@ -4,7 +4,7 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.players = [
             { name: 'Lionel Messi', components: ['messi', 'messicleat', 'messicuff', 'messishorts'] },
             { name: 'Alex Morgan', components: ['morgan', 'morgancleat', 'morgancuff', 'morganshorts'] },
-            { name: 'Trinit Rodman', components: ['rodman', 'rodmancleat', 'rodmancuff', 'rodmanshorts'] },
+            { name: 'Trinity Rodman', components: ['rodman', 'rodmancleat', 'rodmancuff', 'rodmanshorts'] },
             { name: 'Terry McLaurin', components: ['mclaurin', 'mclaurincleat', 'mclaurinhelmet', 'mclaurinpants'] },
             { name: 'Stephen Curry', components: ['curry', 'curryshoe', 'curryheadband', 'curryshorts'] },
             { name: 'Luca Doncic', components: ['doncic', 'doncicshoe', 'doncicheadband', 'doncicshorts'] },
@@ -13,7 +13,7 @@ export default class ObjectiveScene extends Phaser.Scene {
             { name: 'Odell Beckham Jr', components: ['beckham', 'beckhamcleat', 'beckhamhelmet', 'beckhampants'] }
         ];
         this.playerIndex = -1;
-        this.highlight = null;
+        this.highlightSprite = null;
         this.componentImages = {
             'messi': '/src/assets/images/messi.png',
             'morgan': '/src/assets/images/morgan.png',
@@ -58,7 +58,6 @@ export default class ObjectiveScene extends Phaser.Scene {
     }
 
     preload() {
-
         this.load.image('mclaurincleat', '/src/assets/images/mclaurincleat.png');
         this.load.image('beckhamcleat', '/src/assets/images/beckhamcleat.png');
         this.load.image('curryshoe', '/src/assets/images/curryshoe.png');
@@ -103,7 +102,7 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('nextPlayerButton', '/src/assets/images/nextPlayerButton.png');
         this.load.image('startGameButton', '/src/assets/images/startGameButton.png');
         this.load.image('selectPlayerButton', '/src/assets/images/selectPlayerButton.png');
- 
+        this.load.image('highlight', '/src/assets/images/highlight.png')
     }
     
 
@@ -169,12 +168,23 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.selectPlayerButton.on('pointerdown', () => {
             this.selectPlayerButton.setScale(0.55);    // Slightly increase the size for a "pressed" effect
 
+            
             // Schedule to reset the visual feedback after 200ms
             this.time.delayedCall(200, () => {
                 this.selectPlayerButton.setScale(0.5); // Reset the size
             });
 
             if (this.playerIndex >= 0) {
+                // Remove the previous highlight (if any)
+                if (this.highlightSprite) {
+                    this.highlightSprite.destroy();
+                }
+
+                this.highlightSprite = this.add.sprite(this.scale.width / 2, 50, 'highlight');  // Replace with your highlight texture
+                this.highlightSprite.setScale(0.5)
+                this.highlightSprite.setDepth(0);  // Ensure it's behind the text
+                this.highlightSprite.setAlpha(0.65);
+
                 // store  selected player index in localStorage
                 localStorage.setItem('selectedPlayerIndex', this.playerIndex);
             } else {
