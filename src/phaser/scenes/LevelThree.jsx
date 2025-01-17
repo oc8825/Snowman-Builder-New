@@ -8,10 +8,9 @@ export default class LevelThree extends Phaser.Scene {
 
         this.orientation = null;
 
-        this.snowballTarget = 10;
+        this.snowballTarget = 5;
         this.levelCompleted = false;
         this.score = 0;
-        this.level = 1;
         this.overlay = null;
         this.nextLevelButton = null;
 

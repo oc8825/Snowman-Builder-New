@@ -374,7 +374,6 @@ export default class LevelOne extends Phaser.Scene {
         this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
         .setInteractive();
         this.nextLevelButton.on('pointerdown', () => {
-            console.log('Next level clicked!');
             this.scene.start('LevelOnePartTwo');
         });
 
