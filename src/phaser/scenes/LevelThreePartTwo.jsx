@@ -110,7 +110,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
 
-        this.timerText = this.add.text(this.scale.width - 200, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
+        this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
         this.timerText.setDepth(10);
 
         this.timerEvent = this.time.addEvent({
