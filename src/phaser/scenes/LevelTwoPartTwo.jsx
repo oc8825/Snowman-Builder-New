@@ -410,7 +410,7 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
             this.snowball.x = this.targetX; // Snap to target if close enough
         }
 
-        this.ground.tilePositionY -= 1; // move the ground
+        this.ground.tilePositionY -= 2; // move the ground
         this.snowball.rotation += 0.01;
 
         // cleanup for off-screen

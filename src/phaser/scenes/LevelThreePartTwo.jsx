@@ -412,7 +412,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
             this.snowball.x = this.targetX; // Snap to target if close enough
         }
 
-        this.ground.tilePositionY -= 1; // move the ground
+        this.ground.tilePositionY -= 2; // move the ground
         this.snowball.rotation += 0.01;
 
         // cleanup for off-screen
@@ -439,7 +439,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
             this.scene.start('YouWin');
         });
 
-        const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {
+        const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete! You WIN!', {
             fontSize: '48px',
             fill: '#fff',
             align: 'center'

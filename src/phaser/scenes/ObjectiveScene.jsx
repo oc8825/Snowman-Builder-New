@@ -12,7 +12,7 @@ export default class ObjectiveScene extends Phaser.Scene {
             { name: 'Ralph Zimmerman', components: ['zimmerman', 'zimmermancleat', 'zimmermanhelmet', 'zimmermanpants'] },
             { name: 'Odell Beckham Jr', components: ['beckham', 'beckhamcleat', 'beckhamhelmet', 'beckhampants'] }
         ];
-        this.playerIndex = 0;
+        this.playerIndex = -1;
         this.highlight = null;
         this.componentImages = {
             'messi': '/src/assets/images/messi.png',
@@ -211,7 +211,7 @@ export default class ObjectiveScene extends Phaser.Scene {
 
         components.forEach((component, index) => {
             const position = componentPositions[index];
-            this.add.image(position.x, position.y, component).setScale(0.2);
+            this.add.image(position.x, position.y, component).setScale(0.3);
         });
 
     }

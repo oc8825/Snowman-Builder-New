@@ -22,7 +22,7 @@ export default class YouWin extends Phaser.Scene {
         background.setDisplaySize(this.scale.width, this.scale.height);  
         background.setScale(Math.max(this.scale.width / background.width, this.scale.height / background.height));
 
-        this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'You Win!', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'You Win!', { fontSize: '48px', fontWeight: '1500', fill: '#fff' }).setOrigin(0.5);
 
         // retrieve from localStorage
         const playerIndex = localStorage.getItem('selectedPlayerIndex');

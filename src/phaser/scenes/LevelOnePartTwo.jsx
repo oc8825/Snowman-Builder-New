@@ -24,7 +24,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.isRestarting = false;
 
         this.playerPants = {
-            0: ['messiShortCollect'],     // Messi
+            0: ['messiShortsCollect'],     // Messi
             1: ['morganShortsCollect'],    // Morgan
             2: ['rodmanShortsCollect'],          // Rodman
             3: ['mclaurinPantsCollect'],            // McLaurin
@@ -83,6 +83,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.load.image('curryShortsCollect', '/src/assets/images/curryShortsCollect.png')
         this.load.image('doncicShortsCollect', '/src/assets/images/doncicShortsCollect.png')
         this.load.image('messiShortsCollect', '/src/assets/images/messiShortsCollect.png')
+        this.load.image('messiShortsCollect', '/src/assets/images/messiShortsCollect.png')
         this.load.image('morganShortsCollect', '/src/assets/images/morganShortsCollect.png')
         this.load.image('rodmanShortsCollect', '/src/assets/images/rodmanShortsCollect.png')
         this.load.image('ohtaniPantsCollect', '/src/assets/images/ohtaniPantsCollect.png')
@@ -92,6 +93,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.load.image('beckhampants', '/src/assets/images/beckhampants.png');
         this.load.image('curryshorts', '/src/assets/images/curryshorts.png');
         this.load.image('doncicshorts', '/src/assets/images/doncicshorts.png');
+        this.load.image('messishorts', '/src/assets/images/messishorts.png');
         this.load.image('messishorts', '/src/assets/images/messishorts.png');
         this.load.image('morganshorts', '/src/assets/images/morganshorts.png');
         this.load.image('rodmanshorts', '/src/assets/images/rodmanshorts.png');
@@ -524,7 +526,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
             this.snowball.x = this.targetX; // snap to target 
         }
 
-        this.ground.tilePositionY -= 1; // move the ground
+        this.ground.tilePositionY -= 2; // move the ground
         this.snowball.rotation += 0.01;
 
         // cleanup for off-screen
