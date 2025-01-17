@@ -17,14 +17,14 @@ export default class Instructiontwo extends Phaser.Scene {
 
         background.setScale(Math.max(this.scale.width / background.width, this.scale.height / background.height));
 
-        this.add.text(this.scale.width / 2, this.scale.height / 2 + 50, 'Tap the arrow to go to the next instrcutions!', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
+        this.add.text(this.scale.width / 2, this.scale.height / 2 + 50, 'Tap the arrow to start level one!', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
 
         this.arrow = this.add.image(this.scale.width / 2, this.scale.height / 2 + 200, 'arrow').setInteractive();
         this.arrow.setScale(0.5);
 
         
         this.arrow.on('pointerdown', () => {
-            this.scene.start('InstructionThree'); 
+            this.scene.start('LevelOne'); 
         });
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'Instructions', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);

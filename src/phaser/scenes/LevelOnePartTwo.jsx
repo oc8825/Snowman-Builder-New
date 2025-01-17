@@ -549,7 +549,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
             .setInteractive();
         this.nextLevelButton.on('pointerdown', () => {
-            this.scene.start('LevelTwo');
+            this.scene.start('InstructionThree');
         });
 
         const levelUpText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Complete!', {

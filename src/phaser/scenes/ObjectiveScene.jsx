@@ -154,7 +154,7 @@ export default class ObjectiveScene extends Phaser.Scene {
             });
             
             if (this.playerIndex >= 0) {
-                this.scene.start('LevelOne');
+                this.scene.start('Instructiontwo');
             } else {
                 alert('Please select a player first!');
             }
