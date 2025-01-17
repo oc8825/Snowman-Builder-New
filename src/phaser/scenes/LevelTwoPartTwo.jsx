@@ -108,7 +108,7 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
         this.timerText.setDepth(10);
 
-        this.requiredJerseyDisplay = this.add.sprite(this.snowball.x-100, this.snowball.y+110, this.requiredJersey); 
+        this.requiredJerseyDisplay = this.add.sprite(this.snowball.x/2, this.snowball.y/2, this.requiredJersey); 
         this.requiredJerseyDisplay.setScale(0.15);
         
         this.timerEvent = this.time.addEvent({
