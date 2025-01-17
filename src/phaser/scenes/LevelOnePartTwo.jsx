@@ -563,8 +563,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
 
     checkIfPlayerLost() {
         // define required items (example: shoes and pants)
-        const lastCollectedPant = this.collectedPants[0];
-        const lastCollectedShoe = this.collectedShoes[0];
+        const lastCollectedPant = this.collectedPants[this.collectedPants.length-1];
+        const lastCollectedShoe = this.collectedShoes[this.collectedShoes.length-1];
 
         if (lastCollectedPant !== this.requiredPant || lastCollectedShoe !== this.requiredShoe) {
             this.restartLevel();
