@@ -21,9 +21,18 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         this.timerEvent = null;
         this.timeLeft = 30;
 
-        this.isRestarting = false;
+        this.playerItems = {
+            0: ['messiJerseyCollect'],     // Messi
+            1: ['morganJerseyCollect'],    // Morgan
+            2: ['rodmanJerseyCollect'],          // Rodman
+            3: ['mclaurinJerseyCollect'],            // McLaurin
+            4: ['curryJerseyCollect'],  // Curry
+            5: ['doncicJerseyCollect'],    // Doncic
+            6: ['ohtaniJerseyCollect'],          // Ohtani
+            7: ['zimmermanJerseyCollect'],    // Zimmerman
+            8: ['beckhamJerseyCollect'],    // Beckham
+        };
 
-        this.playerLost = false;
     }
 
     preload() {
@@ -64,6 +73,15 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
 
     create() {
         this.setInventory();
+
+        const selectedPlayerIndex = localStorage.getItem('selectedPlayerIndex')
+        if (selectedPlayerIndex !== null) {
+            this.selectedPlayerIndex = parseInt(selectedPlayerIndex, 10);
+        } else {
+            this.selectedPlayerIndex = 0; // default to player 0 (Messi)
+        }
+
+        this.requiredItem = this.playerItems[this.selectedPlayerIndex][0];
 
         this.ground = this.add.tileSprite(
             this.scale.width / 2,
@@ -288,12 +306,20 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         const collectibleJerseyType = ['mclaurinJerseyCollect', 'beckhamJerseyCollect',
             'curryJerseyCollect', 'doncicJerseyCollect',
             'ohtaniJerseyCollect', 'zimmermanJerseyCollect',
-            'morganJerseyCollect', 'rodmanJerseyCollect', 'messiJerseyCollect']
-        const JerseyType = Phaser.Math.RND.pick(collectibleJerseyType);
+            'morganJerseyCollect', 'rodmanJerseyCollect', 'messiJerseyCollect'];
 
-        const collectible = this.collectibles.create(randomX, 0, JerseyType);
+            let chosenJersey;
+            const spawnRequiredItemChance = 3; // Set the frequency, higher value = more rare spawn
+            if (Phaser.Math.RND.integerInRange(1, spawnRequiredItemChance) === 1) {
+                chosenJersey = this.requiredItem;  // Set the required item to spawn
+            } else {
+                chosenJersey = Phaser.Math.RND.pick(collectibleJerseyType);  // Pick a random item from the available items
+            }
+
+
+        const collectible = this.collectibles.create(randomX, 0, chosenJersey);
         collectible.setScale(.35);
-        collectible.setVelocityY(50);
+        collectible.setVelocityY(125);
     }
 
     setInventory(){
@@ -358,21 +384,15 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
 
     checkIfPlayerLost() { 
         // define required items (example: shoes and pants)
-        const requiredJerseys = ['mclaurinJerseyCollect', 'beckhamJerseyCollect', 'curryJerseyCollect'];
         const lastCollectedJersey = this.collectedJerseys[this.collectedJerseys.length - 1];
 
-        let playerLost = false;
-
-        if (!requiredJerseys.includes(lastCollectedJersey)) {
-            playerLost = true;  // player loses if the last item does not match
-        }
-    
-        if (playerLost) {
-            this.restartLevel(); 
-        } else {
+        if(lastCollectedJersey !== this.requiredItem){
+            this.restartLevel();
+        } else if(lastCollectedJersey == this.requiredItem) {
             this.levelCompleted = true;
             this.showLevelUpScene();
         }
+    
     }
 
     restartLevel() {
@@ -427,7 +447,6 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
                 this.isRestarting = false; // Reset the flag
                 this.scene.restart(); // Restart the scene
                 this.timeLeft = 30;
-                playerLost = false;
             });
         });
     }
