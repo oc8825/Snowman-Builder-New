@@ -150,7 +150,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
 
 
         // display time
-        this.timerText = this.add.text(this.scale.width - 200, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
+        this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
         this.timerText.setDepth(10);
 
         this.timerEvent = this.time.addEvent({
