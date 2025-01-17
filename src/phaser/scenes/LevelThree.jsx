@@ -289,18 +289,18 @@ export default class LevelThree extends Phaser.Scene {
 
         if (randomObstacleType === 'baseballbat') {
             obstacle.setScale(0.15);
-            obstacle.setVelocityY(225);
+            obstacle.setVelocityY(275);
             obstacle.rotationSpeed = 0.02;
         } else if (randomObstacleType === 'basketball') {
             obstacle.rotationSpeed = 0.01;
             obstacle.setScale(0.15);
-            obstacle.setVelocityY(350);
+            obstacle.setVelocityY(375);
         } else if (randomObstacleType === 'net') {
             obstacle.setScale(0.3);
-            obstacle.setVelocityY(450);
+            obstacle.setVelocityY(500);
         } else if (randomObstacleType === 'football') {
             obstacle.setScale(0.1);
-            obstacle.setVelocityY(400);
+            obstacle.setVelocityY(450);
             obstacle.rotationSpeed = 0.02;
         }
     }
