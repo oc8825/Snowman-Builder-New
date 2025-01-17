@@ -8,7 +8,7 @@ export default class LevelOne extends Phaser.Scene {
 
         this.orientation = null;
 
-        this.snowballTarget = 3;
+        this.snowballTarget = 10;
         this.levelCompleted = false;
         this.score = 0;
         this.level = 1;
@@ -69,7 +69,7 @@ export default class LevelOne extends Phaser.Scene {
         this.snowAdders = this.physics.add.group();
       
         this.spawnObstacleEvent = this.time.addEvent({ delay: 2000, callback: this.spawnObstacle, callbackScope: this, loop: true });
-        this.spawnSnowAdderEvent = this.time.addEvent({ delay: 3000, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
+        this.spawnSnowAdderEvent = this.time.addEvent({ delay: 1500, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
     
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
@@ -253,7 +253,7 @@ export default class LevelOne extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
 
-        this.score += 3;
+        this.score += 1;
         this.scoreText.setText('Score: ' + this.score);
 
         // glow effect
@@ -287,7 +287,7 @@ export default class LevelOne extends Phaser.Scene {
 
         if (randomObstacleType === 'baseballbat') {
             obstacle.setScale(0.15);
-            obstacle.setVelocityY(100);
+            obstacle.setVelocityY(115);
             obstacle.rotationSpeed = 0.02;
         } else if (randomObstacleType === 'basketball') {
             obstacle.rotationSpeed = 0.01;
@@ -312,7 +312,7 @@ export default class LevelOne extends Phaser.Scene {
 
         const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage'); // spawn at top
         snowAdder.setScale(0.1); // scale the snowAdder down
-        snowAdder.setVelocityY(100); // make the obstacle move downward
+        snowAdder.setVelocityY(150); // make the obstacle move downward
     }
 
     

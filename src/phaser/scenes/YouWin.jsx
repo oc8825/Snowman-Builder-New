@@ -4,8 +4,8 @@ export default class YouWin extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('instructionBackground', '/src/assets/images/instructionBackground.jpg');
-        this.load.image('arrow', '/src/assets/images/arrow.png');
+        this.load.image('winBackground', '/src/assets/images/winBackground.jpg');
+        this.load.image('restartGameButton', '/src/assets/images/restartGameButton.png');
         this.load.image('mclaurinSnowman', '/src/assets/images/mclaurinSnowman.png');
         this.load.image('beckhamSnowman', '/src/assets/images/beckhamSnowman.png');
         this.load.image('currySnowman', '/src/assets/images/currySnowman.png');
@@ -19,7 +19,7 @@ export default class YouWin extends Phaser.Scene {
 
     create() {
 
-        let background = this.add.image(0, 0, 'instructionBackground').setOrigin(0, 0);
+        let background = this.add.image(0, 0, 'winBackground').setOrigin(0, 0);
         background.setDisplaySize(this.scale.width, this.scale.height);  
         background.setScale(Math.max(this.scale.width / background.width, this.scale.height / background.height));
 
@@ -50,12 +50,12 @@ export default class YouWin extends Phaser.Scene {
             console.log('No snowman image for selected player');
         }
 
-        this.arrow = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, 'arrow').setInteractive();
-        this.arrow.setScale(0.25);
+        this.restartGameButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, 'restartGameButton').setInteractive();
+        this.restartGameButton.setScale(0.5);
 
         
-        this.arrow.on('pointerdown', () => {
-            this.scene.start('LevelOne'); 
+        this.restartGameButton.on('pointerdown', () => {
+            this.scene.start('StartScene'); 
         });
     }
 

@@ -1,6 +1,6 @@
 export default class LevelThreePartTwo extends Phaser.Scene {
     constructor() {
-        super({ key: 'LevelThreePartTwo'});
+        super({ key: 'LevelThreePartTwo' });
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
@@ -21,7 +21,19 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         this.timeLeft = 30;
 
         this.isRestarting = false;
-    
+
+        this.playerItems = {
+            0: ['messiCuffCollect'],     // Messi
+            1: ['morganCuffCollect'],    // Morgan
+            2: ['rodmanCuffCollect'],          // Rodman
+            3: ['mclaurinHelmetCollect'],            // McLaurin
+            4: ['curryHeadbandCollect'],  // Curry
+            5: ['doncicHeadbandCollect'],    // Doncic
+            6: ['ohtaniHelmetCollect'],          // Ohtani
+            7: ['zimmermanHelmetCollect'],    // Zimmerman
+            8: ['beckhamHelmetCollect'],    // Beckham
+        };
+
     }
 
     preload() {
@@ -60,6 +72,16 @@ export default class LevelThreePartTwo extends Phaser.Scene {
     }
 
     create() {
+
+        const selectedPlayerIndex = localStorage.getItem('selectedPlayerIndex')
+        if (selectedPlayerIndex !== null) {
+            this.selectedPlayerIndex = parseInt(selectedPlayerIndex, 10);
+        } else {
+            this.selectedPlayerIndex = 0; // default to player 0 (Messi)
+        }
+
+        this.requiredItem = this.playerItems[this.selectedPlayerIndex][0];
+
         this.setInventory();
 
         // background
@@ -83,7 +105,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
 
         this.things = this.physics.add.group();
 
-        this.spawnThingEvent = this.time.addEvent({ delay: 4500, callback: this.spawnThing, callbackScope: this, loop: true });
+        this.spawnThingEvent = this.time.addEvent({ delay: 2000, callback: this.spawnThing, callbackScope: this, loop: true });
 
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
@@ -92,12 +114,12 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         this.timerText.setDepth(10);
 
         this.timerEvent = this.time.addEvent({
-            delay: 1000, 
+            delay: 1000,
             callback: this.updateTimer,
             callbackScope: this,
             loop: true
         });
-       
+
         // set up controls for lane switching
         this.targetX = this.lanes[this.currentLaneIndex]; // Target x position for the snowball
 
@@ -121,79 +143,79 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         this.anims.create({
             key: 'confetti',
             frames: [
-              { key: 'confetti0' },
-              { key: 'confetti1' },
-              { key: 'confetti2' },
-              { key: 'confetti3' },
-              { key: 'confetti4' },
-              { key: 'confetti5' },
-              { key: 'confetti6' },
-              { key: 'confetti7' },
-              { key: 'confetti8' },
-              { key: 'confetti9' },
-              { key: 'confetti10' },
-              { key: 'confetti11' },
-              { key: 'confetti12' },
-              { key: 'confetti13' },
-              { key: 'confetti14' },
-              { key: 'confetti15' },
-              { key: 'confetti16' },
-              { key: 'confetti17' },
-              { key: 'confetti18' },
-              { key: 'confetti19' },
-              { key: 'confetti20' },
-              { key: 'confetti21' },
-              { key: 'confetti22' },
-              { key: 'confetti23' },
-              { key: 'confetti24' },
-              { key: 'confetti25' },
-              { key: 'confetti26' },
-              { key: 'confetti27' },
-              { key: 'confetti28' },
-              { key: 'confetti29' },
-              { key: 'confetti30' },
-              { key: 'confetti31' },
-              { key: 'confetti32' },
-              { key: 'confetti33' },
-              { key: 'confetti34' },
-              { key: 'confetti35' },
-              { key: 'confetti36' },
-              { key: 'confetti37' },
-              { key: 'confetti38' },
-              { key: 'confetti39' },
-              { key: 'confetti40' },
-              { key: 'confetti41' },
-              { key: 'confetti42' },
-              { key: 'confetti43' },
-              { key: 'confetti44' },
-              { key: 'confetti45' },
-              { key: 'confetti46' },
-              { key: 'confetti47' },
-              { key: 'confetti48' },
-              { key: 'confetti49' },
+                { key: 'confetti0' },
+                { key: 'confetti1' },
+                { key: 'confetti2' },
+                { key: 'confetti3' },
+                { key: 'confetti4' },
+                { key: 'confetti5' },
+                { key: 'confetti6' },
+                { key: 'confetti7' },
+                { key: 'confetti8' },
+                { key: 'confetti9' },
+                { key: 'confetti10' },
+                { key: 'confetti11' },
+                { key: 'confetti12' },
+                { key: 'confetti13' },
+                { key: 'confetti14' },
+                { key: 'confetti15' },
+                { key: 'confetti16' },
+                { key: 'confetti17' },
+                { key: 'confetti18' },
+                { key: 'confetti19' },
+                { key: 'confetti20' },
+                { key: 'confetti21' },
+                { key: 'confetti22' },
+                { key: 'confetti23' },
+                { key: 'confetti24' },
+                { key: 'confetti25' },
+                { key: 'confetti26' },
+                { key: 'confetti27' },
+                { key: 'confetti28' },
+                { key: 'confetti29' },
+                { key: 'confetti30' },
+                { key: 'confetti31' },
+                { key: 'confetti32' },
+                { key: 'confetti33' },
+                { key: 'confetti34' },
+                { key: 'confetti35' },
+                { key: 'confetti36' },
+                { key: 'confetti37' },
+                { key: 'confetti38' },
+                { key: 'confetti39' },
+                { key: 'confetti40' },
+                { key: 'confetti41' },
+                { key: 'confetti42' },
+                { key: 'confetti43' },
+                { key: 'confetti44' },
+                { key: 'confetti45' },
+                { key: 'confetti46' },
+                { key: 'confetti47' },
+                { key: 'confetti48' },
+                { key: 'confetti49' },
             ],
             frameRate: 40,
             hideOnComplete: true, // Automatically hide the sprite after the animation completes
-          });
-          this.isRestarting = false;
+        });
+        this.isRestarting = false;
 
     }
 
-    setInventory(){
-        this.slot2 = document.getElementById('slot-1');
+    setInventory() {
+        this.slot2 = document.getElementById('slot-2');
         this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
     }
 
 
-    updateTimer(){
-        this.timeLeft -= 1; 
+    updateTimer() {
+        this.timeLeft -= 1;
         this.timerText.setText(`Time: ${this.timeLeft}`);
-    
+
         // When time runs out, trigger game over or transition
         if (this.timeLeft <= 0) {
             this.timerEvent.remove(); // stop the timer
-            this.checkIfPlayerLost(); 
-        } 
+            this.checkIfPlayerLost();
+        }
     }
 
     handleMotion(event) {
@@ -284,10 +306,10 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         thing.destroy();
     }
 
-    
+
 
     spawnThing() {
-        if(this.levelCompleted) return;
+        if (this.levelCompleted) return;
 
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
@@ -295,12 +317,18 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         const ThingTypes = ['mclaurinHelmetCollect', 'beckhamHelmetCollect',
             'curryHeadbandCollect', 'doncicHeadbandCollect',
             'messiCuffCollect', 'morganCuffCollect',
-            'rodmanCuffCollect', 'ohtaniHelmetCollect', 'zimmermanHelmetCollect']
-        const ChooseThing = Phaser.Math.RND.pick(ThingTypes);
+            'rodmanCuffCollect', 'ohtaniHelmetCollect', 'zimmermanHelmetCollect'];
 
-        const thing = this.things.create(randomX, 0, ChooseThing);
+        let chosenItem;
+        const spawnRequiredItemChance = 4; // Set the frequency, higher value = more rare spawn
+        if (Phaser.Math.RND.integerInRange(1, spawnRequiredItemChance) === 1) {
+            chosenItem = this.requiredItem;  // Set the required item to spawn
+        } else {
+            chosenItem = Phaser.Math.RND.pick(ThingTypes);  // Pick a random item from the available items
+        }
+        const thing = this.things.create(randomX, 0, chosenItem);
         thing.setScale(.25);
-        thing.setVelocityY(50);
+        thing.setVelocityY(125);
     }
 
 
@@ -337,15 +365,16 @@ export default class LevelThreePartTwo extends Phaser.Scene {
 
     }
 
-    showLevelUpScene(){
+    showLevelUpScene() {
         this.physics.pause();
 
         this.overlay = this.add.graphics();
         this.overlay.fillStyle(0x000000, 0.7);
         this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
 
-        this.arrowButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'arrow')
-        .setInteractive();
+        this.arrowButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, 'arrow')
+            .setInteractive()
+            .setScale(0.5);
         this.arrowButton.on('pointerdown', () => {
             this.scene.start('YouWin');
         });
@@ -356,42 +385,38 @@ export default class LevelThreePartTwo extends Phaser.Scene {
             align: 'center'
         });
         levelUpText.setOrigin(0.5);
-    
+
     }
 
-    checkIfPlayerLost() { 
+    checkIfPlayerLost() {
         // define required items (example: shoes and pants)
-        const requiredThings = ['mclaurinHelmetCollect', 'beckhamHelmetCollect', 'curryHeadbandCollect'];
         const lastCollectedThing = this.collectedThings[this.collectedThings.length - 1];
 
         let playerLost = false;
 
-        if (!requiredThings.includes(lastCollectedThing) ){
-            playerLost = true;  // player loses if the last item does not match
-        }
-    
-        if (playerLost) {
-            this.restartLevel(); 
-        } else {
+        if (lastCollectedThing !== this.requiredItem) {
+            this.restartLevel();
+        } else if (lastCollectedThing == this.requiredItem) {
             this.levelCompleted = true;
             this.showLevelUpScene();
         }
+
     }
 
     restartLevel() {
         if (this.isRestarting) return; // If already restarting, exit early
 
         this.isRestarting = true; // Prevent further calls until reset
-    
+
         // Pause gameplay
         this.physics.pause();
-    
+
         // Create a semi-transparent overlay
         const overlay = this.add.graphics();
         overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
         overlay.fillRect(0, 0, this.scale.width, this.scale.height); // Draw the rectangle to cover the screen
         overlay.setDepth(10); // Ensure overlay is above other objects
-    
+
         // Display the initial message
         const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Failed!', {
             fontSize: '48px',
@@ -400,7 +425,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         });
         loseText.setOrigin(0.5);
         loseText.setDepth(11); // Ensure text is above the overlay
-    
+
         // Countdown logic
         const countdownText = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
             fontSize: '64px',
@@ -409,7 +434,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         });
         countdownText.setOrigin(0.5);
         countdownText.setDepth(11); // Ensure countdown text is above the overlay
-    
+
         let countdownValue = 3;
         const countdownTimer = this.time.addEvent({
             delay: 1000, // 1 second per countdown step
@@ -419,19 +444,19 @@ export default class LevelThreePartTwo extends Phaser.Scene {
                 countdownText.setText(countdownValue.toString()); // Update the countdown text
             }
         });
-    
+
         // Schedule the restart after the countdown finishes
         this.time.delayedCall(3000, () => {
             // Clear the countdown text and update the message
             countdownText.destroy();
             loseText.setText('Restarting...');
-    
+
             // Restart the scene after a small delay
             this.time.delayedCall(500, () => {
                 this.isRestarting = false; // Reset the flag
                 this.scene.restart(); // Restart the scene
                 this.timeLeft = 30;
-                playerLost = false;
+                this.playerLost = false;
             });
         });
     }

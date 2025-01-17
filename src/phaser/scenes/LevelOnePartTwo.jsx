@@ -1,7 +1,7 @@
 export default class LevelOnePartTwo extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'LevelOnePartTwo'});
+        super({ key: 'LevelOnePartTwo' });
         this.ground = null;
         this.snowball = null;
         this.speedY = 1;
@@ -22,6 +22,31 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.timerEvent = null;
         this.timeLeft = 30;
         this.isRestarting = false;
+
+        this.playerPants = {
+            0: ['messiShortCollect'],     // Messi
+            1: ['morganShortsCollect'],    // Morgan
+            2: ['rodmanShortsCollect'],          // Rodman
+            3: ['mclaurinPantsCollect'],            // McLaurin
+            4: ['curryShortsCollect'],  // Curry
+            5: ['doncicShortsCollect'],    // Doncic
+            6: ['ohtaniPantsCollect'],          // Ohtani
+            7: ['zimmermanPantsCollect'],    // Zimmerman
+            8: ['beckhamPantsCollect'],    // Beckham
+        };
+
+        this.playerShoes = {
+            0: ['messiCleatsCollect'],     // Messi
+            1: ['morganCleatsCollect'],    // Morgan
+            2: ['rodmanCleatsCollect'],          // Rodman
+            3: ['mclaurinCleatsCollect'],            // McLaurin
+            4: ['curryShoeCollect'],  // Curry
+            5: ['doncicShoeCollect'],    // Doncic
+            6: ['ohtaniCleatsCollect'],          // Ohtani
+            7: ['zimmermanCleatsCollect'],    // Zimmerman
+            8: ['beckhamCleatsCollect'],    // Beckham
+        };
+
     }
 
     preload() {
@@ -81,6 +106,18 @@ export default class LevelOnePartTwo extends Phaser.Scene {
     }
 
     create() {
+
+        const selectedPlayerIndex = localStorage.getItem('selectedPlayerIndex')
+        if (selectedPlayerIndex !== null) {
+            this.selectedPlayerIndex = parseInt(selectedPlayerIndex, 10);
+        } else {
+            this.selectedPlayerIndex = 0; // default to player 0 (Messi)
+        }
+
+        this.requiredPant = this.playerPants[this.selectedPlayerIndex][0];
+        this.requiredShoe = this.playerShoes[this.selectedPlayerIndex][0];
+
+
         this.setInventory();
         this.showInventory();
 
@@ -95,18 +132,18 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         // create lanes and start snowball in middle lane
         this.lanes = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         this.currentLaneIndex = 1;
-        this.targetX = this.lanes[this.currentLaneIndex]; 
+        this.targetX = this.lanes[this.currentLaneIndex];
 
         this.snowball = this.physics.add.sprite(this.lanes[this.currentLaneIndex], this.scale.height * 3 / 4, 'snowball');
         this.snowball.setScale(0.2);
         this.snowball.setOrigin(0.5, 0.5);
-    
+
         this.shoes = this.physics.add.group();
         this.pants = this.physics.add.group();
 
-        this.spawnPantEvent = this.time.addEvent({ delay: 2750, callback: this.spawnPant, callbackScope: this, loop: true });
-        this.spawnShoeEvent = this.time.addEvent({ delay: 2250, callback: this.spawnShoe, callbackScope: this, loop: true });
-        
+        this.spawnPantEvent = this.time.addEvent({ delay: 2500, callback: this.spawnPant, callbackScope: this, loop: true });
+        this.spawnShoeEvent = this.time.addEvent({ delay: 2000, callback: this.spawnShoe, callbackScope: this, loop: true });
+
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.shoes, this.handleShoeCollision, null, this);
         this.physics.add.collider(this.snowball, this.pants, this.handlePantCollision, null, this);
@@ -117,14 +154,14 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.timerText.setDepth(10);
 
         this.timerEvent = this.time.addEvent({
-            delay: 1000, 
+            delay: 1000,
             callback: this.updateTimer,
             callbackScope: this,
             loop: true
         });
 
         // set up controls for lane switching
-        this.targetX = this.lanes[this.currentLaneIndex]; 
+        this.targetX = this.lanes[this.currentLaneIndex];
 
         this.input.keyboard.on('keydown-LEFT', () => {
             this.changeLane(-1);
@@ -146,61 +183,61 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.anims.create({
             key: 'confetti',
             frames: [
-              { key: 'confetti0' },
-              { key: 'confetti1' },
-              { key: 'confetti2' },
-              { key: 'confetti3' },
-              { key: 'confetti4' },
-              { key: 'confetti5' },
-              { key: 'confetti6' },
-              { key: 'confetti7' },
-              { key: 'confetti8' },
-              { key: 'confetti9' },
-              { key: 'confetti10' },
-              { key: 'confetti11' },
-              { key: 'confetti12' },
-              { key: 'confetti13' },
-              { key: 'confetti14' },
-              { key: 'confetti15' },
-              { key: 'confetti16' },
-              { key: 'confetti17' },
-              { key: 'confetti18' },
-              { key: 'confetti19' },
-              { key: 'confetti20' },
-              { key: 'confetti21' },
-              { key: 'confetti22' },
-              { key: 'confetti23' },
-              { key: 'confetti24' },
-              { key: 'confetti25' },
-              { key: 'confetti26' },
-              { key: 'confetti27' },
-              { key: 'confetti28' },
-              { key: 'confetti29' },
-              { key: 'confetti30' },
-              { key: 'confetti31' },
-              { key: 'confetti32' },
-              { key: 'confetti33' },
-              { key: 'confetti34' },
-              { key: 'confetti35' },
-              { key: 'confetti36' },
-              { key: 'confetti37' },
-              { key: 'confetti38' },
-              { key: 'confetti39' },
-              { key: 'confetti40' },
-              { key: 'confetti41' },
-              { key: 'confetti42' },
-              { key: 'confetti43' },
-              { key: 'confetti44' },
-              { key: 'confetti45' },
-              { key: 'confetti46' },
-              { key: 'confetti47' },
-              { key: 'confetti48' },
-              { key: 'confetti49' },
+                { key: 'confetti0' },
+                { key: 'confetti1' },
+                { key: 'confetti2' },
+                { key: 'confetti3' },
+                { key: 'confetti4' },
+                { key: 'confetti5' },
+                { key: 'confetti6' },
+                { key: 'confetti7' },
+                { key: 'confetti8' },
+                { key: 'confetti9' },
+                { key: 'confetti10' },
+                { key: 'confetti11' },
+                { key: 'confetti12' },
+                { key: 'confetti13' },
+                { key: 'confetti14' },
+                { key: 'confetti15' },
+                { key: 'confetti16' },
+                { key: 'confetti17' },
+                { key: 'confetti18' },
+                { key: 'confetti19' },
+                { key: 'confetti20' },
+                { key: 'confetti21' },
+                { key: 'confetti22' },
+                { key: 'confetti23' },
+                { key: 'confetti24' },
+                { key: 'confetti25' },
+                { key: 'confetti26' },
+                { key: 'confetti27' },
+                { key: 'confetti28' },
+                { key: 'confetti29' },
+                { key: 'confetti30' },
+                { key: 'confetti31' },
+                { key: 'confetti32' },
+                { key: 'confetti33' },
+                { key: 'confetti34' },
+                { key: 'confetti35' },
+                { key: 'confetti36' },
+                { key: 'confetti37' },
+                { key: 'confetti38' },
+                { key: 'confetti39' },
+                { key: 'confetti40' },
+                { key: 'confetti41' },
+                { key: 'confetti42' },
+                { key: 'confetti43' },
+                { key: 'confetti44' },
+                { key: 'confetti45' },
+                { key: 'confetti46' },
+                { key: 'confetti47' },
+                { key: 'confetti48' },
+                { key: 'confetti49' },
             ],
             frameRate: 40,
-            hideOnComplete: true, 
-          });
-          this.isRestarting = false;
+            hideOnComplete: true,
+        });
+        this.isRestarting = false;
     }
 
     setInventory() {
@@ -215,15 +252,15 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.slot4.style.backgroundImage = 'url(/src/assets/images/short.png)';
     }
 
-    updateTimer(){
-        this.timeLeft -= 1; 
+    updateTimer() {
+        this.timeLeft -= 1;
         this.timerText.setText(`Time: ${this.timeLeft}`);
-    
+
         // When time runs out, trigger game over or transition
         if (this.timeLeft <= 0) {
             this.timerEvent.remove(); // stop the timer
-            this.checkIfPlayerLost(); 
-        } 
+            this.checkIfPlayerLost();
+        }
     }
 
     handleMotion(event) {
@@ -282,9 +319,9 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         snowball.body.setFriction(0);
         const pantKey = pant.texture.key;
 
-    if (!this.collectedPants.includes(pantKey)) {
-        this.collectedPants.push(pantKey);  // add the collected pant to the array
-    }
+        if (!this.collectedPants.includes(pantKey)) {
+            this.collectedPants.push(pantKey);  // add the collected pant to the array
+        }
 
         if (pantKey === 'mclaurinPantsCollect') {
             this.slot4.style.backgroundImage = `url(/src/assets/images/mclaurinpants.png)`;
@@ -312,7 +349,6 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         confettiSprite.play('confetti');
 
         pant.destroy();
-        console.log("Collected pants:", this.collectedPants);
 
     }
 
@@ -323,7 +359,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         snowball.body.setFriction(0);
         const shoeKey = shoe.texture.key;
         if (!this.collectedShoes.includes(shoeKey)) {
-            this.collectedShoes.push(shoeKey);  
+            this.collectedShoes.push(shoeKey);
         }
         console.log(this.playerLost);
 
@@ -350,13 +386,12 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         const confettiSprite = this.add.sprite(shoe.x, shoe.y, 'confetti0');
         confettiSprite.setScale(1.5);
         confettiSprite.play('confetti');
-        console.log("Collected shoes:", this.collectedShoes);
 
         shoe.destroy();
     }
 
     spawnPant() {
-        if(this.levelCompleted) return;
+        if (this.levelCompleted) return;
 
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
@@ -364,16 +399,23 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         const PantTypes = ['mclaurinPantsCollect', 'beckhamPantsCollect',
             'curryShortsCollect', 'doncicShortsCollect',
             'messiShortsCollect', 'morganShortsCollect',
-            'rodmanShortsCollect', 'ohtaniPantsCollect', 'zimmermanPantsCollect']
-        const ChoosePant = Phaser.Math.RND.pick(PantTypes);
+            'rodmanShortsCollect', 'ohtaniPantsCollect', 'zimmermanPantsCollect'];
 
-        const pant = this.pants.create(randomX, 0, ChoosePant);
+        let chosenPant;
+        const spawnRequiredItemChance = 2; // Set the frequency, higher value = more rare spawn
+        if (Phaser.Math.RND.integerInRange(1, spawnRequiredItemChance) === 1) {
+            chosenPant = this.requiredPant;  // Set the required item to spawn
+        } else {
+            chosenPant = Phaser.Math.RND.pick(PantTypes);  // Pick a random item from the available items
+        }
+
+        const pant = this.pants.create(randomX, 0, chosenPant);
         pant.setScale(.25);
-        pant.setVelocityY(50);
+        pant.setVelocityY(125);
     }
 
     spawnShoe() {
-        if(this.levelCompleted) return;
+        if (this.levelCompleted) return;
 
         const xPositions = [this.scale.width / 6, this.scale.width / 2, this.scale.width * 5 / 6];
         const randomX = Phaser.Math.RND.pick(xPositions);
@@ -381,22 +423,29 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         const shoeType = ['mclaurinCleatsCollect', 'beckhamCleatsCollect',
             'curryShoeCollect', 'doncicShoeCollect',
             'messiCleatsCollect', 'morganCleatsCollect',
-            'rodmanCleatsCollect', 'ohtaniCleatsCollect', 'zimmermanCleatsCollect']
-        const RandomShoeType = Phaser.Math.RND.pick(shoeType);
+            'rodmanCleatsCollect', 'ohtaniCleatsCollect', 'zimmermanCleatsCollect'];
 
-        const shoe = this.shoes.create(randomX, 0, RandomShoeType);
+        let chosenShoe;
+        const spawnRequiredItemChance = 2; // Set the frequency, higher value = more rare spawn
+        if (Phaser.Math.RND.integerInRange(1, spawnRequiredItemChance) === 1) {
+            chosenShoe = this.requiredShoe;  // Set the required item to spawn
+        } else {
+            chosenShoe = Phaser.Math.RND.pick(shoeType);  // Pick a random item from the available items
+        }
+
+        const shoe = this.shoes.create(randomX, 0, chosenShoe);
         shoe.setScale(.25);
-        shoe.setVelocityY(50);
+        shoe.setVelocityY(125);
     }
 
 
     showInventory() {
         const inventoryBox = document.getElementById('inventory-box');
         if (inventoryBox) {
-            inventoryBox.style.display = 'flex'; 
+            inventoryBox.style.display = 'flex';
         }
     }
-    
+
     update() {
 
         // update snowball position if needed
@@ -411,7 +460,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
             if (distance <= moveAmount) {
                 this.snowball.x = this.targetX; // snap to target
             } else {
-                this.snowball.x += Math.sign(this.targetX - this.snowball.x) * moveAmount; 
+                this.snowball.x += Math.sign(this.targetX - this.snowball.x) * moveAmount;
             }
         } else {
             this.snowball.x = this.targetX; // snap to target 
@@ -436,7 +485,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
 
     }
 
-    showLevelUpScene(){
+    showLevelUpScene() {
         this.physics.pause();
 
         this.overlay = this.add.graphics();
@@ -444,7 +493,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.overlay.fillRect(0, 0, this.scale.width, this.scale.height);
 
         this.nextLevelButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'nextLevelButton')
-        .setInteractive();
+            .setInteractive();
         this.nextLevelButton.on('pointerdown', () => {
             this.scene.start('LevelTwo');
         });
@@ -455,45 +504,38 @@ export default class LevelOnePartTwo extends Phaser.Scene {
             align: 'center'
         });
         levelUpText.setOrigin(0.5);
-    
+
     }
 
-    checkIfPlayerLost() { 
+    checkIfPlayerLost() {
         // define required items (example: shoes and pants)
-        const requiredPants = ['mclaurinPantsCollect', 'beckhamPantsCollect', 'curryShortsCollect'];
-        const requiredShoes = ['mclaurinCleatsCollect', 'beckhamCleatsCollect', 'curryShoeCollect'];
-    
-        const lastCollectedPant = this.collectedPants[this.collectedPants.length - 1];
-        const lastCollectedShoe = this.collectedShoes[this.collectedShoes.length - 1];
+        const lastCollectedPant = this.collectedPants[0];
+        const lastCollectedShoe = this.collectedShoes[0];
 
-        let playerLost = false;
-
-        if (!requiredPants.includes(lastCollectedPant) || !requiredShoes.includes(lastCollectedShoe)) {
-            playerLost = true;  // player loses if the last item does not match
-        }
-    
-        if (playerLost) {
-            this.restartLevel(); 
-        } else {
+        if (lastCollectedPant !== this.requiredPant || lastCollectedShoe !== this.requiredShoe) {
+            this.restartLevel();
+        } else if (lastCollectedPant == this.requiredPant &&
+            lastCollectedShoe == this.requiredShoe) {
             this.levelCompleted = true;
             this.showLevelUpScene();
         }
+
     }
 
     restartLevel() {
         if (this.isRestarting) return; // If already restarting, exit early
 
         this.isRestarting = true; // Prevent further calls until reset
-    
+
         // Pause gameplay
         this.physics.pause();
-    
+
         // Create a semi-transparent overlay
         const overlay = this.add.graphics();
         overlay.fillStyle(0x000000, 0.7); // Semi-transparent black
         overlay.fillRect(0, 0, this.scale.width, this.scale.height); // Draw the rectangle to cover the screen
         overlay.setDepth(10); // Ensure overlay is above other objects
-    
+
         // Display the initial message
         const loseText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Level Failed!', {
             fontSize: '48px',
@@ -502,7 +544,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         });
         loseText.setOrigin(0.5);
         loseText.setDepth(11); // Ensure text is above the overlay
-    
+
         // Countdown logic
         const countdownText = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
             fontSize: '64px',
@@ -511,7 +553,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         });
         countdownText.setOrigin(0.5);
         countdownText.setDepth(11); // Ensure countdown text is above the overlay
-    
+
         let countdownValue = 3;
         const countdownTimer = this.time.addEvent({
             delay: 1000, // 1 second per countdown step
@@ -521,13 +563,13 @@ export default class LevelOnePartTwo extends Phaser.Scene {
                 countdownText.setText(countdownValue.toString()); // Update the countdown text
             }
         });
-    
+
         // Schedule the restart after the countdown finishes
         this.time.delayedCall(3000, () => {
             // Clear the countdown text and update the message
             countdownText.destroy();
             loseText.setText('Restarting...');
-    
+
             // Restart the scene after a small delay
             this.time.delayedCall(500, () => {
                 this.isRestarting = false; // Reset the flag

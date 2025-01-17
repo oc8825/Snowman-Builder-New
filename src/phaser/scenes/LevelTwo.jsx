@@ -8,7 +8,7 @@ export default class LevelTwo extends Phaser.Scene {
 
         this.orientation = null;
 
-        this.snowballTarget = 3;
+        this.snowballTarget = 7;
         this.levelCompleted = false;
         this.score = 0;
         this.level = 1;
@@ -70,8 +70,8 @@ export default class LevelTwo extends Phaser.Scene {
         this.obstacles = this.physics.add.group(); // obstacles
         this.snowAdders = this.physics.add.group();
 
-        this.spawnObstacleEvent = this.time.addEvent({ delay: 2000, callback: this.spawnObstacle, callbackScope: this, loop: true });
-        this.spawnSnowAdderEvent = this.time.addEvent({ delay: 3000, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
+        this.spawnObstacleEvent = this.time.addEvent({ delay: 1750, callback: this.spawnObstacle, callbackScope: this, loop: true });
+        this.spawnSnowAdderEvent = this.time.addEvent({ delay: 1500, callback: this.spawnSnowAdder, callbackScope: this, loop: true });
         
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.obstacles, this.handleObstacleCollision, null, this);
@@ -203,7 +203,7 @@ export default class LevelTwo extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
 
-        this.score += 3;
+        this.score += 1;
         this.scoreText.setText('Score: ' + this.score);
 
         // glow effect
@@ -237,18 +237,18 @@ export default class LevelTwo extends Phaser.Scene {
 
         if (randomObstacleType === 'baseballbat') {
             obstacle.setScale(0.15);
-            obstacle.setVelocityY(100);
+            obstacle.setVelocityY(175);
             obstacle.rotationSpeed = 0.02;
         } else if (randomObstacleType === 'basketball') {
             obstacle.rotationSpeed = 0.01;
             obstacle.setScale(0.15);
-            obstacle.setVelocityY(200);
+            obstacle.setVelocityY(275);
         } else if (randomObstacleType === 'net') {
             obstacle.setScale(0.3);
-            obstacle.setVelocityY(300);
+            obstacle.setVelocityY(375);
         } else if (randomObstacleType === 'football') {
             obstacle.setScale(0.1);
-            obstacle.setVelocityY(250);
+            obstacle.setVelocityY(325);
             obstacle.rotationSpeed = 0.02;
         }
     }
@@ -261,7 +261,7 @@ export default class LevelTwo extends Phaser.Scene {
 
         const snowAdder = this.snowAdders.create(randomX, 0, 'snowAdderImage'); // spawn at top
         snowAdder.setScale(0.1); // scale the snowAdder down
-        snowAdder.setVelocityY(100); // make the obstacle move downward
+        snowAdder.setVelocityY(175); // make the obstacle move downward
     }
 
 
