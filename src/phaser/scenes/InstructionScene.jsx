@@ -29,14 +29,24 @@ export default class InstructionScene extends Phaser.Scene {
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'Instructions', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
 
-        const boxWidth = 500;
+        const boxWidth =600;
 
         const verticalPosition = this.cameras.main.centerY - 100;
+
+        const bulletPoints = [
+            'To get started, chose a player',
+            'Enable tilt contorls on mobile devices',
+            'For desktop users, use the arrow keys to move the snowball',
+            'Hitting snowballs gains points',
+            'Hitting obstacles loses points'
+        ];
+
+        const formattedText = bulletPoints.map(point => `• ${point}`).join('\n');
       
         const text = this.add.text(
             this.cameras.main.centerX,
             verticalPosition,
-            'To get started, chose a player and enable tilt contorls on mobile devices. For desktop users, use the arrow keys to move the snowball. Hitting snowballs gains points, hitting obsitcales loses poitns.',
+            formattedText,
             { 
                 fontSize: '25px', 
                 color: '#000',
