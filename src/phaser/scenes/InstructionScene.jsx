@@ -35,7 +35,7 @@ export default class InstructionScene extends Phaser.Scene {
 
         const bulletPoints = [
             'To get started, chose a player',
-            'Enable tilt contorls on mobile devices',
+            'Enable tilt controls on mobile devices',
             'For desktop users, use the arrow keys to move the snowball',
             'Hitting snowballs gains points',
             'Hitting obstacles loses points'
