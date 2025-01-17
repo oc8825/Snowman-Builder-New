@@ -29,14 +29,22 @@ export default class InstructionFour extends Phaser.Scene {
 
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 250, 'Instructions', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
 
-        const boxWidth = 500;
+        const boxWidth = 700;
 
         const verticalPosition = this.cameras.main.centerY - 100;
       
+        const bulletPoints = [
+            'In level 3, you will build the head of the snowman',
+            'You will first have to avoid obsacles and collect snowballs to reach 5 points',
+            'You will then have to collect the correct gear for the player that you built (head-gear and cuffs)'
+        ];
+
+        const formattedText = bulletPoints.map(point => `• ${point}`).join('\n');
+
         const text = this.add.text(
             this.cameras.main.centerX,
             verticalPosition,
-            'In level 3, you will build the head of the snowman. You will first have 30 seconds collect the correct gear for the player that you built (head-gear). In part 2, you will have to get to 5 points. If your point value is less than 0, you lose! ',
+            formattedText,
             { 
                 fontSize: '25px', 
                 color: '#000',

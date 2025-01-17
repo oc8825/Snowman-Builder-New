@@ -124,12 +124,20 @@ export default class ObjectiveScene extends Phaser.Scene {
             });
         });
 
-        const nextPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 150, 'nextPlayerButton').setOrigin(0.5);
-        nextPlayerButton.setInteractive();
-        nextPlayerButton.setScale(.5);
-        nextPlayerButton.setDepth(1);  
+        this.nextPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 150, 'nextPlayerButton')
+            .setOrigin(0.5)
+            .setInteractive()
+            .setScale(.5)
+            .setDepth(1);  
 
-        nextPlayerButton.on('pointerdown', () => {
+        this.nextPlayerButton.on('pointerdown', () => {
+            this.nextPlayerButton.setScale(0.55);    // Slightly increase the size for a "pressed" effect
+
+            // Schedule to reset the visual feedback after 200ms
+            this.time.delayedCall(200, () => {
+                this.nextPlayerButton.setScale(0.5); // Reset the size
+            });
+            
             this.children.list.forEach(child => {
                 if (child.type === 'Image' && !['nextPlayerButton', 'startGameButton', 'selectPlayerButton'].includes(child.texture.key)) {
                     child.destroy();
@@ -142,12 +150,20 @@ export default class ObjectiveScene extends Phaser.Scene {
         });
 
         // start game button
-        const startGameButton = this.add.image(this.scale.width / 2, this.scale.height - 100, 'startGameButton').setOrigin(0.5);
-        startGameButton.setInteractive();
-        startGameButton.setScale(0.5);
-        startGameButton.setDepth(1);  
+        this.startGameButton = this.add.image(this.scale.width / 2, this.scale.height - 100, 'startGameButton')
+            .setOrigin(0.5)
+            .setInteractive()
+            .setScale(0.5)
+            .setDepth(1);  
 
-        startGameButton.on('pointerdown', () => {
+        this.startGameButton.on('pointerdown', () => {
+            this.startGameButton.setScale(0.55);    // Slightly increase the size for a "pressed" effect
+
+            // Schedule to reset the visual feedback after 200ms
+            this.time.delayedCall(200, () => {
+                this.startGameButton.setScale(0.5); // Reset the size
+            });
+            
             if (this.playerIndex >= 0) {
                 this.scene.start('LevelOne');
             } else {
@@ -155,12 +171,20 @@ export default class ObjectiveScene extends Phaser.Scene {
             }
         });
 
-        const selectPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 200, 'selectPlayerButton').setOrigin(0.5);
-        selectPlayerButton.setInteractive();
-        selectPlayerButton.setScale(0.5);
-        selectPlayerButton.setDepth(1);
+        this.selectPlayerButton = this.add.image(this.scale.width / 2, this.scale.height - 200, 'selectPlayerButton')
+            .setOrigin(0.5)
+            .setInteractive()
+            .setScale(0.5)
+            .setDepth(1);
 
-        selectPlayerButton.on('pointerdown', () => {
+        this.selectPlayerButton.on('pointerdown', () => {
+            this.selectPlayerButton.setScale(0.55);    // Slightly increase the size for a "pressed" effect
+
+            // Schedule to reset the visual feedback after 200ms
+            this.time.delayedCall(200, () => {
+                this.selectPlayerButton.setScale(0.5); // Reset the size
+            });
+
             if (this.playerIndex >= 0) {
                 // store  selected player index in localStorage
                 localStorage.setItem('selectedPlayerIndex', this.playerIndex);
