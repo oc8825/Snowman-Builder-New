@@ -21,7 +21,6 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.timerText = null;
         this.timerEvent = null;
         this.timeLeft = 30;
-
         this.isRestarting = false;
     }
 
@@ -313,6 +312,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         confettiSprite.play('confetti');
 
         pant.destroy();
+        console.log("Collected pants:", this.collectedPants);
+
     }
 
 
@@ -324,6 +325,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         if (!this.collectedShoes.includes(shoeKey)) {
             this.collectedShoes.push(shoeKey);  
         }
+        console.log(this.playerLost);
 
         if (shoeKey === 'mclaurinCleatsCollect') {
             this.slot3.style.backgroundImage = `url(/src/assets/images/mclaurincleat.png)`;
@@ -348,6 +350,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         const confettiSprite = this.add.sprite(shoe.x, shoe.y, 'confetti0');
         confettiSprite.setScale(1.5);
         confettiSprite.play('confetti');
+        console.log("Collected shoes:", this.collectedShoes);
 
         shoe.destroy();
     }
@@ -472,8 +475,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         if (playerLost) {
             this.restartLevel(); 
         } else {
-            this.showLevelUpScene();
             this.levelCompleted = true;
+            this.showLevelUpScene();
         }
     }
 
@@ -530,6 +533,7 @@ export default class LevelOnePartTwo extends Phaser.Scene {
                 this.isRestarting = false; // Reset the flag
                 this.scene.restart(); // Restart the scene
                 this.timeLeft = 30;
+                let playerLost = false;
             });
         });
     }

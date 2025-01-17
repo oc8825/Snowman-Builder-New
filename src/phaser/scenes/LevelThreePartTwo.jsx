@@ -60,6 +60,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
     }
 
     create() {
+        this.setInventory();
 
         // background
         this.ground = this.add.tileSprite(
@@ -174,9 +175,15 @@ export default class LevelThreePartTwo extends Phaser.Scene {
             frameRate: 40,
             hideOnComplete: true, // Automatically hide the sprite after the animation completes
           });
+          this.isRestarting = false;
 
-          // create flag so don't restart multiple times in a row
     }
+
+    setInventory(){
+        this.slot2 = document.getElementById('slot-1');
+        this.slot2.style.backgroundImage = 'url(/src/assets/images/accessories.png)';
+    }
+
 
     updateTimer(){
         this.timeLeft -= 1; 
@@ -245,6 +252,10 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
         const thingKey = thing.texture.key;
+
+        if (!this.collectedThings.includes(thingKey)) {
+            this.collectedThings.push(thingKey);  // add the collected pant to the array
+        }
 
         if (thingKey === 'mclaurinHelmetCollect') {
             this.slot2.style.backgroundImage = `url(/src/assets/images/mclaurinhelmet.png)`;
@@ -350,9 +361,8 @@ export default class LevelThreePartTwo extends Phaser.Scene {
 
     checkIfPlayerLost() { 
         // define required items (example: shoes and pants)
-        const requiredThings = ['mclaurinPantsCollect', 'beckhamPantsCollect', 'curryShortsCollect'];
-    
-        const lastCollectedThing= this.lastCollectedThings[this.lastCollectedThing.length - 1];
+        const requiredThings = ['mclaurinHelmetCollect', 'beckhamHelmetCollect', 'curryHeadbandCollect'];
+        const lastCollectedThing = this.collectedThings[this.collectedThings.length - 1];
 
         let playerLost = false;
 
@@ -363,6 +373,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         if (playerLost) {
             this.restartLevel(); 
         } else {
+            this.levelCompleted = true;
             this.showLevelUpScene();
         }
     }
@@ -419,6 +430,8 @@ export default class LevelThreePartTwo extends Phaser.Scene {
             this.time.delayedCall(500, () => {
                 this.isRestarting = false; // Reset the flag
                 this.scene.restart(); // Restart the scene
+                this.timeLeft = 30;
+                playerLost = false;
             });
         });
     }

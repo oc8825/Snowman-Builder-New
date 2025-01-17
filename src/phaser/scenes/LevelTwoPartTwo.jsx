@@ -22,6 +22,8 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         this.timeLeft = 30;
 
         this.isRestarting = false;
+
+        this.playerLost = false;
     }
 
     preload() {
@@ -368,8 +370,8 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         if (playerLost) {
             this.restartLevel(); 
         } else {
-            this.showLevelUpScene();
             this.levelCompleted = true;
+            this.showLevelUpScene();
         }
     }
 
@@ -424,6 +426,8 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
             this.time.delayedCall(500, () => {
                 this.isRestarting = false; // Reset the flag
                 this.scene.restart(); // Restart the scene
+                this.timeLeft = 30;
+                playerLost = false;
             });
         });
     }
