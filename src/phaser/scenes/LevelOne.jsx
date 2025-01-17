@@ -336,7 +336,7 @@ export default class LevelOne extends Phaser.Scene {
             this.snowball.x = this.targetX; // snap to target 
         }
 
-        this.ground.tilePositionY -= 1; 
+        this.ground.tilePositionY -= 2; 
         this.snowball.rotation += 0.01;
 
         // cleanup for off-screen

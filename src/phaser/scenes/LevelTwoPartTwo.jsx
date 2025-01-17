@@ -317,10 +317,8 @@ export default class LevelTwoPartTwo extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
         const collectibleKey = collectible.texture.key;
-
-        if (!this.collectedJerseys.includes(collectibleKey)) {
+        
             this.collectedJerseys.push(collectibleKey);  
-        }
 
         if (collectibleKey === 'mclaurinJerseyCollect') {
             this.slot1.style.backgroundImage = `url(/src/assets/images/mclaurin.png)`;

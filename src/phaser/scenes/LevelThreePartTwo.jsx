@@ -329,9 +329,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         snowball.body.setFriction(0);
         const thingKey = thing.texture.key;
 
-        if (!this.collectedThings.includes(thingKey)) {
             this.collectedThings.push(thingKey);  // add the collected pant to the array
-        }
 
         if (thingKey === 'mclaurinHelmetCollect') {
             this.slot2.style.backgroundImage = `url(/src/assets/images/mclaurinhelmet.png)`;

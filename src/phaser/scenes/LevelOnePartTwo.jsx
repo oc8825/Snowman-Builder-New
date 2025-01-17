@@ -373,10 +373,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         snowball.body.setFriction(0);
         const pantKey = pant.texture.key;
 
-        if (!this.collectedPants.includes(pantKey)) {
-            this.collectedPants.push(pantKey);  // add the collected pant to the array
-        }
-
+        this.collectedPants.push(pantKey);  
+        
         if (pantKey === 'mclaurinPantsCollect') {
             this.slot4.style.backgroundImage = `url(/src/assets/images/mclaurinpants.png)`;
         } else if (pantKey == 'beckhamPantsCollect') {
@@ -402,6 +400,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         confettiSprite.setScale(1.5);
         confettiSprite.play('confetti');
 
+        console.log("Updating Collected Pants:", this.collectedPants);
+
         pant.destroy();
 
     }
@@ -412,10 +412,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         snowball.body.setBounce(0);
         snowball.body.setFriction(0);
         const shoeKey = shoe.texture.key;
-        if (!this.collectedShoes.includes(shoeKey)) {
-            this.collectedShoes.push(shoeKey);
-        }
-        console.log(this.playerLost);
+        
+        this.collectedShoes.push(shoeKey);
 
         if (shoeKey === 'mclaurinCleatsCollect') {
             this.slot3.style.backgroundImage = `url(/src/assets/images/mclaurincleat.png)`;
@@ -440,6 +438,8 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         const confettiSprite = this.add.sprite(shoe.x, shoe.y, 'confetti0');
         confettiSprite.setScale(1.5);
         confettiSprite.play('confetti');
+
+        console.log("Updating Collected Shoes:", this.collectedShoes);
 
         shoe.destroy();
     }
