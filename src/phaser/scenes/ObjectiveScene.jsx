@@ -27,7 +27,7 @@ export default class ObjectiveScene extends Phaser.Scene {
 
             'messicleat': '/src/assets/images/messicleat.png',
             'morgancleat': '/src/assets/images/usacleat.png',
-            'rodmancleat': '/src/assets/images/usacleat.png',
+            'rodmancleat': '/src/assets/images/rodmancleat.png',
             'mclaurincleat': '/src/assets/images/mclaurincleat.png',
             'curryshoe': '/src/assets/images/curryshoe.png',
             'doncicshoe': '/src/assets/images/doncicshoe.png',
@@ -37,7 +37,7 @@ export default class ObjectiveScene extends Phaser.Scene {
 
             'messicuff': '/src/assets/images/messicuff.png',
             'morgancuff': '/src/assets/images/usacuff.png',
-            'rodmancuff': '/src/assets/images/usacuff.png',
+            'rodmancuff': '/src/assets/images/rodmancuff.png',
             'mclaurinhelmet': '/src/assets/images/mclaurinhelmet.png',
             'curryheadband': '/src/assets/images/curryheadband.png',
             'doncicheadband': '/src/assets/images/doncicheadband.png',
@@ -65,7 +65,7 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('doncicshoe', '/src/assets/images/doncicshoe.png');
         this.load.image('messicleat', '/src/assets/images/messicleat.png');
         this.load.image('morgancleat', '/src/assets/images/usacleat.png');
-        this.load.image('rodmancleat', '/src/assets/images/usacleat.png');
+        this.load.image('rodmancleat', '/src/assets/images/rodmancleat.png');
         this.load.image('ohtanicleat', '/src/assets/images/ohtanicleat.png');
         this.load.image('zimmermancleat', '/src/assets/images/zimmermancleat.png');
 
@@ -95,7 +95,7 @@ export default class ObjectiveScene extends Phaser.Scene {
         this.load.image('doncicheadband', '/src/assets/images/doncicheadband.png');
         this.load.image('messicuff', '/src/assets/images/messicuff.png');
         this.load.image('morgancuff', '/src/assets/images/usacuff.png');
-        this.load.image('rodmancuff', '/src/assets/images/usacuff.png');
+        this.load.image('rodmancuff', '/src/assets/images/rodmancuff.png');
         this.load.image('ohtanihelmet', '/src/assets/images/ohtanihelmet.png');
         this.load.image('zimmermanhelmet', '/src/assets/images/zimmermanhelmet.png');
 

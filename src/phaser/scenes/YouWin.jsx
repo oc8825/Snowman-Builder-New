@@ -55,7 +55,14 @@ export default class YouWin extends Phaser.Scene {
 
         
         this.restartGameButton.on('pointerdown', () => {
-            this.scene.start('ObjectiveScene'); 
+            this.scene.start('ObjectiveScene');
+            this.scene.restart('LevelOne');
+            this.scene.restart('LevelOnePartTwo');
+            this.scene.restart('LevelTwo');
+            this.scene.restart('LevelTwoPartTwo');
+            this.scene.restart('LevelThree');
+            this.scene.restart('LevelThreePartTwo');
+
         });
     }
 

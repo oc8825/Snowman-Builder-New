@@ -148,6 +148,10 @@ export default class LevelOnePartTwo extends Phaser.Scene {
         this.physics.add.collider(this.snowball, this.shoes, this.handleShoeCollision, null, this);
         this.physics.add.collider(this.snowball, this.pants, this.handlePantCollision, null, this);
 
+        this.requiredShoeDisplay = this.add.sprite(this.snowball.x-100, this.snowball.y+110, this.requiredShoe); 
+        this.requiredShoeDisplay.setScale(0.15);
+        this.requiredPantDisplay = this.add.sprite(this.snowball.x+100, this.snowball.y+110, this.requiredPant); 
+        this.requiredPantDisplay.setScale(0.15);
 
         // display time
         this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
@@ -502,6 +506,17 @@ export default class LevelOnePartTwo extends Phaser.Scene {
 
     update() {
 
+      /*  if (this.requiredShoeDisplay) {
+            this.requiredShoeDisplay.setPosition(this.snowball.x-100, this.snowball.y+110); // Adjust 50 for vertical spacing
+        }
+
+        if (this.requiredPantDisplay) {
+            this.requiredPantDisplay.setPosition(this.snowball.x+100, this.snowball.y+110); // Adjust 50 for vertical spacing
+        }
+            */
+
+        
+
         // update snowball position if needed
         const speed = 1000; // pixels per second
         const threshold = 1; // snap threshold for close distances
@@ -629,7 +644,6 @@ export default class LevelOnePartTwo extends Phaser.Scene {
                 this.isRestarting = false; // Reset the flag
                 this.scene.restart(); // Restart the scene
                 this.timeLeft = 30;
-                let playerLost = false;
             });
         });
     }

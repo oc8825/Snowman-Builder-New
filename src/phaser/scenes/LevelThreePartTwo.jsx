@@ -76,9 +76,7 @@ export default class LevelThreePartTwo extends Phaser.Scene {
         const selectedPlayerIndex = localStorage.getItem('selectedPlayerIndex')
         if (selectedPlayerIndex !== null) {
             this.selectedPlayerIndex = parseInt(selectedPlayerIndex, 10);
-        } else {
-            this.selectedPlayerIndex = 0; // default to player 0 (Messi)
-        }
+        } 
 
         this.requiredItem = this.playerItems[this.selectedPlayerIndex][0];
 
@@ -109,6 +107,10 @@ export default class LevelThreePartTwo extends Phaser.Scene {
 
         // collision detection for obstacles
         this.physics.add.collider(this.snowball, this.things, this.handleThingCollision, null, this);
+
+        this.requiredThingDisplay = this.add.sprite(this.snowball.x-100, this.snowball.y+110, this.requiredItem); 
+        this.requiredThingDisplay.setScale(0.25);
+      
 
         this.timerText = this.add.text(10, 10, `Time: ${this.timeLeft}`, { fontSize: '32px', fill: '#000' });
         this.timerText.setDepth(10);
@@ -357,8 +359,6 @@ export default class LevelThreePartTwo extends Phaser.Scene {
 
         thing.destroy();
     }
-
-
 
     spawnThing() {
         if (this.levelCompleted) return;

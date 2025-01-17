@@ -8,7 +8,7 @@ export default class LevelOne extends Phaser.Scene {
 
         this.orientation = null;
 
-        this.snowballTarget = 10;
+        this.snowballTarget = 1;
         this.levelCompleted = false;
         this.score = 0;
         this.level = 1;
